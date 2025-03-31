@@ -5,18 +5,21 @@ import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
+import Inicio from './Pages/Inicio'
+import Perfil from './Pages/Perfil'
+import PaginaError from './Pages/Error'
 // Configuración de rutas
 
-const domain = 'TU_DOMINIO.auth0.com'
-const clientId = 'TU_CLIENT_ID'
-
+const domain = import.meta.env.VITE_AUTH0_DOMAIN
+const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      //   { index: true, element: <Home /> }, // Ruta raíz: "/"
-      //   { path: 'about', element: <About /> }
+      { index: true, element: <Inicio /> }, // Ruta raíz: "/"
+      { path: '/perfil', element: <Perfil /> },
+      { path: '*', element: <PaginaError /> } // Ruta para manejar errores
     ]
   }
 ])

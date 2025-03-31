@@ -1,6 +1,13 @@
+import { Outlet } from 'react-router-dom'
 import './App.css'
+import Navbar from './Pages/Navbar'
 const Layout = () => {
-  return <div className='bg-black text-6xl text-red-800 '>texto</div>
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  )
 }
 
 export default Layout
