@@ -6,13 +6,14 @@ const Perfil = () => {
   if (isLoading) {
     return <div>Loading ...</div>
   }
-
+  console.log(user)
   return (
     isAuthenticated && (
       <div>
+        imagen:
         <img src={user?.picture} alt={user?.name} />
-        <h2>{user?.name}</h2>
-        <p>{user?.email}</p>
+        <h2>usuario:{user?.name}</h2>
+        <p>emaill:{user?.email}</p>
       </div>
     )
   )

@@ -1,0 +1,6 @@
+Producto id:
+https://www.creative-tim.com/twcomponents/component/free-tailwind-css-quick-views-component
+navbar:
+https://www.creative-tim.com/twcomponents/component/navbar-hamburger-menu-for-ecommerce
+sidebar: de nabvar movil:
+https://www.creative-tim.com/twcomponents/component/tailwind-css-sidebar
