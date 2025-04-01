@@ -1,15 +1,8 @@
-// import Perfil from './Perfil'
-// import { useAuth0 } from '@auth0/auth0-react'
-// import Logout from './Logout'
-// import Login from './Login'
+import Perfil from './Perfil'
 const Inicio = () => {
-  // const { isAuthenticated } = useAuth0()
-
   return (
     <div>
-      {/* {isAuthenticated ? <Logout /> : <Login />} */}
-
-      {/* <Perfil /> */}
+      <Perfil />
     </div>
   )
 }
