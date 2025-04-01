@@ -1,8 +1,14 @@
 import { useEffect, useState } from 'react'
 import { todos_usuarios } from '../../axios'
 
+type usuario = {
+  id: number
+  nombre: string
+  email: string
+}
+
 const Usuarios = () => {
-  const [users, setUsuarios] = useState([])
+  const [users, setUsuarios] = useState<usuario[]>([])
 
   const llamado = async () => {
     const datos = await todos_usuarios()
@@ -17,8 +23,11 @@ const Usuarios = () => {
   // El array vacío asegura que se ejecute solo una vez al montar el componente
   return (
     <div>
-      <h1>Lista de Usuarios</h1>
-      <ul></ul>
+      {users.map((e, key) => (
+        <li key={key}>
+          {e.nombre} - {e.email}
+        </li>
+      ))}
     </div>
   )
 }

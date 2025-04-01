@@ -7,5 +7,5 @@ const backend = axios.create({
 // funciones para peticiones backend usuarios
 export const todos_usuarios = async () => {
   const res = await backend.get('/u/usuarios')
-  return res.data
+  return res.data.Usuarios
 }
