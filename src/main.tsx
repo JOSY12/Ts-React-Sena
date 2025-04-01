@@ -5,9 +5,10 @@ import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
 import { Auth0Provider } from '@auth0/auth0-react'
-import Inicio from './Pages/Inicio'
-import Perfil from './Pages/Perfil'
-import PaginaError from './Pages/Error'
+import Inicio from './Componentes/Inicio'
+import Perfil from './Componentes/Perfil'
+import PaginaError from './Componentes/Error'
+import Usuarios from './Componentes/Administracion/Usuarios'
 // Configuración de rutas
 
 const domain = import.meta.env.VITE_AUTH0_DOMAIN
@@ -16,9 +17,11 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
+    errorElement: <PaginaError />,
     children: [
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
       { path: '/perfil', element: <Perfil /> },
+      { path: '/usuarios', element: <Usuarios /> },
       { path: '*', element: <PaginaError /> } // Ruta para manejar errores
     ]
   }
