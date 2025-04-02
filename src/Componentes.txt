@@ -4,3 +4,5 @@ navbar:
 https://www.creative-tim.com/twcomponents/component/navbar-hamburger-menu-for-ecommerce
 sidebar: de nabvar movil:
 https://www.creative-tim.com/twcomponents/component/tailwind-css-sidebar
+componente no cargado de mis cards:
+https://www.creative-tim.com/twcomponents/component/animacion-de-carga

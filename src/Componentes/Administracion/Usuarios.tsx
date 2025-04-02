@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import { todos_usuarios } from '../../axios'
+import { useLoaderData } from 'react-router-dom'
 
 type usuario = {
   id: number
@@ -8,24 +7,15 @@ type usuario = {
 }
 
 const Usuarios = () => {
-  const [users, setUsuarios] = useState<usuario[]>([])
+  // obtube los datos usando el nuevo hook useloaderdata de router 7 esta bueno
+  const usuarios = useLoaderData() as usuario[]
 
-  const llamado = async () => {
-    const datos = await todos_usuarios()
-    setUsuarios(datos)
-  }
-
-  useEffect(() => {
-    llamado()
-  }, [])
-  console.log(users)
-
-  // El array vacío asegura que se ejecute solo una vez al montar el componente
   return (
     <div>
-      {users.map((e, key) => (
-        <li key={key}>
-          {e.nombre} - {e.email}
+      {usuarios.map(usuarios => (
+        <li key={usuarios.id}>
+          Id: {usuarios.id} - Nombre:{usuarios.nombre} - Email:
+          {usuarios.email}
         </li>
       ))}
     </div>

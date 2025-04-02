@@ -6,6 +6,7 @@ import Logout from './Logout'
 import { useAuth0 } from '@auth0/auth0-react'
 const Sidebar = () => {
   const { isAuthenticated } = useAuth0()
+
   return (
     <>
       <div
@@ -17,12 +18,9 @@ const Sidebar = () => {
             <ul className='space-y-2'>
               {isAuthenticated ? (
                 <>
-                  {/* dashboard */}
+                  {/* dashboard administrativo para mis productos y usuarios*/}
                   <li>
-                    <a
-                      href='#'
-                      className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    >
+                    <button className='flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         className='w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -32,17 +30,17 @@ const Sidebar = () => {
                         <path d='M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z'></path>
                         <path d='M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z'></path>
                       </svg>
-                      <span className='ml-3'>Dashboard</span>
-                    </a>
+                      <Link to={'/admin'}>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          Administracion
+                        </span>
+                      </Link>
+                    </button>
                   </li>
                   <li></li>
                   {/* mensajes de usuarios */}
                   <li>
-                    <a
-                      href='#'
-                      target='_blank'
-                      className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    >
+                    <button className='flex cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -52,17 +50,19 @@ const Sidebar = () => {
                         <path d='M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z'></path>
                         <path d='M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z'></path>
                       </svg>
-                      <span className='flex-1 ml-3 whitespace-nowrap'>
-                        Notificaciones
-                      </span>
+                      <Link to={'/notificaciones'}>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          Notificaciones
+                        </span>
+                      </Link>
                       {/* <span className='inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full dark:bg-blue-900 dark:text-blue-200'>
                         3
                       </span> */}
-                    </a>
+                    </button>
                   </li>
                   {/* administracion de usuarios */}
                   <li>
-                    <button className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                    <button className='flex cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -76,7 +76,7 @@ const Sidebar = () => {
                         ></path>
                       </svg>
 
-                      <Link to={'/usuarios'}>
+                      <Link to={'/perfil'}>
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           Perfil
                         </span>
@@ -84,11 +84,8 @@ const Sidebar = () => {
                     </button>
                   </li>
 
-                  <li>
-                    <a
-                      href='#'
-                      className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    >
+                  {/* <li>
+                    <button className='flex items-center  cursor-pointer  p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
@@ -103,18 +100,17 @@ const Sidebar = () => {
                           d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
                         />
                       </svg>
-                      <span className='flex-1 ml-3 whitespace-nowrap'>
-                        Favoritos
-                      </span>
-                    </a>
-                  </li>
+                      <Link to={'/favoritos'}>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          Favoritos
+                        </span>
+                      </Link>
+                    </button>
+                  </li> */}
 
                   {/* productos de tienda */}
                   <li>
-                    <a
-                      href='#'
-                      className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                    >
+                    <button className='flex  cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -127,10 +123,12 @@ const Sidebar = () => {
                           clipRule='evenodd'
                         ></path>
                       </svg>
-                      <span className='flex-1 ml-3 whitespace-nowrap'>
-                        Compras
-                      </span>
-                    </a>
+                      <Link to={'/compras'}>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          Compras
+                        </span>
+                      </Link>
+                    </button>
                   </li>
                   {/* cerrar sesion */}
                   <li>
