@@ -29,7 +29,10 @@ export const router = createBrowserRouter([
     errorElement: <PaginaError />,
     children: [
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
-      { path: '/perfil', element: <Perfil /> },
+      {
+        path: '/perfil',
+        element: <Perfil />
+      },
       { path: '/productos', element: <Productos /> },
       { path: '/notificaciones', element: <Notificaciones /> },
       { path: '/carrito', element: <Carrito /> },
