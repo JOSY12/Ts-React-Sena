@@ -1,6 +1,8 @@
 import { useAuth0 } from '@auth0/auth0-react'
-import { obtener_usuario } from '../axios'
+import { obtener_usuario } from '../Services'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Cargando from './Cargando'
 
 type usuario = {
   id: string
@@ -18,8 +20,9 @@ interface respuestas {
 }
 
 const Perfil = () => {
-  const { user, isAuthenticated } = useAuth0()
+  const { user, isAuthenticated, isLoading } = useAuth0()
   // console.log(user)
+  const navega = useNavigate()
   const [datos, setdatos] = useState<usuario>()
 
   const usuariosbd = async (): Promise<respuestas> => {
@@ -58,14 +61,144 @@ const Perfil = () => {
   }, [user])
 
   return (
-    isAuthenticated && (
-      <div>
-        imagen:
-        <img src={user?.picture} alt={user?.name} />
-        <h2>usuario:{datos?.nombre}</h2>
-        <p>emaill:{user?.email}</p>
+    <>
+      <div className='bg-gray-100  min-h-screen'>
+        <div className='w-full text-white bg-main-color'>
+          <div
+            x-data='{ open: false }'
+            className='flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8'
+          >
+            <nav className='flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row'>
+              <div className='relative' x-data='{ open: false }'></div>
+            </nav>
+          </div>
+        </div>
+
+        <div className='container mx-auto my-5 p-5'>
+          <div className='md:flex no-wrap md:-mx-2 '>
+            {/* <!-- Left Side --> */}
+            <div className='w-full md:w-3/12 md:mx-2'>
+              {/* <!-- Profile Card --> */}
+              <div className='bg-white p-3 border-t-4 border-green-400'>
+                <div className='image overflow-hidden'>
+                  <img
+                    className='h-auto w-full mx-auto'
+                    src='https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg'
+                    alt=''
+                  ></img>
+                </div>
+                <p className='text-sm text-gray-500 hover:text-gray-600 leading-6'>
+                  <img className='w-full' src={user?.picture} alt='' />
+                </p>
+                <h1 className='text-gray-900 font-bold text-xl leading-8 my-1'>
+                  {user?.name}
+                </h1>
+                <h3 className='text-gray-600 font-lg text-semibold leading-6'>
+                  {user?.nickname}
+                </h3>
+
+                <ul className='bg-gray-100 text-gray-600 hover:text-gray-700 hover:shadow py-2 px-3 mt-3 divide-y rounded shadow-sm'>
+                  <li className='flex items-center py-3'>
+                    <span>Estado</span>
+                    <span className='ml-auto'>
+                      <span className='bg-green-500 py-1 px-2 rounded text-white text-sm'>
+                        {/* {user?.profile} */}
+                      </span>
+                    </span>
+                  </li>
+                  <li className='flex items-center py-3'>
+                    <span>Miengro desde</span>
+                    <span className='ml-auto'>{datos?.fecha_creacion}</span>
+                  </li>
+                </ul>
+              </div>
+              <div className='my-4'></div>
+            </div>
+            <div className='w-full md:w-9/12 mx-2 h-64'>
+              <div className='bg-white p-3 shadow-sm rounded-sm'>
+                <div className='flex items-center space-x-2 font-semibold text-gray-900 leading-8'>
+                  <span className='text-green-500'>
+                    <svg
+                      className='h-5'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'
+                    >
+                      <path
+                        stroke-linecap='round'
+                        stroke-linejoin='round'
+                        stroke-width='2'
+                        d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
+                      />
+                    </svg>
+                  </span>
+                  <span className='tracking-wide'>Informacion</span>
+                </div>
+                <div className='text-gray-700'>
+                  <div className='grid md:grid-cols-2 text-sm'>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>Nombre</div>
+                      <div className='px-4 py-2'>Jane</div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>Apeliido</div>
+                      <div className='px-4 py-2'>Doe</div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>Genero</div>
+                      <div className='px-4 py-2'>Female</div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>Contacto</div>
+                      <div className='px-4 py-2'>{user?.phone_number}</div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>
+                        Direcion Actual
+                      </div>
+                      <div className='px-4 py-2'>
+                        Beech Creek, PA, Pennsylvania
+                      </div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>
+                        Direccion de entrega
+                      </div>
+                      <div className='px-4 py-2'>
+                        Arlington Heights, IL, Illinois
+                      </div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>Email.</div>
+                      <div className='px-4 py-2'>
+                        <a
+                          className='text-blue-800'
+                          href={`mailto:${user?.email}`}
+                        >
+                          {user?.email}
+                        </a>
+                      </div>
+                    </div>
+                    <div className='grid grid-cols-2'>
+                      <div className='px-4 py-2 font-semibold'>
+                        Fecha de nacimiento
+                      </div>
+                      <div className='px-4 py-2'>{user?.birthdate}</div>
+                    </div>
+                  </div>
+                </div>
+                <button className='block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4'>
+                  Modificar
+                </button>
+              </div>
+
+              <div className='my-4'></div>
+            </div>
+          </div>
+        </div>
       </div>
-    )
+    </>
   )
 }
 

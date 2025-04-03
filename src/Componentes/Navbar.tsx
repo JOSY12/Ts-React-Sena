@@ -5,7 +5,7 @@ import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
 const Navbar = () => {
-  const { isAuthenticated } = useAuth0()
+  const { user, isAuthenticated } = useAuth0()
 
   const [sidebar, Setsidbar] = useState<boolean>(false)
 
@@ -45,7 +45,7 @@ const Navbar = () => {
                 {/* // aqui comienzan mis favoritos de usuarios */}
                 {isAuthenticated && (
                   <>
-                    <Link to={'/favoritos'}>
+                    <Link to={'/u/favoritos'}>
                       <button className='hover:text-gray-200 cursor-pointer '>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
@@ -66,7 +66,7 @@ const Navbar = () => {
 
                     {/* aqui comienza mis carrito de compras de usuarios */}
 
-                    <Link to={'/carrito'}>
+                    <Link to={'/u/carrito'}>
                       <button className='flex cursor-pointer  items-center hover:text-gray-200'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
@@ -101,20 +101,29 @@ const Navbar = () => {
                     Setsidbar(!sidebar)
                   }}
                 >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-6 w-6 hover:text-gray-200'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                  {/* foto de perfil condicional */}
+                  {user?.picture ? (
+                    <img
+                      src={user?.picture}
+                      className='relative inline-block h-8 w-8 cursor-pointer rounded-full object-cover object-center'
+                      data-popover-target='profile-menu'
                     />
-                  </svg>
+                  ) : (
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      className='h-6 w-6 hover:text-gray-200'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      stroke='currentColor'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
+                        d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+                      />
+                    </svg>
+                  )}
                 </button>
               </div>
             </div>
@@ -123,7 +132,7 @@ const Navbar = () => {
                 {/* aqui comienza carrito en resolucion mobil*/}
                 <Link
                   className='xl:hidden cursor-pointer flex mr-6 items-center'
-                  to={'/carrito'}
+                  to={'/u/carrito'}
                 >
                   <button>
                     <svg

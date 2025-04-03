@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { useEffect, useState } from 'react'
-import { crear_usuario } from '../../axios'
+import { crear_usuario } from '../../Services'
 import { useNavigate } from 'react-router-dom'
 import Cargando from '../Cargando'
 
@@ -11,7 +11,7 @@ export type respuestas = {
 }
 
 const Verificar = () => {
-  const { user } = useAuth0()
+  const { user, isAuthenticated } = useAuth0()
   const navigate = useNavigate()
   const [usuariobd, setUsuarios] = useState<Partial<respuestas>>()
   const [cargando, setcargando] = useState<boolean>(false)
@@ -42,7 +42,7 @@ const Verificar = () => {
   }, [user])
 
   useEffect(() => {
-    if (usuariobd?.Existe || usuariobd?.Exito) {
+    if (usuariobd?.Existe || (usuariobd?.Exito && isAuthenticated)) {
       setcargando(false)
       navigate('/')
     } else if (!usuariobd?.Error) {
