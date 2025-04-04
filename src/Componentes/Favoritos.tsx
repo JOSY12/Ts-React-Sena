@@ -1,3 +1,4 @@
+import { basedatos } from '../bd'
 const Favoritos = () => {
   return (
     <>

@@ -1,7 +1,23 @@
+import { basedatos } from '../bd'
 const Compras = () => {
   return (
     <>
-      <div className=' h-screen m-5 border border-black'>
+      <div className='  container     py-6 flex justify-center items-center text-black'>
+        <div className='flex flex-col jusitfy-start items-start'>
+          <div>
+            {/* <p className='text-sm leading-4   text-black'>Home</p> */}
+          </div>
+
+          <h1
+            className='text-3xl lg:text-4xl tracking-tight font-semibold 
+            leading-8 lg:leading-9 text-black'
+          >
+            Historial de compras
+          </h1>
+        </div>
+      </div>
+
+      <div className=' h-screen m-5 border '>
         <div className='w-full flex justify-between items-center mb-3 mt-12 pl-3'>
           <div className='mx-3'>
             <div className='w-full max-w-sm min-w-[200px] relative'></div>
@@ -11,94 +27,51 @@ const Compras = () => {
         <div className='  flex flex-col w-full h-full overflow-scroll text-gray-700 bg-white shadow-md rounded-lg bg-clip-border'>
           <table className='w-full text-left table-auto min-w-max'>
             <thead>
-              <tr className='border-b border-slate-300 bg-slate-50'>
+              <tr className='  bg-slate-50'>
                 <th className='p-4 text-sm font-normal leading-none text-slate-500'>
-                  Product
+                  Producto
                 </th>
                 <th className='p-4 text-sm font-normal leading-none text-slate-500'>
-                  Name
+                  Nombre
                 </th>
                 <th className='p-4 text-sm font-normal leading-none text-slate-500'>
-                  Quantity
+                  Cantidad
                 </th>
                 <th className='p-4 text-sm font-normal leading-none text-slate-500'>
-                  Price per Item
+                  Precio de item
                 </th>
                 <th className='p-4 text-sm font-normal leading-none text-slate-500'>
-                  Total Price
+                  Total
                 </th>
               </tr>
             </thead>
+
             <tbody>
-              <tr className='hover:bg-slate-50'>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <img
-                    src='https://demos.creative-tim.com/corporate-ui-dashboard-pro/assets/img/kam-idris-_HqHX3LBN18-unsplash.jpg'
-                    alt='Product 1'
-                    className='w-16 h-16 object-cover rounded'
-                  />
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='block font-semibold text-sm text-slate-800'>
-                    Beautiful Chair
-                  </p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>2</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$500</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$1,000</p>
-                </td>
-              </tr>
-              <tr className='hover:bg-slate-50'>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <img
-                    src='https://demos.creative-tim.com/corporate-ui-dashboard-pro/assets/img/spacejoy-NpF_OYE301E-unsplash.jpg'
-                    alt='Product 2'
-                    className='w-16 h-16 object-cover rounded'
-                  />
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='block font-semibold text-sm text-slate-800'>
-                    Little Sofa
-                  </p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>1</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$750</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$750</p>
-                </td>
-              </tr>
-              <tr className='hover:bg-slate-50'>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <img
-                    src='https://demos.creative-tim.com/corporate-ui-dashboard-pro/assets/img/michael-oxendine-GHCVUtBECuY-unsplash.jpg'
-                    alt='Product 3'
-                    className='w-16 h-16 object-cover rounded'
-                  />
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='block font-semibold text-sm text-slate-800'>
-                    Brown Coach
-                  </p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>3</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$3,000</p>
-                </td>
-                <td className='p-4 border-b border-slate-200 py-5'>
-                  <p className='text-sm text-slate-500'>$9,000</p>
-                </td>
-              </tr>
+              {basedatos?.map((e, k) => (
+                <tr className='hover:bg-slate-50  ' key={k}>
+                  <td className='p-4 border-b   py-5'>
+                    <img
+                      src={e.imagen}
+                      alt='Product 1'
+                      className='w-16 h-16 object-cover   rounded'
+                    />
+                  </td>
+                  <td className='p-4 border-b border-slate-200 py-5'>
+                    <p className='block font-semibold text-sm text-slate-800'>
+                      {e.nombre}
+                    </p>
+                  </td>
+                  <td className='p-4 border-b border-slate-200 py-5'>
+                    <p className='text-sm text-slate-500'>{e.cantidad}</p>
+                  </td>
+                  <td className='p-4 border-b border-slate-200 py-5'>
+                    <p className='text-sm text-slate-500'>${e.precio}</p>
+                  </td>
+                  <td className='p-4 border-b border-slate-200 py-5'>
+                    <p className='text-sm text-slate-500'>${e.total}</p>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

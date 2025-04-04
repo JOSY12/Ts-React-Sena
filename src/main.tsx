@@ -66,7 +66,8 @@ createRoot(document.getElementById('root')!).render(
       domain={domain}
       clientId={clientId}
       authorizationParams={{
-        redirect_uri: `${window.location.origin}/u/verificar`
+        redirect_uri: `${window.location.origin}/u/verificar`,
+        ui_locales: 'es'
       }}
       useRefreshTokens={true}
       cacheLocation='localstorage'

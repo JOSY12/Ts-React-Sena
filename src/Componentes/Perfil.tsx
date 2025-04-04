@@ -74,7 +74,11 @@ const Perfil = () => {
                   ></img>
                 </div>
                 <p className='text-sm text-gray-500 hover:text-gray-600 leading-6'>
-                  <img className='w-full' src={user?.picture} alt='' />
+                  <img
+                    className='w-full'
+                    src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'
+                    alt=''
+                  />
                 </p>
                 <h1 className='text-gray-900 font-bold text-xl leading-8 my-1'>
                   {user?.name}
@@ -95,10 +99,10 @@ const Perfil = () => {
                   </li>
                   <li className='flex items-center py-3'>
                     <span>Fecha de Registrado</span>
-                    <span className='ml-auto text-wrap  '>
-                      {datos?.fecha_creacion}
-                    </span>
                   </li>
+                  <span className='ml-auto text-wrap  '>
+                    {datos?.fecha_creacion}
+                  </span>
                 </ul>
               </div>
               <div className='my-4'></div>
@@ -135,8 +139,8 @@ const Perfil = () => {
                       <div className='px-4 py-2'>{user?.family_name}</div>
                     </div>
                     <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>Genero</div>
-                      <div className='px-4 py-2'>Female</div>
+                      {/* <div className='px-4 py-2 font-semibold'>Genero</div>
+                      <div className='px-4 py-2'>Female</div> */}
                     </div>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Contacto</div>

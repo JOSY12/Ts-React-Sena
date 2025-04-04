@@ -9,22 +9,17 @@ const Inicio = () => {
     <>
       <div className='bg-white '>
         <main className='my-8'>
-          <div className='container mx-auto px-6'>
+          <div className='container mx-auto px-6 '>
             <div
               className={`h-64 rounded-2xl bg-cover bg-center `}
               style={{ backgroundImage: `url(${imageUrlcomputadoras})` }}
             >
-              <div className='  bg-opacity-50 flex items-center h-full'>
-                <div className='px-10 max-w-xl'>
-                  <h2 className='text-2xl text-white font-semibold'>
+              <div className='  bg-opacity-50 flex items-center   h-full  border border-b-4 rounded-2xl '>
+                <div className='px-10 max-w-xl h-full py-5  flex flex-col justify-between '>
+                  <h2 className='text-2xl text-white  font-semibold'>
                     Computadoras
                   </h2>
-                  <p className='mt-2 text-white'>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Non hic quisquam ab commodi, deserunt tempora! Totam,
-                    eligendi ipsa at, culpa suscipit ullam in ipsam, possimus ut
-                    temporibus facilis quisquam vitae.
-                  </p>
+
                   <button className='flex items-center mt-4 px-3 py-2 bg-blue-900 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
                     <span>Ir a comprar</span>
                   </button>
@@ -36,16 +31,12 @@ const Inicio = () => {
                 className='w-full h-64 md:mx-4 rounded-2xl overflow-hidden bg-cover bg-center md:w-1/2'
                 style={{ backgroundImage: `url(${telefonos})` }}
               >
-                <div className='  bg-opacity-50 flex items-center h-full'>
-                  <div className='px-10 max-w-xl'>
+                <div className='  bg-opacity-50 flex items-center  border border-b-4  h-full'>
+                  <div className='px-10  max-w-xl h-full py-5  flex flex-col justify-between '>
                     <h2 className='text-2xl text-white font-semibold'>
                       Telefonos
                     </h2>
-                    <p className='mt-2 text-white'>
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                      Tempore facere provident molestias ipsam sint voluptatum
-                      pariatur.
-                    </p>
+
                     <button className='flex items-center mt-4 text-white text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
                       <span>Ir a comprar</span>
                       <svg
@@ -69,16 +60,12 @@ const Inicio = () => {
                   backgroundImage: `url(${consolas})`
                 }}
               >
-                <div className='  bg-opacity-50 flex items-center h-full'>
-                  <div className='px-10 max-w-xl'>
+                <div className='  bg-opacity-50 flex items-center     border border-b-4 h-full'>
+                  <div className='px-10 max-w-xl h-full py-5  flex flex-col justify-between '>
                     <h2 className='text-2xl text-white  font-semibold'>
                       Consolas y juegos
                     </h2>
-                    <p className='mt-2 text-white '>
-                      Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                      Tempore facere provident molestias ipsam sint voluptatum
-                      pariatur.
-                    </p>
+
                     <button className='flex items-center mt-4 text-white  text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
                       <span>Ir a comprar</span>
                       <svg
