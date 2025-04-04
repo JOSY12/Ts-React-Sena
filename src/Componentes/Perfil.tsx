@@ -1,8 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { obtener_usuario } from '../Services'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import Cargando from './Cargando'
 
 type usuario = {
   id: string
@@ -20,9 +18,8 @@ interface respuestas {
 }
 
 const Perfil = () => {
-  const { user, isAuthenticated, isLoading } = useAuth0()
-  // console.log(user)
-  const navega = useNavigate()
+  const { user } = useAuth0()
+  console.log(user)
   const [datos, setdatos] = useState<usuario>()
 
   const usuariosbd = async (): Promise<respuestas> => {
@@ -63,17 +60,6 @@ const Perfil = () => {
   return (
     <>
       <div className='bg-gray-100  min-h-screen'>
-        <div className='w-full text-white bg-main-color'>
-          <div
-            x-data='{ open: false }'
-            className='flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8'
-          >
-            <nav className='flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row'>
-              <div className='relative' x-data='{ open: false }'></div>
-            </nav>
-          </div>
-        </div>
-
         <div className='container mx-auto my-5 p-5'>
           <div className='md:flex no-wrap md:-mx-2 '>
             {/* <!-- Left Side --> */}
@@ -103,12 +89,15 @@ const Perfil = () => {
                     <span className='ml-auto'>
                       <span className='bg-green-500 py-1 px-2 rounded text-white text-sm'>
                         {/* {user?.profile} */}
+                        activo
                       </span>
                     </span>
                   </li>
                   <li className='flex items-center py-3'>
-                    <span>Miengro desde</span>
-                    <span className='ml-auto'>{datos?.fecha_creacion}</span>
+                    <span>Fecha de Registrado</span>
+                    <span className='ml-auto text-wrap  '>
+                      {datos?.fecha_creacion}
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -139,11 +128,11 @@ const Perfil = () => {
                   <div className='grid md:grid-cols-2 text-sm'>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Nombre</div>
-                      <div className='px-4 py-2'>Jane</div>
+                      <div className='px-4 py-2'>{user?.given_name}</div>
                     </div>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Apeliido</div>
-                      <div className='px-4 py-2'>Doe</div>
+                      <div className='px-4 py-2'>{user?.family_name}</div>
                     </div>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Genero</div>
@@ -157,17 +146,13 @@ const Perfil = () => {
                       <div className='px-4 py-2 font-semibold'>
                         Direcion Actual
                       </div>
-                      <div className='px-4 py-2'>
-                        Beech Creek, PA, Pennsylvania
-                      </div>
+                      <div className='px-4 py-2'>Montelibao cordoba</div>
                     </div>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>
                         Direccion de entrega
                       </div>
-                      <div className='px-4 py-2'>
-                        Arlington Heights, IL, Illinois
-                      </div>
+                      <div className='px-4 py-2'>cr22</div>
                     </div>
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Email.</div>

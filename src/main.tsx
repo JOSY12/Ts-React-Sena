@@ -8,9 +8,9 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import Inicio from './Componentes/Inicio'
 import Perfil from './Componentes/Perfil'
 import PaginaError from './Componentes/Error'
-import Usuarios from './Componentes/Administracion/Usuarios'
+// import Usuarios from './Componentes/Administracion/Usuarios'
 import Productos from './Componentes/Productos'
-import { todos_usuarios } from './Services'
+// import { todos_usuarios } from './Services'
 import Verificar from './Componentes/Administracion/Verificar'
 import Notificaciones from './Componentes/Notificaciones'
 import Carrito from './Componentes/Carrito'
@@ -30,9 +30,9 @@ export const router = createBrowserRouter([
     errorElement: <PaginaError />,
     children: [
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
-
+      { path: 'productos', element: <Productos /> }, // el unico lugar que el visitante puede visitar para ver los productos
       {
-        path: '/u',
+        path: 'u',
         element: <ProtectedRoute />,
         children: [
           {
@@ -48,7 +48,6 @@ export const router = createBrowserRouter([
           },
           { path: 'favoritos', element: <Favoritos /> },
 
-          { path: 'productos', element: <Productos /> },
           {
             path: 'verificar',
             element: <Verificar />
@@ -56,7 +55,6 @@ export const router = createBrowserRouter([
         ]
       },
 
-      // { path: '/usuarios', element: <Usuarios />, loader: todos_usuarios },
       { path: '*', element: <PaginaError /> } // Ruta para manejar errores
     ]
   }

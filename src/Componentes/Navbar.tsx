@@ -15,30 +15,23 @@ const Navbar = () => {
         <section className='relative mx-auto'>
           <nav className='flex justify-between bg-gray-900 text-white w-screen'>
             <div className='px-5 xl:px-12 py-6 flex w-full items-center'>
-              <a className='text-3xl font-bold font-heading'>
+              <a className='text-3xl font-bold font-heading' href='/'>
                 {/* <img className='h-9' src='logo.png' alt='logo' /> */}
                 Techsells
               </a>
-              <ul className='hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
+              <ul className=' hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
                 <li>
-                  <a className='hover:text-gray-200' href='#'>
-                    Inicio
-                  </a>
+                  <a className='hover:text-gray-200'>Inicio</a>
                 </li>
                 <li>
-                  <a className='hover:text-gray-200' href='#'>
-                    Categorias
-                  </a>
+                  <a className='hover:text-gray-200'>Productos</a>
                 </li>
                 <li>
-                  <a className='hover:text-gray-200' href='#'>
-                    Productos
-                  </a>
+                  <a className='hover:text-gray-200'>Categorias</a>
                 </li>
+
                 <li>
-                  <a className='hover:text-gray-200' href='#'>
-                    Contacto
-                  </a>
+                  <a className='hover:text-gray-200'>Contacto</a>
                 </li>
               </ul>
               <div className='hidden xl:flex   space-x-5 items-center'>
