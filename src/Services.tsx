@@ -5,7 +5,8 @@ const URL = import.meta.env.VITE_AXIOS_BASE_URL
 
 //crea configuracion de axios basica para poder hacer peticiones tipo funcion hook
 const backend = axios.create({
-  baseURL: URL
+  baseURL: URL,
+  withCredentials: true
   // adapter: cache.adapter
 })
 
