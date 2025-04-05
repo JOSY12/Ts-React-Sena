@@ -55,7 +55,7 @@ const Inicio = () => {
                 </div>
               </div>
               <div
-                className='w-full h-64 mt-8 md:mx-4 rounded-md overflow-hidden bg-cover bg-center md:mt-0 md:w-1/2'
+                className='w-full h-64 mt-8 md:mx-4 rounded-2xl overflow-hidden bg-cover bg-center md:mt-0 md:w-1/2'
                 style={{
                   backgroundImage: `url(${consolas})`
                 }}

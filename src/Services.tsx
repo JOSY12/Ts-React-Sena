@@ -1,9 +1,11 @@
 import axios from 'axios'
 import { respuestas } from './Componentes/Administracion/Verificar'
 
+const URL = import.meta.env.VITE_AXIOS_BASE_URL
+
 //crea configuracion de axios basica para poder hacer peticiones tipo funcion hook
 const backend = axios.create({
-  baseURL: 'http://localhost:3000/sena'
+  baseURL: URL
   // adapter: cache.adapter
 })
 

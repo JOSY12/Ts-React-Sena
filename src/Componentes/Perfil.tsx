@@ -69,7 +69,7 @@ const Perfil = () => {
                 <div className='image overflow-hidden'>
                   <img
                     className='h-auto w-full mx-auto'
-                    src='https://lavinephotography.com.au/wp-content/uploads/2017/01/PROFILE-Photography-112.jpg'
+                    src={user?.picture}
                     alt=''
                   ></img>
                 </div>

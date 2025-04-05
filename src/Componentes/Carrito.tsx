@@ -3,7 +3,9 @@ const Carrito = () => {
   return (
     <>
       <div className='h-screen bg-gray-100 pt-10'>
-        <h1 className='mb-10 text-center text-2xl font-bold'>Cart Items</h1>
+        <h1 className='mb-10 text-center text-2xl font-bold'>
+          Carrito de compras
+        </h1>
         <div className='mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0'>
           <div className='rounded-lg md:w-2/3'>
             {/* tarjeta de producto */}
@@ -82,7 +84,7 @@ const Carrito = () => {
               </div>
             </div>
             <button className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'>
-              Check out
+              Pagar
             </button>
           </div>
         </div>
