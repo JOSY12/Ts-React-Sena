@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { respuestas } from './Componentes/Administracion/Verificar'
+import { toast } from 'sonner'
 
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
 
@@ -20,26 +21,39 @@ const backend = axios.create({
 
 // funciones para peticiones backend usuarios
 export const todos_usuarios = async (): Promise<any> => {
+  const id = toast.loading('cargando')
+
   try {
     const res = await backend.get('/u/usuarios')
+    toast.success('Usuarios obtenidos exitosamente', { id })
     return res.data.Usuarios
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
+      toast.error('error al cargar usuarios', { id })
       return error.response?.data
     }
+    toast.error('error al cargar usuarios', { id })
+
     return { message: 'Ocurrió un error inesperado', error }
   }
 }
 
 export const obtener_usuario = async (id: string): Promise<any> => {
+  const idcarga = toast.loading('cargando usuario')
+
   try {
-    const res = await backend.get<string>(`/u/perfil/${id}`)
+    const res = await backend.get(`/u/perfil/${id}`)
+    toast.success('Usuarios obtenidos exitosamente', { id: idcarga })
 
     return { Exito: true, Datos: res.data }
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
+      toast.error('error al cargar usuarios', { id: idcarga })
+
       return error.response?.data
     }
+    toast.error('error al cargar usuarios', { id: idcarga })
+
     return { message: 'Ocurrió un error inesperado', error }
   }
 }
@@ -61,17 +75,23 @@ export const crear_usuario = async (
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
+      toast.error('error al hacer la solicitud')
       return error.response.data
     }
     return { Error: '' }
   }
 }
 
-// const cache = setupCache({
-//   maxAge: 15 * 60 * 1000 // 15 minutos de caché
-// })
+//  peticion de pruebas toast
 
-// // Crear una instancia de axios con caché
-// const api = axios.create({
-//   adapter: cache.adapter
-// })
+export const tosta = async () => {
+  const id = toast.loading('cargando')
+  try {
+    const res = await backend.get('/u/tost')
+    toast.success('Peticion exitosa', { id })
+    return res.data
+  } catch (error) {
+    toast.error('Error al hacer la solititud', { id })
+    return error
+  }
+}

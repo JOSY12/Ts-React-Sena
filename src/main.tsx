@@ -19,6 +19,7 @@ import DashboardGeneral from './Componentes/Administracion/DashboardGeneral'
 import Favoritos from './Componentes/Favoritos'
 import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 // Configuración de rutas
+import { Toaster } from 'sonner'
 
 const domain = import.meta.env.VITE_AUTH0_DOMAIN
 const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
@@ -72,6 +73,8 @@ createRoot(document.getElementById('root')!).render(
       useRefreshTokens={true}
       cacheLocation='localstorage'
     >
+      <Toaster position='top-center' richColors />
+
       <RouterProvider router={router}></RouterProvider>
     </Auth0Provider>
   </StrictMode>

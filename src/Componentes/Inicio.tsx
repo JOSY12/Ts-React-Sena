@@ -1,3 +1,5 @@
+import { tosta } from '../Services'
+
 const Inicio = () => {
   const imageUrlcomputadoras =
     'https://concepto.de/wp-content/uploads/2020/06/Computadora-de-escritorio-scaled-e1724955496406-2048x1041.jpg'
@@ -10,6 +12,7 @@ const Inicio = () => {
       <div className='bg-white '>
         <main className='my-8'>
           <div className='container mx-auto px-6 '>
+            <button onClick={tosta}>Test toast</button>
             <div
               className={`h-64 rounded-2xl bg-cover bg-center `}
               style={{ backgroundImage: `url(${imageUrlcomputadoras})` }}
@@ -42,9 +45,9 @@ const Inicio = () => {
                       <svg
                         className='h-5 w-5 mx-2'
                         fill='none'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
                         viewBox='0 0 24 24'
                         stroke='currentColor'
                       >
@@ -71,9 +74,9 @@ const Inicio = () => {
                       <svg
                         className='h-5 w-5 mx-2'
                         fill='none'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
                         viewBox='0 0 24 24'
                         stroke='currentColor'
                       >
@@ -218,9 +221,9 @@ const Inicio = () => {
                       <svg
                         className='h-5 w-5'
                         fill='none'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
                         viewBox='0 0 24 24'
                         stroke='currentColor'
                       >
@@ -247,9 +250,9 @@ const Inicio = () => {
                       <svg
                         className='h-5 w-5'
                         fill='none'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        strokeWidth='2'
                         viewBox='0 0 24 24'
                         stroke='currentColor'
                       >
