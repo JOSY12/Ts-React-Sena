@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
-import { Auth0Provider } from '@auth0/auth0-react'
 import Inicio from './Componentes/Inicio'
 import Perfil from './Componentes/Perfil'
 import PaginaError from './Componentes/Error'
@@ -17,12 +16,15 @@ import Carrito from './Componentes/Carrito'
 import Compras from './Componentes/Compras'
 import DashboardGeneral from './Componentes/Administracion/DashboardGeneral'
 import Favoritos from './Componentes/Favoritos'
-import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 // Configuración de rutas
 import { Toaster } from 'sonner'
-
-const domain = import.meta.env.VITE_AUTH0_DOMAIN
-const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
+import { ClerkProvider, SignIn } from '@clerk/clerk-react'
+import { esES } from '@clerk/localizations'
+import Iniciar_sesion from './Componentes/Iniciar_sesion'
+import Registrar_sesion from './Componentes/Registrar_sesion'
+import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
+// const domain = import.meta.env.VITE_AUTH0_DOMAIN
+// const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +34,8 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
       { path: 'productos', element: <Productos /> }, // el unico lugar que el visitante puede visitar para ver los productos
+      { path: 'iniciarsesion', element: <Iniciar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos
+      { path: 'registrar', element: <Registrar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos
       {
         path: 'u',
         element: <ProtectedRoute />,
@@ -63,19 +67,15 @@ export const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Auth0Provider
-      domain={domain}
-      clientId={clientId}
-      authorizationParams={{
-        redirect_uri: `${window.location.origin}/u/verificar`,
-        ui_locales: 'es'
-      }}
-      useRefreshTokens={true}
-      cacheLocation='localstorage'
+    <ClerkProvider
+      publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
+      signInForceRedirectUrl={'/u/verificar'}
+      signUpFallbackRedirectUrl={'/u/verificar'}
+      localization={esES}
     >
       <Toaster position='top-center' richColors />
 
       <RouterProvider router={router}></RouterProvider>
-    </Auth0Provider>
+    </ClerkProvider>
   </StrictMode>
 )

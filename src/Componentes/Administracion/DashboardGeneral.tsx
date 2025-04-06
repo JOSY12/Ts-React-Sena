@@ -1,7 +1,6 @@
-import { useAuth0 } from '@auth0/auth0-react'
-
+import { useClerk } from '@clerk/clerk-react'
 const DashboardGeneral = () => {
-  const { user } = useAuth0()
+  const { user } = useClerk()
 
   return (
     <>
@@ -63,7 +62,7 @@ const DashboardGeneral = () => {
                   ></path>
                 </svg>
 
-                <span className='mx-3'>UI Elements</span>
+                <span className='mx-3'>Ex</span>
               </a>
 
               <a
@@ -85,7 +84,7 @@ const DashboardGeneral = () => {
                   ></path>
                 </svg>
 
-                <span className='mx-3'>Tables</span>
+                <span className='mx-3'>Tablas</span>
               </a>
 
               <a
@@ -107,7 +106,7 @@ const DashboardGeneral = () => {
                   ></path>
                 </svg>
 
-                <span className='mx-3'>Forms</span>
+                <span className='mx-3'>Productos</span>
               </a>
             </nav>
           </div>
@@ -364,17 +363,17 @@ const DashboardGeneral = () => {
                                 <div className='flex-shrink-0 w-10 h-10'>
                                   <img
                                     className='w-10 h-10 rounded-full'
-                                    src={user?.picture}
+                                    src={user?.imageUrl}
                                     alt=''
                                   ></img>
                                 </div>
 
                                 <div className='ml-4'>
                                   <div className='text-sm font-medium leading-5 text-gray-900'>
-                                    {user?.name}
+                                    {user?.fullName}
                                   </div>
                                   <div className='text-sm leading-5 text-gray-500'>
-                                    {user?.email}
+                                    {user?.lastName}
                                   </div>
                                 </div>
                               </div>

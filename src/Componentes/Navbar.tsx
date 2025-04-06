@@ -1,12 +1,14 @@
 import { useState } from 'react'
 // import Login from './Login'
-import { useAuth0 } from '@auth0/auth0-react'
+// import { useAuth0 } from '@auth0/auth0-react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 // import { Link } from 'react-router-dom'
+import { useAuth } from '@clerk/clerk-react'
 const Navbar = () => {
-  const { user, isAuthenticated } = useAuth0()
+  const { isSignedIn } = useAuth()
 
+  // const { user, isAuthenticated } = useAuth0()
   const [sidebar, Setsidbar] = useState<boolean>(false)
 
   return (
@@ -40,7 +42,7 @@ const Navbar = () => {
               </ul>
               <div className='hidden xl:flex   space-x-5 items-center'>
                 {/* // aqui comienzan mis favoritos de usuarios */}
-                {isAuthenticated && (
+                {isSignedIn && (
                   <>
                     <Link to={'/u/favoritos'}>
                       <button className='hover:text-gray-200 cursor-pointer '>
@@ -89,9 +91,7 @@ const Navbar = () => {
                     </Link>
                   </>
                 )}
-
                 {/* boton de lineas para barra lateral en xl */}
-
                 <button
                   className='flex cursor-pointer  items-center hover:text-gray-200'
                   onClick={() => {
@@ -99,32 +99,25 @@ const Navbar = () => {
                   }}
                 >
                   {/* foto de perfil condicional */}
-                  {user?.picture ? (
-                    <img
-                      src={user?.picture}
-                      className='relative inline-block h-8 w-8 cursor-pointer rounded-full object-cover object-center'
-                      data-popover-target='profile-menu'
+
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-6 w-6 hover:text-gray-200'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='currentColor'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
                     />
-                  ) : (
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-6 w-6 hover:text-gray-200'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-                      />
-                    </svg>
-                  )}
+                  </svg>
                 </button>
               </div>
             </div>
-            {isAuthenticated && (
+            {isSignedIn && (
               <>
                 {/* aqui comienza carrito en resolucion mobil*/}
                 <Link

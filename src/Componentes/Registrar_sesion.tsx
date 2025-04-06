@@ -1,6 +1,6 @@
-import { SignInButton } from '@clerk/clerk-react'
+import { SignUpButton } from '@clerk/clerk-react'
 
-const Login = () => {
+const Registrar_sesion = () => {
   return (
     <>
       <button className='cursor-pointer '>
@@ -18,7 +18,7 @@ const Login = () => {
             ></path>
           </svg>
           <span className='flex-1 ml-3 whitespace-nowrap'>
-            <SignInButton>Iniciar sesion</SignInButton>
+            <SignUpButton>Registrar</SignUpButton>
           </span>
         </a>
       </button>
@@ -26,4 +26,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Registrar_sesion

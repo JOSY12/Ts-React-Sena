@@ -2,21 +2,22 @@
 
 import { Link } from 'react-router-dom'
 import Login from './Login'
+import { SignInButton, SignOutButton, useAuth } from '@clerk/clerk-react'
 import Logout from './Logout'
-import { useAuth0 } from '@auth0/auth0-react'
+import Registrar_sesion from './Registrar_sesion'
 const Sidebar = () => {
-  const { isAuthenticated } = useAuth0()
+  const { isSignedIn } = useAuth()
 
   return (
     <>
       <div
         className={`  
-        } max-w-2xl absolute right-0 mt-20 mx-auto`}
+        } max-w-2xl z-1 absolute right-0  mt-20 mx-auto`}
       >
-        <aside className='w-64' aria-label='Sidebar'>
+        <aside className='w-64 ' aria-label='Sidebar'>
           <div className='px-3 py-4 overflow-y-auto rounded   bg-gray-900'>
             <ul className='space-y-2'>
-              {isAuthenticated ? (
+              {isSignedIn ? (
                 <>
                   {/* dashboard administrativo para mis productos y usuarios*/}
                   <li>
@@ -132,13 +133,18 @@ const Sidebar = () => {
                   </li>
                   {/* cerrar sesion */}
                   <li>
-                    <Logout />{' '}
+                    <Logout />
                   </li>
                 </>
               ) : (
-                <li>
-                  <Login />
-                </li>
+                <>
+                  <li>
+                    <Login />
+                  </li>
+                  <li>
+                    <Registrar_sesion />
+                  </li>
+                </>
               )}
 
               {/* inciarse sesion  */}
