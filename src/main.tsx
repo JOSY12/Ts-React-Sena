@@ -18,7 +18,7 @@ import DashboardGeneral from './Componentes/Administracion/DashboardGeneral'
 import Favoritos from './Componentes/Favoritos'
 // Configuración de rutas
 import { Toaster } from 'sonner'
-import { ClerkProvider, SignIn } from '@clerk/clerk-react'
+import { ClerkProvider } from '@clerk/clerk-react'
 import { esES } from '@clerk/localizations'
 import Iniciar_sesion from './Componentes/Iniciar_sesion'
 import Registrar_sesion from './Componentes/Registrar_sesion'
