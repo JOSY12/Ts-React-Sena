@@ -1,5 +1,3 @@
-import { tosta } from '../Services'
-
 const Inicio = () => {
   const imageUrlcomputadoras =
     'https://concepto.de/wp-content/uploads/2020/06/Computadora-de-escritorio-scaled-e1724955496406-2048x1041.jpg'
