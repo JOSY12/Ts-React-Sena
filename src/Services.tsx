@@ -43,16 +43,15 @@ export const obtener_usuario = async (id: string): Promise<any> => {
 
   try {
     const res = await backend.get(`/u/perfil/${id}`)
-    toast.success('Usuarios obtenidos exitosamente', { id: idcarga })
 
     return { Exito: true, Datos: res.data }
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error('error al cargar usuarios', { id: idcarga })
+      toast.error('error al cargar datos del usuario', { id: idcarga })
 
       return error.response?.data
     }
-    toast.error('error al cargar usuarios', { id: idcarga })
+    toast.error('error al cargar datos del usuario', { id: idcarga })
 
     return { message: 'Ocurrió un error inesperado', error }
   }
@@ -75,9 +74,9 @@ export const crear_usuario = async (
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error('error al hacer la solicitud')
       return error.response.data
     }
+
     return { Error: '' }
   }
 }

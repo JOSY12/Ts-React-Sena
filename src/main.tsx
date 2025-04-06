@@ -79,3 +79,22 @@ createRoot(document.getElementById('root')!).render(
     </Auth0Provider>
   </StrictMode>
 )
+
+// reseteo de contraseña opcional para usuarios no implementado (innecesario)
+// const handlePasswordReset = async () => {
+//   try {
+//     const response = await axios.post(
+//       `https://${domain}/dbconnections/change_password`,
+//       {
+//         client_id: `${clientId}`,
+//         email: user?.email,
+//         connection: 'Username-Password-Authentication'
+//       }
+//     )
+//     console.log(response)
+//     alert(response.data)
+//   } catch (error) {
+//     console.error('Error enviando correo de cambio de contraseña:', error)
+//     alert('Ocurrió un error al enviar el correo de cambio de contraseña.')
+//   }
+// }

@@ -12,7 +12,6 @@ const Inicio = () => {
       <div className='bg-white '>
         <main className='my-8'>
           <div className='container mx-auto px-6 '>
-            <button onClick={tosta}>Test toast</button>
             <div
               className={`h-64 rounded-2xl bg-cover bg-center `}
               style={{ backgroundImage: `url(${imageUrlcomputadoras})` }}
