@@ -1,11 +1,5 @@
-import { Navigate, Outlet } from 'react-router-dom'
-import {
-  useUser,
-  SignedIn,
-  SignedOut,
-  RedirectToSignIn
-} from '@clerk/clerk-react'
-import Cargando from '../Cargando'
+import { Outlet } from 'react-router-dom'
+import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
 const ProtectedRoute = () => {
   // const { isAuthenticated, isLoading } = useAuth0()
   return (

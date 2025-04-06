@@ -2,7 +2,7 @@
 
 import { Link } from 'react-router-dom'
 import Login from './Login'
-import { SignInButton, SignOutButton, useAuth } from '@clerk/clerk-react'
+import { useAuth } from '@clerk/clerk-react'
 import Logout from './Logout'
 import Registrar_sesion from './Registrar_sesion'
 const Sidebar = () => {

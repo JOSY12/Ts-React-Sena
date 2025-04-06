@@ -1,7 +1,6 @@
 // import { obtener_usuario } from '../Services'
 // import { useEffect, useState } from 'react'
-import { UserButton, UserProfile } from '@clerk/clerk-react'
-import { useAuth } from '@clerk/clerk-react'
+import { UserProfile } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
 // type usuario = {
 //   id: string
