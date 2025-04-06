@@ -39,19 +39,18 @@ export const todos_usuarios = async (): Promise<any> => {
 }
 
 export const obtener_usuario = async (id: string): Promise<any> => {
-  const idcarga = toast.loading('cargando usuario')
+  // const idcarga = toast.loading('cargando usuario')
 
   try {
     const res = await backend.get(`/u/perfil/${id}`)
-
     return { Exito: true, Datos: res.data }
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error('error al cargar datos del usuario', { id: idcarga })
+      // toast.error('error al cargar datos del usuario', { id: idcarga })
 
       return error.response?.data
     }
-    toast.error('error al cargar datos del usuario', { id: idcarga })
+    // toast.error('error al cargar datos del usuario', { id: idcarga })
 
     return { message: 'Ocurrió un error inesperado', error }
   }
