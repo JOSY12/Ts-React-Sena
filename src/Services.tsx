@@ -1,15 +1,11 @@
 import axios from 'axios'
 import { respuestas } from './Componentes/Administracion/Verificar'
 import { toast } from 'sonner'
-
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
-const backend = axios.create({
+export const backend = axios.create({
   baseURL: URL,
   withCredentials: true
 })
-
-//  interface listausuarios{
-// }
 
 // tipado para manejo  de errores
 // type RespuestaUsuarios =
@@ -86,6 +82,20 @@ export const tosta = async () => {
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
+    toast.error('Error al hacer la solititud', { id })
+    return error
+  }
+}
+
+export const clrektest = async () => {
+  const id = toast.loading('cargando')
+  try {
+    const res = await backend.get('/privada')
+    toast.success('Peticion exitosa', { id })
+    console.log(res.data.user)
+    return res.data
+  } catch (error) {
+    console.log(error)
     toast.error('Error al hacer la solititud', { id })
     return error
   }

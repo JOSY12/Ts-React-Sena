@@ -8,9 +8,11 @@ import Logout from './Logout'
 // import Registrar from './Registrar'
 import { FaSignInAlt } from 'react-icons/fa'
 import { IoPersonAddSharp } from 'react-icons/io5'
+import { useClerk } from '@clerk/clerk-react'
 
 const Sidebar = () => {
   const { isSignedIn } = useAuth()
+  const { user } = useClerk()
 
   return (
     <>
@@ -24,25 +26,31 @@ const Sidebar = () => {
               {isSignedIn ? (
                 <>
                   {/* dashboard administrativo para mis productos y usuarios*/}
-                  <li>
-                    <button className='flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
-                      <svg
-                        className='w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
-                        fill='currentColor'
-                        viewBox='0 0 20 20'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path d='M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z'></path>
-                        <path d='M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z'></path>
-                      </svg>
-                      <Link to={'/u/admin'}>
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
-                          Administracion
-                        </span>
-                      </Link>
-                    </button>
-                  </li>
-                  <li></li>
+                  {isSignedIn && user?.publicMetadata?.admin && (
+                    <>
+                      {' '}
+                      <li>
+                        <button className='flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                          <svg
+                            className='w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
+                            fill='currentColor'
+                            viewBox='0 0 20 20'
+                            xmlns='http://www.w3.org/2000/svg'
+                          >
+                            <path d='M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z'></path>
+                            <path d='M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z'></path>
+                          </svg>
+                          <Link to={'/u/verificador/admin'}>
+                            <span className='flex-1 ml-3 whitespace-nowrap'>
+                              Administracion
+                            </span>
+                          </Link>
+                        </button>
+                      </li>
+                      <li></li>
+                    </>
+                  )}
+
                   {/* mensajes de usuarios */}
                   <li>
                     <button className='flex cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
@@ -144,26 +152,26 @@ const Sidebar = () => {
                 <>
                   <li>
                     <button className='cursor-pointer '>
-                      <a className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                      <div className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                         <FaSignInAlt />
 
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           <Link to={'/iniciarsesion'}>Iniciar sesion</Link>
                         </span>
-                      </a>
+                      </div>
                     </button>
 
                     {/* <Login /> */}
                   </li>
                   <li>
                     <button className='cursor-pointer '>
-                      <a className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                      <div className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                         <IoPersonAddSharp />
 
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           <Link to={'/Registrar'}>Registrar</Link>
                         </span>
-                      </a>
+                      </div>
                     </button>
                     {/* <Registrarboton /> */}
                   </li>

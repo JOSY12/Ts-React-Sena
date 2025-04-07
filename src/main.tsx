@@ -19,6 +19,7 @@ import { esES } from '@clerk/localizations'
 import Iniciar_sesion from './Componentes/Iniciarsesion'
 import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 import Registrar from './Componentes/Registrar'
+import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 
 export const router = createBrowserRouter([
   {
@@ -41,15 +42,17 @@ export const router = createBrowserRouter([
           { path: 'notificaciones', element: <Notificaciones /> },
           { path: 'carrito', element: <Carrito /> },
           { path: 'compras', element: <Compras /> },
-          {
-            path: 'admin',
-            element: <DashboardGeneral />
-          },
+
           { path: 'favoritos', element: <Favoritos /> },
 
           {
             path: 'verificar',
             element: <Verificar />
+          },
+          {
+            path: 'verificador',
+            element: <Limitadoradmin />,
+            children: [{ path: 'admin', element: <DashboardGeneral /> }]
           }
         ]
       },

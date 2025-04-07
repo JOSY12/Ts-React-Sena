@@ -16,7 +16,7 @@ import { useClerk } from '@clerk/clerk-react'
 //   Datos?: usuario
 //   Error?: string
 // }
-
+import { clrektest } from '../Services'
 const Perfil = () => {
   const { user } = useClerk()
 
@@ -58,10 +58,17 @@ const Perfil = () => {
   // }, [userId])
   return (
     <>
-      <div className='flex justify-center   bg-gray-100'>
+      {/* <button
+        onClick={() => {
+          clrektest()
+        }}
+      >
+        test clerk
+      </button> */}
+      <div className='flex justify-center   bg-white'>
         <UserProfile />
       </div>
-      <div className='bg-gray-100 flex justify-center shadow-2xl '>
+      <div className='bg-white flex justify-center shadow-2xl '>
         <div className='container flex justify-center      '>
           <div className=' flex justify-center   w-full    sm:w-full md:w-full lg:w-4xl   '>
             {/* <!-- Left Side --> */}
