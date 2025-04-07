@@ -16,7 +16,6 @@ import { useClerk } from '@clerk/clerk-react'
 //   Datos?: usuario
 //   Error?: string
 // }
-import { clrektest } from '../Services'
 const Perfil = () => {
   const { user } = useClerk()
 
