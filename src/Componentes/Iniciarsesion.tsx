@@ -3,7 +3,9 @@ import { SignIn } from '@clerk/clerk-react'
 const Iniciar_sesion = () => {
   return (
     <>
-      <SignIn></SignIn>
+      <div className='flex justify-center h-screen p-15 '>
+        <SignIn></SignIn>
+      </div>
     </>
   )
 }

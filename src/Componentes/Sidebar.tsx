@@ -1,10 +1,14 @@
 // import React from 'react'
 
 import { Link } from 'react-router-dom'
-import Login from './Login'
+// import Login from './Login'
 import { useAuth } from '@clerk/clerk-react'
 import Logout from './Logout'
-import Registrar_sesion from './Registrar_sesion'
+// import Registrarboton from './Registrarboton'
+// import Registrar from './Registrar'
+import { FaSignInAlt } from 'react-icons/fa'
+import { IoPersonAddSharp } from 'react-icons/io5'
+
 const Sidebar = () => {
   const { isSignedIn } = useAuth()
 
@@ -139,10 +143,29 @@ const Sidebar = () => {
               ) : (
                 <>
                   <li>
-                    <Login />
+                    <button className='cursor-pointer '>
+                      <a className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                        <FaSignInAlt />
+
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          <Link to={'/iniciarsesion'}>Iniciar sesion</Link>
+                        </span>
+                      </a>
+                    </button>
+
+                    {/* <Login /> */}
                   </li>
                   <li>
-                    <Registrar_sesion />
+                    <button className='cursor-pointer '>
+                      <a className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                        <IoPersonAddSharp />
+
+                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                          <Link to={'/Registrar'}>Registrar</Link>
+                        </span>
+                      </a>
+                    </button>
+                    {/* <Registrarboton /> */}
                   </li>
                 </>
               )}

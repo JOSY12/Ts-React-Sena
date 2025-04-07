@@ -1,6 +1,6 @@
 import { SignUpButton } from '@clerk/clerk-react'
 
-const Registrar_sesion = () => {
+const Registrarboton = () => {
   return (
     <>
       <button className='cursor-pointer '>
@@ -26,4 +26,4 @@ const Registrar_sesion = () => {
   )
 }
 
-export default Registrar_sesion
+export default Registrarboton
