@@ -8,7 +8,7 @@ import { backend } from './Services'
 const Layout = () => {
   const { getToken } = useAuth()
   const interceptorAgregado = useRef(false) // 🧠 bandera para evitar repetir
-
+  console.log(interceptorAgregado)
   useEffect(() => {
     if (interceptorAgregado.current) return // ya se agregó
     interceptorAgregado.current = true

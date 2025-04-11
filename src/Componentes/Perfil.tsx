@@ -2,68 +2,12 @@
 // import { useEffect, useState } from 'react'
 import { UserProfile } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
-// type usuario = {
-//   id: string
-//   nombre: string
-//   email: string
-//   edad: null | number
-//   claveacceso: null | string
-//   fecha_creacion: string
-// }
 
-// interface respuestas {
-//   Exito: boolean
-//   Datos?: usuario
-//   Error?: string
-// }
 const Perfil = () => {
   const { user } = useClerk()
 
-  // const [datos, setdatos] = useState<usuario>()
-
-  // const usuariosbd = async (): Promise<respuestas> => {
-  //   if (!userId?.sub) {
-  //     return {
-  //       Exito: false,
-  //       Error: 'El usuario no está autenticado o no tiene un ID válido.'
-  //     }
-  //   }
-
-  //   try {
-  //     const res = await obtener_usuario(userId)
-
-  //     if (res?.Datos?.Perfil?.length > 0) {
-  //       setdatos(res.Datos.Perfil[0])
-  //       return { Exito: true, Datos: res.Datos.Perfil[0] }
-  //     }
-
-  //     return {
-  //       Exito: false,
-  //       Error: 'No se encontró información del perfil en la base de datos.'
-  //     }
-  //   } catch (error: unknown) {
-  //     console.error('Error al obtener el perfil del usuario:', error)
-  //     return {
-  //       Exito: false,
-  //       Error: 'Ocurrió un error al procesar los datos del perfil.'
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   if (userId?.sub) {
-  //     usuariosbd()
-  //   }
-  // }, [userId])
   return (
     <>
-      {/* <button
-        onClick={() => {
-          clrektest()
-        }}
-      >
-        test clerk
-      </button> */}
       <div className='flex justify-center   bg-white'>
         <UserProfile />
       </div>

@@ -28,19 +28,26 @@ const Navbar = () => {
                 Techsells
               </a>
               <ul className=' hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
-                <li>
-                  <a className='hover:text-gray-200'>Inicio</a>
-                </li>
-                <li>
-                  <a className='hover:text-gray-200'>Productos</a>
-                </li>
-                <li>
-                  <a className='hover:text-gray-200'>Categorias</a>
-                </li>
-
-                <li>
-                  <a className='hover:text-gray-200'>Contacto</a>
-                </li>
+                <Link to={'/'}>
+                  <li>
+                    <a className='hover:text-gray-200'>Inicio</a>
+                  </li>
+                </Link>
+                <Link to={'/productos'}>
+                  <li>
+                    <a className='hover:text-gray-200'>Productos</a>
+                  </li>
+                </Link>
+                <Link to={'/categorias'}>
+                  <li>
+                    <a className='hover:text-gray-200'>Categorias</a>
+                  </li>
+                </Link>
+                <Link to={'/contacto'}>
+                  <li>
+                    <a className='hover:text-gray-200'>Contacto</a>
+                  </li>
+                </Link>
               </ul>
               <div className='hidden xl:flex   space-x-5 items-center'>
                 {/* // aqui comienzan mis favoritos de usuarios */}

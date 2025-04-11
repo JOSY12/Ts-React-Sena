@@ -7,7 +7,6 @@ import Inicio from './Componentes/Inicio'
 import Perfil from './Componentes/Perfil'
 import PaginaError from './Componentes/Error'
 import Productos from './Componentes/Productos'
-import Verificar from './Componentes/Administracion/Verificar'
 import Notificaciones from './Componentes/Notificaciones'
 import Carrito from './Componentes/Carrito'
 import Compras from './Componentes/Compras'
@@ -46,10 +45,6 @@ export const router = createBrowserRouter([
           { path: 'favoritos', element: <Favoritos /> },
 
           {
-            path: 'verificar',
-            element: <Verificar />
-          },
-          {
             path: 'verificador',
             element: <Limitadoradmin />,
             children: [{ path: 'admin', element: <DashboardGeneral /> }]
@@ -66,8 +61,8 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ClerkProvider
       publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}
-      signInForceRedirectUrl={'/u/verificar'}
-      signUpFallbackRedirectUrl={'/u/verificar'}
+      signInForceRedirectUrl={'/productos'}
+      signUpFallbackRedirectUrl={'/productos'}
       localization={esES}
     >
       <Toaster position='top-center' richColors />

@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { respuestas } from './Componentes/Administracion/Verificar'
 import { toast } from 'sonner'
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
 export const backend = axios.create({
@@ -53,12 +52,12 @@ export const crear_usuario = async (
   sub: string,
   name: string,
   email: string
-): Promise<respuestas> => {
+) => {
   try {
     if (!sub || !name || !email) {
       throw new Error('Todos los campos (id, nombre, email) son obligatorios.')
     }
-    const res = await backend.post<respuestas>(`/u/crear/`, {
+    const res = await backend.post(`/u/crear/`, {
       sub,
       name,
       email
