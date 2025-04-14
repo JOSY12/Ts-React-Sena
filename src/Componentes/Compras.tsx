@@ -5,7 +5,7 @@ const Compras = () => {
       <div className='  container     py-6 flex justify-center items-center text-black'>
         <div className='flex flex-col jusitfy-start items-start'>
           <div>
-            {/* <p className='text-sm leading-4   text-black'>Home</p> */}
+            {/* <p className='text-sm leading-4   text-black'>Inicio</p> */}
           </div>
 
           <h1

@@ -5,11 +5,7 @@ const Footer = () => {
         <footer className='p-4 bg-white   shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-100'>
           <span className='text-sm text-black sm:text-center '>
             © 2025{' '}
-            <a
-              href='https://flowbite.com'
-              className='hover:underline'
-              target='_blank'
-            >
+            <a className='hover:underline' target='_blank'>
               Techsells creado por: Josmer bertel
             </a>{' '}
             Derechos reservados

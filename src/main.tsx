@@ -19,6 +19,7 @@ import Iniciar_sesion from './Componentes/Iniciarsesion'
 import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 import Registrar from './Componentes/Registrar'
 import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
+import Contacto from './Componentes/Contacto'
 
 export const router = createBrowserRouter([
   {
@@ -27,6 +28,8 @@ export const router = createBrowserRouter([
     errorElement: <PaginaError />,
     children: [
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
+      { path: 'contacto', element: <Contacto /> }, // el unico lugar que el visitante puede visitar para ver los productos
+
       { path: 'productos', element: <Productos /> }, // el unico lugar que el visitante puede visitar para ver los productos
       { path: 'iniciarsesion', element: <Iniciar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos
       { path: 'registrar', element: <Registrar /> }, // el unico lugar que el visitante puede visitar para ver los productos
