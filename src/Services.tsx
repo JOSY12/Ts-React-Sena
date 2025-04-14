@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { toast } from 'sonner'
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
-export const backend = axios.create({
+export const axiosbackend = axios.create({
   baseURL: URL,
   withCredentials: true
 })
@@ -16,7 +16,7 @@ export const todos_usuarios = async (): Promise<any> => {
   const id = toast.loading('cargando')
 
   try {
-    const res = await backend.get('/u/usuarios')
+    const res = await axiosbackend.get('/u/usuarios')
     toast.success('Usuarios obtenidos exitosamente', { id })
     return res.data.Usuarios
   } catch (error: unknown) {
@@ -34,7 +34,7 @@ export const obtener_usuario = async (id: string): Promise<any> => {
   // const idcarga = toast.loading('cargando usuario')
 
   try {
-    const res = await backend.get(`/u/perfil/${id}`)
+    const res = await axiosbackend.get(`/u/perfil/${id}`)
     return { Exito: true, Datos: res.data }
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -57,7 +57,7 @@ export const crear_usuario = async (
     if (!sub || !name || !email) {
       throw new Error('Todos los campos (id, nombre, email) son obligatorios.')
     }
-    const res = await backend.post(`/u/crear/`, {
+    const res = await axiosbackend.post(`/u/crear/`, {
       sub,
       name,
       email
@@ -77,7 +77,7 @@ export const crear_usuario = async (
 export const tosta = async () => {
   const id = toast.loading('cargando')
   try {
-    const res = await backend.get('/u/tost')
+    const res = await axiosbackend.get('/u/tost')
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
@@ -89,7 +89,7 @@ export const tosta = async () => {
 export const clrektest = async () => {
   const id = toast.loading('cargando')
   try {
-    const res = await backend.get('/privada')
+    const res = await axiosbackend.get('/privada')
     toast.success('Peticion exitosa', { id })
     console.log(res.data.user)
     return res.data

@@ -1,3 +1,6 @@
+import { basedatos } from '../bd'
+import Producto from './Producto'
+
 const Productos = () => {
   return (
     <div>
@@ -5,7 +8,7 @@ const Productos = () => {
         <div className='container px-6 py-8 mx-auto'>
           <div className='lg:flex lg:-mx-2'>
             {/* nombres de categorias */}
-            <div className='space-y-3 mt-20 hidden sm:hidden       lg:block xl:block text-black lg:w-1/5 lg:px-2 lg:space-y-4'>
+            <div className='space-y-3  hidden sm:hidden       lg:block xl:block text-black lg:w-1/5 lg:px-2 lg:space-y-4'>
               <a href='#' className='block font-medium    hover:underline'>
                 Telefonos
               </a>
@@ -33,9 +36,9 @@ const Productos = () => {
             {/* label de filtros */}
             <div className='mt-6 lg:mt-0 lg:px-2 lg:w-4/5 '>
               <div className='lg:hidden grid grid-cols-2 w-auto justify-between xl:hidden     '>
-                <label>Selecionar categoria</label>
+                <label>Selecionar categoria:</label>
                 <select
-                  className='text-end'
+                  className='text-end font-bold'
                   name='categorias'
                   defaultValue={'todos'}
                 >
@@ -52,21 +55,31 @@ const Productos = () => {
                   <option value='mas-vistos'>Mas Vistos</option>
                 </select>
               </div>
+              <div className='flex items-center   mt-4  '>
+                <p className=' '>Ordenar</p>
+                <select className=' text-end font-bold   '>
+                  <option value='#'>Recomendado</option>
+                  <option value='#'>Precio</option>
+                </select>
+              </div>
 
               <div className='flex items-center justify-between text-sm tracking-widest uppercase '>
                 <p className=' '>6 Productos</p>
-                <div className='flex items-center'>
-                  <p className=' '>Ordenar</p>
-                  <select className='font-medium text-gray-700 bg-transparent dark: focus:outline-none'>
-                    <option value='#'>Recomendado</option>
-                    <option value='#'>Precio</option>
-                  </select>
-                </div>
+                <div className='flex items-center'></div>
               </div>
 
               <div className='grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {/* mi tarjeta de prueba */}
-                <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
+
+                {basedatos.map((p) => (
+                  <Producto
+                    nombre={p.nombre}
+                    precio={p.precio}
+                    imagen={p.imagen}
+                  />
+                ))}
+                {/* tarjeta de prueba por eliminar o mejorar */}
+                {/* <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
                   <div
                     className='flex items-end justify-end h-56 w-full bg-cover'
                     style={{
@@ -92,7 +105,7 @@ const Productos = () => {
                     <h3 className='text-gray-700 uppercase'>woman mix</h3>
                     <span className=' mt-2'>$12</span>
                   </div>
-                </div>
+                </div> */}
                 {/* fin de tarjeta */}
               </div>
             </div>

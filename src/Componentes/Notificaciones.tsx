@@ -1,52 +1,18 @@
 const Notificaciones = () => {
   return (
-    <div>
-      <div className='py-8'>
-        {/* <button className='focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 focus:outline-none  py-2 px-10 rounded bg-indigo-600 hover:bg-indigo-700 text-white'>
+    <div className=' '>
+      {/* <button className='focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 focus:outline-none  py-2 px-10 rounded bg-indigo-600 hover:bg-indigo-700 text-white'>
        abrir notificaicones
         </button> */}
-      </div>
-      <div
-        className='w-full h-full bg-gray-800 bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0'
-        id='chec-div'
-      >
-        <div
-          className='w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700'
-          id='notification'
-        >
-          <div className='2xl:w-4/12 bg-gray-50 h-screen overflow-y-auto p-8 absolute right-0'>
+      {/* clases para usar */}
+      {/*  top-0 overflow-y-auto overflow-x-hidden fixed sticky-0 */}
+      <div className='w-full h-full bg-gray-800 bg-opacity-90'>
+        <div className='w-full     duration-700'>
+          <div className=' w-full bg-gray-50 h-screen p-8    '>
             <div className='flex items-center justify-between'>
               <p className='focus:outline-none text-2xl font-semibold leading-6 text-gray-800'>
-                Notifications
+                Notificaciones
               </p>
-              <button
-                role='button'
-                aria-label='close modal'
-                className='focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 rounded-md cursor-pointer'
-              >
-                <svg
-                  width='24'
-                  height='24'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    d='M18 6L6 18'
-                    stroke='#4B5563'
-                    stroke-width='1.25'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  />
-                  <path
-                    d='M6 6L18 18'
-                    stroke='#4B5563'
-                    stroke-width='1.25'
-                    stroke-linecap='round'
-                    stroke-linejoin='round'
-                  />
-                </svg>
-              </button>
             </div>
 
             <div className='w-full p-3 mt-8 bg-white rounded flex'>
@@ -225,9 +191,9 @@ const Notificaciones = () => {
                 </p>
               </div>
             </div>
-            <h2 className='focus:outline-none text-sm leading-normal pt-8 border-b pb-2 border-gray-300 text-gray-600'>
+            {/* <h2 className='focus:outline-none text-sm leading-normal pt-8 border-b pb-2 border-gray-300 text-gray-600'>
               YESTERDAY
-            </h2>
+            </h2> */}
             <div className='w-full p-3 mt-6 bg-white rounded flex'>
               <div
                 aria-label='post icon'
