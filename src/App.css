@@ -1,1 +1,39 @@
 @import 'tailwindcss';
+/* En tu archivo global CSS (ej: styles.css) */
+/* Eliminar sombras del modal de UserProfile */
+/* styles/globals.css */
+/* Elimina sombras del contenedor principal */
+.cl-userProfile-root [class*='cl-cardBox'] {
+  box-shadow: none !important;
+}
+
+.cl-cardBox {
+  height: screen !important;
+  width: screen !important;
+}
+
+.cl-rootBox {
+  width: auto !important;
+}
+
+#clerk-profileCardScrollBox {
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.cl-rootBox .cl-internal-17dpwu0 {
+  width: 100% !important;
+  margin: auto;
+}
+
+.cl-internal-1dauvpw {
+  display: none;
+}
+.cl-internal-13u79ez {
+  display: none;
+}
+
+.cl-internal-to9o31 {
+  display: none;
+}

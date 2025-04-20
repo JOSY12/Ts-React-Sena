@@ -26,9 +26,8 @@ const Sidebar = () => {
               {isSignedIn ? (
                 <>
                   {/* dashboard administrativo para mis productos y usuarios*/}
-                  {isSignedIn && user?.publicMetadata?.admin && (
+                  {isSignedIn && user?.publicMetadata?.administrador && (
                     <>
-                      {' '}
                       <li>
                         <button className='flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                           <svg

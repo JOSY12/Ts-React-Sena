@@ -99,3 +99,35 @@ export const clerktest = async () => {
     return error
   }
 }
+// id_usuario text  NOT NULL  REFERENCES Usuarios (id) ON DELETE CASCADE,
+// --pais text NOT null
+// ciudad text NOT NULL,
+// direccion text NOT NULL,
+// nota text ,
+// telefono text NOT NULL,
+// --calle boolean DEFAULT FALSE,
+// fecha_agregado timestamp DEFAULT CURRENT_TIMESTAMP
+
+export const agregar_direccion = async (
+  id_usuario: string,
+  ciudad: string,
+  direccion: string,
+  nota: string,
+  telefono: string
+) => {
+  const id = toast.loading('cargando')
+  try {
+    const res = await axiosbackend.post('/u/actualizar', {
+      id_usuario,
+      ciudad,
+      direccion,
+      nota,
+      telefono
+    })
+    toast.success('Peticion exitosa', { id })
+    return res.data
+  } catch (error) {
+    toast.error('Error al hacer la solititud', { id })
+    return error
+  }
+}

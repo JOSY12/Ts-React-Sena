@@ -9,7 +9,7 @@ const Limitadoradmin = () => {
     return <Cargando />
   }
 
-  if (!isSignedIn || !user?.publicMetadata.admin) {
+  if (!isSignedIn || !user?.publicMetadata.administrador) {
     return <Navigate to='/404' />
   }
 

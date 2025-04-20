@@ -2,23 +2,22 @@
 // import { useEffect, useState } from 'react'
 import { UserProfile } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
+import Modal from './Modal'
 
 const Perfil = () => {
   const { user } = useClerk()
-
+  console.log(user?.publicMetadata.administrador)
   return (
     <>
-      <div className='flex justify-center   bg-white'>
-        <UserProfile />
-      </div>
-      <div className='bg-white flex justify-center shadow-2xl '>
-        <div className='container flex justify-center      '>
-          <div className=' flex justify-center   w-full    sm:w-full md:w-full lg:w-4xl   '>
-            {/* <!-- Left Side --> */}
-            <div className='w-full mt-5 px-4   '>
-              <div className='bg-white p-3 shadow-2xl rounded-xl   border-1 border-gray-300 '>
-                <div className='flex items-center space-x-2 font-semibold  text-gray-900 leading-8'>
-                  <span className='text-green-500'>
+      <UserProfile />
+
+      <div className=' border-t-1 m-3 border-black '>
+        <div className='     '>
+          <div className='     '>
+            <div className='    px-2   '>
+              <div className='bg-white  p-3    '>
+                <div className='flex   items-center space-x-2 font-semibold  text-gray-900  '>
+                  <span className='  text-green-500'>
                     <svg
                       className='h-5'
                       xmlns='http://www.w3.org/2000/svg'
@@ -34,22 +33,20 @@ const Perfil = () => {
                       />
                     </svg>
                   </span>
-                  <span className='tracking-wide'>Informacion</span>
+
+                  <span className=' tracking-wide'>Informacion de entrega</span>
+
+                  <Modal />
                 </div>
                 <div className='text-gray-700'>
                   <div className='grid md:grid-cols-2 text-sm'>
                     <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>Nombre</div>
-                      <div className='px-4 py-2'>{user?.username}</div>
+                      <div className='px-4 py-2 font-semibold'>
+                        Nombre completo
+                      </div>
+                      <div className='px-4 py-2'>{user?.fullName}</div>
                     </div>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>Apeliido</div>
-                      <div className='px-4 py-2'>{user?.lastName}</div>
-                    </div>
-                    <div className='grid grid-cols-2'>
-                      {/* <div className='px-4 py-2 font-semibold'>Genero</div>
-                      <div className='px-4 py-2'>Female</div> */}
-                    </div>
+
                     <div className='grid grid-cols-2'>
                       <div className='px-4 py-2 font-semibold'>Contacto</div>
                       <div className='px-4 py-2'>{user?.firstName}</div>
@@ -65,23 +62,6 @@ const Perfil = () => {
                         Direccion de entrega
                       </div>
                       <div className='px-4 py-2'>cr22</div>
-                    </div>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>Email.</div>
-                      <div className='px-4 py-2'>
-                        <a
-                          className='text-blue-800'
-                          href={`mailto:${user?.emailAddresses}`}
-                        >
-                          {user?.fullName}
-                        </a>
-                      </div>
-                    </div>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>
-                        Fecha de nacimiento
-                      </div>
-                      <div className='px-4 py-2'>{user?.fullName}</div>
                     </div>
                   </div>
                 </div>
