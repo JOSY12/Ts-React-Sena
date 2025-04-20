@@ -52,16 +52,16 @@ const Favoritos = () => {
                       <path
                         d='M13 1L1 13'
                         stroke='currentColor'
-                        stroke-width='1.25'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='1.25'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                       <path
                         d='M1 1L13 13'
                         stroke='currentColor'
-                        stroke-width='1.25'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='1.25'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                     </svg>
                   </button>

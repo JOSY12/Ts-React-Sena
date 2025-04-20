@@ -35,9 +35,10 @@ const Carrito = () => {
                       <input
                         className='h-8 w-8 border bg-white text-center text-xs outline-none'
                         type='number'
-                        value={e.cantidad}
+                        // value={e.cantidad}
+                        defaultValue={e.cantidad}
                         min='1'
-                        // onChange={null}
+                        // onChange={undefined}
                       />
                       <span className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'>
                         {' '}
@@ -81,7 +82,7 @@ const Carrito = () => {
               <p className='text-lg font-bold'>Total</p>
               <div className=''>
                 <p className='mb-1 text-lg font-bold'>$2105 USD</p>
-                {/* <p className='text-sm text-gray-700'>including VAT</p> */}
+                {/* <p className='text-sm text-gray-700'>inscluding VAT</p> */}
               </div>
             </div>
             <button className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'>

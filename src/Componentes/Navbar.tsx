@@ -30,22 +30,22 @@ const Navbar = () => {
               <ul className=' hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
                 <Link to={'/'}>
                   <li>
-                    <a className='hover:text-gray-200'>Inicio</a>
+                    <span className='hover:text-gray-200'>Inicio</span>
                   </li>
                 </Link>
                 <Link to={'/productos'}>
                   <li>
-                    <a className='hover:text-gray-200'>Productos</a>
+                    <span className='hover:text-gray-200'>Productos</span>
                   </li>
                 </Link>
-                <Link to={'/categorias'}>
+                {/* <Link to={'/categorias'}>
                   <li>
-                    <a className='hover:text-gray-200'>Categorias</a>
+                    <span className='hover:text-gray-200'>Categorias</span>
                   </li>
-                </Link>
+                </Link> */}
                 <Link to={'/contacto'}>
                   <li>
-                    <a className='hover:text-gray-200'>Contacto</a>
+                    <span className='hover:text-gray-200'>Contacto</span>
                   </li>
                 </Link>
               </ul>

@@ -86,13 +86,13 @@ export const tosta = async () => {
   }
 }
 
-export const clrektest = async () => {
+export const clerktest = async () => {
   const id = toast.loading('cargando')
   try {
     const res = await axiosbackend.get('/privada')
     toast.success('Peticion exitosa', { id })
-    console.log(res.data.user)
-    return res.data
+    console.log(res)
+    // return res.data
   } catch (error) {
     console.log(error)
     toast.error('Error al hacer la solititud', { id })

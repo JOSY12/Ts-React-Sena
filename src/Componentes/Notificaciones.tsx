@@ -85,16 +85,16 @@ const Notificaciones = () => {
                       <path
                         d='M10.5 3.5L3.5 10.5'
                         stroke='#4B5563'
-                        stroke-width='1.25'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='1.25'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                       <path
                         d='M3.5 3.5L10.5 10.5'
                         stroke='#4B5563'
-                        stroke-width='1.25'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
+                        strokeWidth='1.25'
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
                       />
                     </svg>
                   </div>

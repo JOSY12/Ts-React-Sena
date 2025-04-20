@@ -1,3 +1,5 @@
+import { clerktest } from '../Services'
+
 const Inicio = () => {
   const imageUrlcomputadoras =
     'https://concepto.de/wp-content/uploads/2020/06/Computadora-de-escritorio-scaled-e1724955496406-2048x1041.jpg'
@@ -7,6 +9,7 @@ const Inicio = () => {
     'https://hardzone.es/app/uploads-hardzone.es/2023/05/consolas.jpeg'
   return (
     <>
+      <button onClick={clerktest}>test</button>
       <div className='bg-white '>
         <main className='my-8'>
           <div className='container mx-auto px-6 '>

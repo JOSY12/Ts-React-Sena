@@ -34,10 +34,11 @@ const Contacto = () => {
         <div className='mt-5'>
           <h3 className='text-xl font-semibold'>Bio</h3>
           <p className='text-gray-600 mt-2'>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio,
-            voluptates! Iure perspiciatis ex eum deleniti mollitia consectetur
-            numquam sequi ullam sunt, nihil quia, reiciendis laudantium, dicta
-            veritatis voluptas quisquam laboriosam!
+            Programador web fullstack con experiencia en el desarrollo de
+            aplicaciones web utilizando tecnologías como React, Node.js y
+            MongoDB. Apasionado por aprender nuevas tecnologías y mejorar mis
+            habilidades de programación. Me gusta trabajar en equipo y colaborar
+            en proyectos desafiantes.
           </p>
         </div>
       </div>

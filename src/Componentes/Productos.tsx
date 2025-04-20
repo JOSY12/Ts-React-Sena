@@ -71,8 +71,9 @@ const Productos = () => {
               <div className='grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {/* mi tarjeta de prueba */}
 
-                {basedatos.map((p) => (
+                {basedatos.map((p, k) => (
                   <Producto
+                    key={k}
                     nombre={p.nombre}
                     precio={p.precio}
                     imagen={p.imagen}
