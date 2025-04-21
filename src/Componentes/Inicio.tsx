@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { clerktest } from '../Services'
+// import { clerktest } from '../Services'
 
 const Inicio = () => {
   const imageUrlcomputadoras =
