@@ -15,19 +15,25 @@ const Contacto = () => {
         </p>
         <div className='flex justify-center mt-5'>
           <a
+            target='_blank'
             className='text-blue-500 hover:text-blue-700'
             href='mailto:josmer1997@hotmail.es'
           >
             Enviar correo
           </a>
 
-          <a href='#' className='text-blue-500 hover:text-blue-700 mx-3'>
-            Twitter
-          </a>
-          <a href='#' className='text-blue-500 hover:text-blue-700 mx-3'>
+          <a
+            target='_blank'
+            href='https://www.linkedin.com/in/josmer-bertel-calle-12569a236/'
+            className='text-blue-500 hover:text-blue-700 mx-3'
+          >
             LinkedIn
           </a>
-          <a href='#' className='text-blue-500 hover:text-blue-700 mx-3'>
+          <a
+            target='_blank'
+            href='https://github.com/JOSY12'
+            className='text-blue-500 hover:text-blue-700 mx-3'
+          >
             GitHub
           </a>
         </div>

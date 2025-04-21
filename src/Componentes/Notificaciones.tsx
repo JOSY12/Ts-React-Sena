@@ -6,14 +6,15 @@ const Notificaciones = () => {
         </button> */}
       {/* clases para usar */}
       {/*  top-0 overflow-y-auto overflow-x-hidden fixed sticky-0 */}
-      <div className='w-full h-full bg-gray-800 bg-opacity-90'>
-        <div className='w-full     duration-700'>
+      <div className='w-full h-full   bg-opacity-90'>
+        <div className='flex items-center justify-between'>
+          <p className='focus:outline-none text-2xl font-semibold leading-6 text-gray-800'>
+            Notificaciones
+          </p>
+        </div>
+        {/* <div className='w-full     duration-700'>
           <div className=' w-full bg-gray-50 h-screen p-8    '>
-            <div className='flex items-center justify-between'>
-              <p className='focus:outline-none text-2xl font-semibold leading-6 text-gray-800'>
-                Notificaciones
-              </p>
-            </div>
+            
 
             <div className='w-full p-3 mt-8 bg-white rounded flex'>
               <div
@@ -191,9 +192,7 @@ const Notificaciones = () => {
                 </p>
               </div>
             </div>
-            {/* <h2 className='focus:outline-none text-sm leading-normal pt-8 border-b pb-2 border-gray-300 text-gray-600'>
-              YESTERDAY
-            </h2> */}
+
             <div className='w-full p-3 mt-6 bg-white rounded flex'>
               <div
                 aria-label='post icon'
@@ -320,7 +319,7 @@ const Notificaciones = () => {
               <hr className='w-full'></hr>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

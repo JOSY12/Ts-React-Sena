@@ -6,7 +6,7 @@ import Modal from './Modal'
 
 const Perfil = () => {
   const { user } = useClerk()
-  console.log(user?.publicMetadata.administrador)
+  console.log(user)
   return (
     <>
       <UserProfile />
