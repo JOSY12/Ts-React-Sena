@@ -4,8 +4,7 @@ type productoprops = {
   imagen: string
 }
 import { IoIosHeartEmpty } from 'react-icons/io'
-// import { IoMdHeart } from 'react-icons/io'
-// ;<IoMdHeart />
+
 const Producto = ({ nombre, precio, imagen }: productoprops) => {
   return (
     <>

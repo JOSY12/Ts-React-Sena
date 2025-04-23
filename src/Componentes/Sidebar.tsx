@@ -8,9 +8,15 @@ import Logout from './Logout'
 // import Registrar from './Registrar'
 import { FaSignInAlt } from 'react-icons/fa'
 import { IoPersonAddSharp } from 'react-icons/io5'
+import { AiFillHeart } from 'react-icons/ai'
+
 import { useClerk } from '@clerk/clerk-react'
 
-const Sidebar = () => {
+type activador = {
+  activar: () => void
+}
+
+const Sidebar = ({ activar }: activador) => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
 
@@ -29,7 +35,10 @@ const Sidebar = () => {
                   {isSignedIn && user?.publicMetadata?.administrador && (
                     <>
                       <li>
-                        <button className='flex cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                        <button
+                          onClick={activar}
+                          className='flex  cursor-pointer items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                        >
                           <svg
                             className='w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                             fill='currentColor'
@@ -46,13 +55,15 @@ const Sidebar = () => {
                           </Link>
                         </button>
                       </li>
-                      <li></li>
                     </>
                   )}
 
                   {/* mensajes de usuarios */}
                   <li>
-                    <button className='flex cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                    <button
+                      onClick={activar}
+                      className='flex   cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    >
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -74,7 +85,10 @@ const Sidebar = () => {
                   </li>
                   {/* administracion de usuarios */}
                   <li>
-                    <button className='flex cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                    <button
+                      onClick={activar}
+                      className='flex cursor-pointer   items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    >
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -96,7 +110,7 @@ const Sidebar = () => {
                     </button>
                   </li>
 
-                  {/* <li>
+                  <li className='  xl:hidden '>
                     <button className='flex items-center  cursor-pointer  p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -112,17 +126,20 @@ const Sidebar = () => {
                           d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
                         />
                       </svg>
-                      <Link to={'/favoritos'}>
+                      <Link to={'u/favoritos'}>
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           Favoritos
                         </span>
                       </Link>
                     </button>
-                  </li> */}
+                  </li>
 
                   {/* productos de tienda */}
                   <li>
-                    <button className='flex  cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+                    <button
+                      onClick={activar}
+                      className='flex    cursor-pointer  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                    >
                       <svg
                         className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
                         fill='currentColor'
@@ -150,11 +167,11 @@ const Sidebar = () => {
               ) : (
                 <>
                   <li>
-                    <button className='cursor-pointer '>
+                    <button onClick={activar} className='   cursor-pointer '>
                       <div className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                         <FaSignInAlt />
 
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                        <span className='  ml-3 whitespace-nowrap'>
                           <Link to={'/iniciarsesion'}>Iniciar sesion</Link>
                         </span>
                       </div>
@@ -163,11 +180,11 @@ const Sidebar = () => {
                     {/* <Login /> */}
                   </li>
                   <li>
-                    <button className='cursor-pointer '>
+                    <button onClick={activar} className='    cursor-pointer '>
                       <div className='flex  items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
                         <IoPersonAddSharp />
 
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
+                        <span className='  ml-3 whitespace-nowrap'>
                           <Link to={'/Registrar'}>Registrar</Link>
                         </span>
                       </div>

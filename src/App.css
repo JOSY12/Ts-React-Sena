@@ -1,8 +1,5 @@
 @import 'tailwindcss';
-/* En tu archivo global CSS (ej: styles.css) */
-/* Eliminar sombras del modal de UserProfile */
-/* styles/globals.css */
-/* Elimina sombras del contenedor principal */
+
 .cl-userProfile-root [class*='cl-cardBox'] {
   box-shadow: none !important;
 }

@@ -21,6 +21,7 @@ import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 import Registrar from './Componentes/Registrar'
 import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
+import { todos_usuarios } from './Services'
 
 export const router = createBrowserRouter([
   {
@@ -51,7 +52,15 @@ export const router = createBrowserRouter([
           {
             path: 'verificador',
             element: <Limitadoradmin />,
-            children: [{ path: 'admin', element: <DashboardGeneral /> }]
+            children: [
+              {
+                path: 'admin',
+                element: <DashboardGeneral />,
+                loader: async () => {
+                  return await todos_usuarios()
+                }
+              }
+            ]
           }
         ]
       },

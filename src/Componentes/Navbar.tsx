@@ -1,24 +1,23 @@
 import { useState } from 'react'
-// import Login from './Login'
-// import { useAuth0 } from '@auth0/auth0-react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
-// import { Link } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
 const Navbar = () => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
-
-  // const { user, isAuthenticated } = useAuth0()
   const [sidebar, Setsidbar] = useState<boolean>(false)
+
+  const n_vistas = async (sidebar: boolean) => {
+    Setsidbar(sidebar)
+  }
 
   return (
     <>
       <div className='flex flex-wrap place-items-center  '>
-        <section className='relative mx-auto'>
-          <nav className='flex justify-between bg-[#000000] text-white w-screen'>
-            <div className='px-5 xl:px-12 py-6 flex w-full items-center'>
+        <section className='relative m-auto'>
+          <nav className='flex    bg-[#000000] text-white w-screen '>
+            <div className='px-5 xl:px-10 py-6 flex w-full items-center'>
               <a className='text-3xl font-bold  flex font-heading' href='/'>
                 <img
                   className='h-10'
@@ -54,7 +53,12 @@ const Navbar = () => {
                 {isSignedIn && (
                   <>
                     <Link to={'/u/favoritos'}>
-                      <button className='hover:text-gray-200 cursor-pointer '>
+                      <button
+                        onClick={() => {
+                          sidebar && Setsidbar(false)
+                        }}
+                        className='hover:text-gray-200 cursor-pointer  '
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -75,7 +79,12 @@ const Navbar = () => {
                     {/* aqui comienza mis carrito de compras de usuarios */}
 
                     <Link to={'/u/carrito'}>
-                      <button className='flex cursor-pointer  items-center hover:text-gray-200'>
+                      <button
+                        onClick={() => {
+                          sidebar && Setsidbar(false)
+                        }}
+                        className='flex cursor-pointer  items-center hover:text-gray-200'
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
@@ -104,7 +113,7 @@ const Navbar = () => {
                 <button
                   className='flex cursor-pointer  items-center hover:text-gray-200'
                   onClick={() => {
-                    Setsidbar(!sidebar)
+                    n_vistas(!sidebar)
                   }}
                 >
                   {/* foto de perfil condicional */}
@@ -169,7 +178,7 @@ const Navbar = () => {
 
             <button
               onClick={() => {
-                Setsidbar(!sidebar)
+                n_vistas(!sidebar)
               }}
               className='navbar-burger cursor-pointer self-center mr-12 xl:hidden'
             >
@@ -189,7 +198,7 @@ const Navbar = () => {
               </svg>
             </button>
 
-            {sidebar && <Sidebar />}
+            {sidebar && <Sidebar activar={() => Setsidbar(!sidebar)} />}
           </nav>
         </section>
       </div>
