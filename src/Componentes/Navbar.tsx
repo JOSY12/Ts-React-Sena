@@ -20,8 +20,8 @@ const Navbar = () => {
             <div className='px-5 xl:px-10 py-6 flex w-full items-center'>
               <a className='text-3xl font-bold  flex font-heading' href='/'>
                 <img
-                  className='h-10'
-                  src='https://josmerweb.netlify.app/techsells-high-resolution-logo-white.png'
+                  className='h-10 mr-2'
+                  src='/src/img/images.webp'
                   alt='logo'
                 />
                 Techsells
