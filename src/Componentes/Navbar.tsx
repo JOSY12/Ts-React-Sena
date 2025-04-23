@@ -20,8 +20,8 @@ const Navbar = () => {
             <div className='px-5 xl:px-10 py-6 flex w-full items-center'>
               <a className='text-3xl font-bold  flex font-heading' href='/'>
                 <img
-                  className='h-10 mr-2'
-                  src='/src/img/images.webp'
+                  className='h-10'
+                  src='https://vercel.com/api/v0/deployments/dpl_7ThFmMU7q2kYcknnzwbp6gGoP771/favicon?project=proyecto-techsells&readyState=READY&teamId=team_Q8w2FaK0hXRx6B4PJM92CFFs'
                   alt='logo'
                 />
                 Techsells
