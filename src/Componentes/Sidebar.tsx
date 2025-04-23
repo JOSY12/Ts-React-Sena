@@ -8,7 +8,6 @@ import Logout from './Logout'
 // import Registrar from './Registrar'
 import { FaSignInAlt } from 'react-icons/fa'
 import { IoPersonAddSharp } from 'react-icons/io5'
-import { AiFillHeart } from 'react-icons/ai'
 
 import { useClerk } from '@clerk/clerk-react'
 
