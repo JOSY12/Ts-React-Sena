@@ -21,7 +21,7 @@ const Navbar = () => {
               <a className='text-3xl font-bold  flex font-heading' href='/'>
                 <img
                   className='h-10'
-                  src='https://vercel.com/api/v0/deployments/dpl_7ThFmMU7q2kYcknnzwbp6gGoP771/favicon?project=proyecto-techsells&readyState=READY&teamId=team_Q8w2FaK0hXRx6B4PJM92CFFs'
+                  src='https://josmerweb.netlify.app/techsells-high-resolution-logo-white.png'
                   alt='logo'
                 />
                 Techsells
