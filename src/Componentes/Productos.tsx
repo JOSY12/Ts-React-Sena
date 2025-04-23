@@ -3,84 +3,83 @@ import Producto from './Producto'
 
 const Productos = () => {
   return (
-    <div>
-      <section className='bg-white h-screen lg:mt-20 xl:mt-20  dark:bg-white'>
-        <div className='container px-6 py-8 mx-auto'>
-          <div className='lg:flex lg:-mx-2'>
-            {/* nombres de categorias */}
-            <div className='space-y-3  hidden sm:hidden       lg:block xl:block text-black lg:w-1/5 lg:px-2 lg:space-y-4'>
-              <a href='#' className='block font-medium    hover:underline'>
-                Telefonos
-              </a>
-              <a href='#' className='block font-medium   hover:underline'>
-                Computadoras
-              </a>
-              <a href='#' className='block font-medium    hover:underline'>
-                Escritorio
-              </a>
-              <a href='#' className='block font-medium   hover:underline'>
-                Perifericos
-              </a>
-              <a href='#' className='block font-medium   hover:underline'>
-                Sillas
-              </a>
-              <a href='#' className='block font-medium   hover:underline'>
-                herramientas
-              </a>
-              <a href='#' className='block font-medium   hover:underline'>
-                Ofertas
-              </a>
+    <section className='bg-gray-100     '>
+      <div className='container  pt-8  mx-auto'>
+        <div className='lg:flex '>
+          {/* nombres de categorias */}
+          <div className='space-y-3  hidden sm:hidden h-screen  border-r-4 lg:py-20   lg:block xl:block text-black lg:w-1/5 lg:px-4 lg:space-y-4'>
+            <a href='#' className='block font-medium    hover:underline'>
+              Telefonos
+            </a>
+            <a href='#' className='block font-medium   hover:underline'>
+              Computadoras
+            </a>
+            <a href='#' className='block font-medium    hover:underline'>
+              Escritorio
+            </a>
+            <a href='#' className='block font-medium   hover:underline'>
+              Perifericos
+            </a>
+            <a href='#' className='block font-medium   hover:underline'>
+              Sillas
+            </a>
+            <a href='#' className='block font-medium   hover:underline'>
+              herramientas
+            </a>
+            <a href='#' className='block font-medium   hover:underline'>
+              Ofertas
+            </a>
+          </div>
+
+          {/* fin nombres de categorias */}
+          {/* label de filtros */}
+          <div className='mt-6 lg:mt-0 lg:px-2 lg:w-4/5 '>
+            <div className='lg:hidden grid grid-cols-2 w-auto justify-between xl:hidden     '>
+              <label>Selecionar categoria:</label>
+              <select
+                className='text-end font-bold'
+                name='categorias'
+                defaultValue={'todos'}
+              >
+                <option value='computadoras'>Computadoras</option>
+                <option value='telefonos'>Telefonos</option>
+                <option value='escritorio'>Escritorio</option>
+                <option value='perifericos'>Perifericos</option>
+                <option value='sillas'>Sillas</option>
+                <option value='herramientas'>Herramientas</option>
+                <option value='ofertas'>Ofertas</option>
+                <option value='nuevos'>Nuevos</option>
+                <option value='recomendados'>Recomendados</option>
+                <option value='mas-vendidos'>Mas Vendidos</option>
+                <option value='mas-vistos'>Mas Vistos</option>
+              </select>
+            </div>
+            <div className='flex items-center   mt-4  '>
+              <p className=' '>Ordenar</p>
+              <select className=' text-end font-bold   '>
+                <option value='#'>Recomendado</option>
+                <option value='#'>Precio</option>
+              </select>
             </div>
 
-            {/* fin nombres de categorias */}
-            {/* label de filtros */}
-            <div className='mt-6 lg:mt-0 lg:px-2 lg:w-4/5 '>
-              <div className='lg:hidden grid grid-cols-2 w-auto justify-between xl:hidden     '>
-                <label>Selecionar categoria:</label>
-                <select
-                  className='text-end font-bold'
-                  name='categorias'
-                  defaultValue={'todos'}
-                >
-                  <option value='computadoras'>Computadoras</option>
-                  <option value='telefonos'>Telefonos</option>
-                  <option value='escritorio'>Escritorio</option>
-                  <option value='perifericos'>Perifericos</option>
-                  <option value='sillas'>Sillas</option>
-                  <option value='herramientas'>Herramientas</option>
-                  <option value='ofertas'>Ofertas</option>
-                  <option value='nuevos'>Nuevos</option>
-                  <option value='recomendados'>Recomendados</option>
-                  <option value='mas-vendidos'>Mas Vendidos</option>
-                  <option value='mas-vistos'>Mas Vistos</option>
-                </select>
-              </div>
-              <div className='flex items-center   mt-4  '>
-                <p className=' '>Ordenar</p>
-                <select className=' text-end font-bold   '>
-                  <option value='#'>Recomendado</option>
-                  <option value='#'>Precio</option>
-                </select>
-              </div>
+            <div className='flex items-center justify-between text-sm tracking-widest uppercase '>
+              <p className=' '>6 Productos</p>
+              <div className='flex items-center'></div>
+            </div>
 
-              <div className='flex items-center justify-between text-sm tracking-widest uppercase '>
-                <p className=' '>6 Productos</p>
-                <div className='flex items-center'></div>
-              </div>
+            <div className='grid grid-cols-2 gap-6  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              {/* mi tarjeta de prueba */}
 
-              <div className='grid grid-cols-1 gap-8 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                {/* mi tarjeta de prueba */}
-
-                {basedatos.map((p, k) => (
-                  <Producto
-                    key={k}
-                    nombre={p.nombre}
-                    precio={p.precio}
-                    imagen={p.imagen}
-                  />
-                ))}
-                {/* tarjeta de prueba por eliminar o mejorar */}
-                {/* <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
+              {basedatos.map((p, k) => (
+                <Producto
+                  key={k}
+                  nombre={p.nombre}
+                  precio={p.precio}
+                  imagen={p.imagen}
+                />
+              ))}
+              {/* tarjeta de prueba por eliminar o mejorar */}
+              {/* <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
                   <div
                     className='flex items-end justify-end h-56 w-full bg-cover'
                     style={{
@@ -107,13 +106,12 @@ const Productos = () => {
                     <span className=' mt-2'>$12</span>
                   </div>
                 </div> */}
-                {/* fin de tarjeta */}
-              </div>
+              {/* fin de tarjeta */}
             </div>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   )
 }
 

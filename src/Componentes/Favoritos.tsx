@@ -66,7 +66,7 @@ const Favoritos = () => {
                     </svg>
                   </button>
                 </div>
-                <div className='mt-6 flex justify-between items-center'>
+                <div className='mt-6 truncate flex justify-between items-center'>
                   <div className='flex justify-center items-center'>
                     <p className='tracking-tight text-2xl font-semibold leading-6  text-black'>
                       {e.nombre}

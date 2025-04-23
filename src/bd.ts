@@ -1,6 +1,7 @@
 export const basedatos = [
   {
-    nombre: 'portatil notebook hp',
+    nombre:
+      'portatil notebook hpawdawda <wdawdadawdasdasdwadasdawdasdadawdadawdasda></wdawdadawdasdasdwadasdawdasdadawdadawdasda>',
     precio: 1200,
     cantidad: 1,
     imagen:

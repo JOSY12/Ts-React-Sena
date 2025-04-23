@@ -19,9 +19,9 @@ const Carrito = () => {
                   alt='product-image'
                   className='w-full rounded-lg sm:w-40'
                 />
-                <div className='sm:ml-4 sm:flex sm:w-full sm:justify-between'>
-                  <div className='mt-5 sm:mt-0'>
-                    <h2 className='text-lg font-bold text-gray-900'>
+                <div className='truncate sm:ml-4 sm:flex sm:w-full sm:justify-between'>
+                  <div className=' truncate mt-5 sm:mt-0'>
+                    <h2 className='  truncate text-lg font-bold text-gray-900'>
                       {e.nombre}
                     </h2>
                     <p className='mt-1 text-xs text-gray-700'>{e.precio}</p>
