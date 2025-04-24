@@ -23,9 +23,9 @@ const Notificaciones = () => {
 
   const Recargar_notificaciones = async () => {
     const datos = await usuario_notificaciones()
-    if (!datos.length) {
-      toast.success(`tienes ${datos.length} notificaciones nuevas`)
-    }
+
+    toast.success(`carga exitosa`)
+
     setnotificaciones(datos)
   }
   const borrar_todas_notificaciones_usuario = async () => {
