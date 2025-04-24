@@ -12,9 +12,11 @@ import { AiOutlineReload, AiFillDelete } from 'react-icons/ai'
 import { toast } from 'sonner'
 
 const Notificaciones = () => {
-  const data = useLoaderData()
-  const [misnotificaciones, setnotificaciones] =
-    useState<notificacionesprops[]>(data)
+  const data = useLoaderData<notificacionesprops[]>()
+  const [misnotificaciones, setnotificaciones] = useState<
+    notificacionesprops[]
+  >([])
+
   const borrar_notifiacacion_unica = async (id: string) => {
     await borrar_notificaciones(id)
     const filtrado = misnotificaciones.filter((e) => e.id !== id)
@@ -29,8 +31,12 @@ const Notificaciones = () => {
     setnotificaciones(datos)
   }
   const borrar_todas_notificaciones_usuario = async () => {
-    await borrar_todas_notificaciones()
-    setnotificaciones([])
+    if (misnotificaciones.length) {
+      await borrar_todas_notificaciones()
+      setnotificaciones([])
+    } else {
+      toast.warning('no hay nada que borrar')
+    }
   }
 
   useEffect(() => {
@@ -41,7 +47,9 @@ const Notificaciones = () => {
     if (misnotificaciones.length) {
       marcar_visto_todo()
     }
-  }, [misnotificaciones.length]) // se ejecuta solo una vez
+    setnotificaciones(data)
+  }, []) // se ejecuta solo una vez
+  console.log(misnotificaciones.length > 0)
 
   return (
     <div className='     bg-opacity-90'>
@@ -79,7 +87,7 @@ const Notificaciones = () => {
             </div>
           </div>
           {/* ejemplo para multiplicar */}
-          {misnotificaciones.length >= 0 ? (
+          {misnotificaciones && misnotificaciones.length > 0 ? (
             misnotificaciones.map((n) => (
               <Notificacion
                 key={n.id}
