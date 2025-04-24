@@ -4,7 +4,7 @@ import { useLoaderData } from 'react-router-dom'
 import {
   borrar_notificaciones,
   borrar_todas_notificaciones,
-  marcar_visto,
+  // marcar_visto,
   usuario_notificaciones
 } from '../Services'
 import { notificacionesprops } from './types'
@@ -18,7 +18,6 @@ const Notificaciones = () => {
   const borrar_notifiacacion_unica = async (id: string) => {
     await borrar_notificaciones(id)
     const filtrado = misnotificaciones.filter((e) => e.id !== id)
-    console.log(filtrado)
     setnotificaciones(filtrado)
   }
 
@@ -35,13 +34,13 @@ const Notificaciones = () => {
   }
 
   useEffect(() => {
-    const marcar_visto_todo = async () => {
-      await marcar_visto()
-      console.log('todo marcado visto')
-    }
-    if (misnotificaciones.length) {
-      marcar_visto_todo()
-    }
+    // const marcar_visto_todo = async () => {
+    //   await marcar_visto()
+    //   console.log('todo marcado visto')
+    // }
+    // if (misnotificaciones.length) {
+    //   marcar_visto_todo()
+    // }
   }, [misnotificaciones]) // se ejecuta solo una vez
 
   return (
