@@ -42,7 +42,7 @@ const Notificaciones = () => {
     if (misnotificaciones.length) {
       marcar_visto_todo()
     }
-  }, [misnotificaciones.length]) // se ejecuta solo una vez
+  }, [misnotificaciones]) // se ejecuta solo una vez
 
   return (
     <div className='     bg-opacity-90'>
