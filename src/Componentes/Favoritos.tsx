@@ -32,14 +32,14 @@ const Favoritos = () => {
 
                   <div className='flex  absolute bottom-0 jusitfy-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8'>
                     <div className='w-full'>
-                      <button className='cursor-pointer focus:outline-none  focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800 dark:hover:bg-gray-700 dark:hover:text-white'>
+                      <button className='cursor-pointer focus:outline-none  focus:ring-offset-2 focus:ring-2 text-white w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-800 border border-gray-800 :hover:bg-gray-700 :hover:text-white'>
                         Agregar al carrito
                       </button>
                     </div>
                   </div>
                   <button
                     aria-label='close'
-                    className='top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 absolute p-1.5 bg-gray-800 dark:bg-white dark:text-gray-800 text-white hover:text-gray-400'
+                    className='top-4 right-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 absolute p-1.5 bg-gray-800 :bg-white :text-gray-800 text-white hover:text-gray-400'
                   >
                     <svg
                       className='fil-current'

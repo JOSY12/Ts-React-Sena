@@ -1,19 +1,18 @@
-type notificacionesprops = {
-  id: string
-  titulo: string
-  descripcion: string
-  fecha_creacion: string
-}
+import { notificacionesprops } from './types'
 
 const Notificacion = ({
   id,
   titulo,
   descripcion,
-  fecha_creacion
+  fecha_creacion,
+  visto,
+  borrar
 }: notificacionesprops) => {
   return (
     <div
-      className={`w-full p-3 mt-4 ${id}  bg-white rounded shadow flex flex-shrink-0`}
+      className={`w-full p-3 mt-4     ${
+        visto ? 'bg-gray-200' : 'bg-gray-100'
+      } rounded shadow flex flex-shrink-0`}
     >
       <div
         aria-label='group icon'
@@ -39,12 +38,14 @@ const Notificacion = ({
             <span className='text-indigo-700'>{titulo}</span>:
             <span className='text-indigo-700'> {descripcion}</span>
           </p>
-          <div
-            aria-label='close icon'
-            role='button'
-            className='focus:outline-none cursor-pointer size-icon flex items-center justify-center w-8 h-8 rounded-full hover:bg-red-200'
+
+          <button
+            onClick={() => {
+              borrar(id)
+            }}
+            className='cursor-pointer  items-center'
           >
-            <button className='cursor-pointer'>
+            <div className='focus:outline-none cursor-pointer   flex items-center justify-center w-8 h-8 rounded-full hover:bg-red-200'>
               <svg
                 width='14'
                 height='14'
@@ -67,11 +68,18 @@ const Notificacion = ({
                   strokeLinejoin='round'
                 />
               </svg>
-            </button>
-          </div>
+            </div>
+          </button>
         </div>
-        <p className='focus:outline-none text-xs leading-3 pt-1 text-gray-500'>
+        <p className='focus:outline-none text-xs leading-3 pt-1 flex justify-between text-gray-500'>
           {fecha_creacion}
+          <span
+            className={`relative rounded-2xl ${
+              visto ? ' ' : ' text-green-600 '
+            }  text-black font-bold`}
+          >
+            {visto ? 'Visto' : 'nuevo'}
+          </span>
         </p>
       </div>
     </div>

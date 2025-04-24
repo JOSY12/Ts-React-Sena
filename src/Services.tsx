@@ -17,7 +17,6 @@ export const todos_usuarios = async (): Promise<any> => {
   try {
     const res = await axiosbackend.get('/u/usuarios')
     toast.success('Usuarios obtenidos exitosamente', { id })
-    console.log(res.data.Usuarios)
     return res.data.Usuarios
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -161,10 +160,9 @@ export const editar_direccion = async (
 export const usuario_notificaciones = async () => {
   try {
     const res = await axiosbackend.get(`/u/notificaciones`)
-
     return res.data.rows
   } catch (error) {
-    toast.error('Error al hacer la solititud')
+    toast.error('Error al cargar datos')
     return error
   }
 }
@@ -183,13 +181,45 @@ export const actualizar_notificaciones = async () => {
 }
 
 export const borrar_notificaciones = async (nid: string) => {
-  const id = toast.loading('cargando')
+  const id = toast.loading('borrando')
+  console.log(nid)
   try {
-    const res = await axiosbackend.delete(`/u/notifacaciones/:${nid}`)
-    toast.success('Peticion exitosa', { id })
+    const res = await axiosbackend.delete(`/u/notificaciones/${nid}`)
+    toast.success('Borrado exitoso', { id })
     return res.data
   } catch (error) {
     toast.error('Error al hacer la solititud', { id })
+    return error
+  }
+}
+
+export const contador_notificaciones = async () => {
+  try {
+    const res = await axiosbackend.get(`/u/contador_notificaciones`)
+    return res.data
+  } catch (error) {
+    return error
+  }
+}
+
+export const marcar_visto = async () => {
+  try {
+    await axiosbackend.put(`/u/marcar_visto`)
+  } catch (error) {
+    toast.error('Error al cargar datos')
+    return error
+  }
+}
+
+export const borrar_todas_notificaciones = async () => {
+  const id = toast.loading('borrando')
+
+  try {
+    const res = await axiosbackend.delete(`/u/borrar_todas_notificaciones`)
+    toast.success('notificaciones borradas exitosamente', { id })
+    return res.data.rows
+  } catch (error) {
+    toast.error('Error al borrar datos', { id })
     return error
   }
 }

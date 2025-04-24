@@ -3,9 +3,9 @@ import { SignOutButton } from '@clerk/clerk-react'
 const Logout = () => {
   return (
     <div className='cursor-pointer'>
-      <a className='flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'>
+      <a className='flex  cursor-pointer hover:font-bold items-center p-2 text-base font-normal text-white rounded-lg    hover:bg-red-600'>
         <svg
-          className='flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white'
+          className='flex-shrink-0 w-6 h-6 text-white cursor-pointer transition duration-75 rounded-lg    '
           fill='currentColor'
           viewBox='0 0 20 20'
           xmlns='http://www.w3.org/2000/svg'
@@ -16,8 +16,10 @@ const Logout = () => {
             clipRule='evenodd'
           ></path>
         </svg>
-        <span className='flex-1 ml-3 cursor-pointer whitespace-nowrap'>
-          <SignOutButton>Cerrar sesion</SignOutButton>
+        <span className='flex-1    ml-3 cursor-pointer whitespace-nowrap'>
+          <SignOutButton>
+            <span className='cursor-pointer'>Cerrar sesion</span>
+          </SignOutButton>
         </span>
       </a>
     </div>

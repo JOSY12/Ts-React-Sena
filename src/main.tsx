@@ -21,7 +21,7 @@ import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 import Registrar from './Componentes/Registrar'
 import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
-import { todos_usuarios } from './Services'
+import { todos_usuarios, usuario_notificaciones } from './Services'
 
 export const router = createBrowserRouter([
   {
@@ -43,7 +43,13 @@ export const router = createBrowserRouter([
             path: 'perfil',
             element: <Perfil />
           },
-          { path: 'notificaciones', element: <Notificaciones /> },
+          {
+            path: 'notificaciones',
+            element: <Notificaciones />,
+            loader: async () => {
+              return await usuario_notificaciones()
+            }
+          },
           { path: 'carrito', element: <Carrito /> },
           { path: 'compras', element: <Compras /> },
 
@@ -78,7 +84,7 @@ createRoot(document.getElementById('root')!).render(
       signUpFallbackRedirectUrl={'/productos'}
       localization={esES}
     >
-      <Toaster position='top-center' richColors />
+      <Toaster position='bottom-right' richColors />
 
       <RouterProvider router={router}></RouterProvider>
     </ClerkProvider>
