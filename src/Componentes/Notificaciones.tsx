@@ -4,7 +4,7 @@ import { useLoaderData } from 'react-router-dom'
 import {
   borrar_notificaciones,
   borrar_todas_notificaciones,
-  // marcar_visto,
+  marcar_visto,
   usuario_notificaciones
 } from '../Services'
 import { notificacionesprops } from './types'
@@ -23,9 +23,9 @@ const Notificaciones = () => {
 
   const Recargar_notificaciones = async () => {
     const datos = await usuario_notificaciones()
-
-    toast.success(`carga exitosa`)
-
+    if (!datos.length) {
+      toast.success(`tienes ${datos.length} notificaciones nuevas`)
+    }
     setnotificaciones(datos)
   }
   const borrar_todas_notificaciones_usuario = async () => {
@@ -34,14 +34,14 @@ const Notificaciones = () => {
   }
 
   useEffect(() => {
-    // const marcar_visto_todo = async () => {
-    //   await marcar_visto()
-    //   console.log('todo marcado visto')
-    // }
-    // if (misnotificaciones.length) {
-    //   marcar_visto_todo()
-    // }
-  }, [misnotificaciones]) // se ejecuta solo una vez
+    const marcar_visto_todo = async () => {
+      await marcar_visto()
+      console.log('todo marcado visto')
+    }
+    if (misnotificaciones.length) {
+      marcar_visto_todo()
+    }
+  }, [misnotificaciones.length]) // se ejecuta solo una vez
 
   return (
     <div className='     bg-opacity-90'>
@@ -79,7 +79,7 @@ const Notificaciones = () => {
             </div>
           </div>
           {/* ejemplo para multiplicar */}
-          {misnotificaciones.length ? (
+          {misnotificaciones.length >= 0 ? (
             misnotificaciones.map((n) => (
               <Notificacion
                 key={n.id}
