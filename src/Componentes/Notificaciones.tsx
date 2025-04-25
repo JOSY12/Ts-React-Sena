@@ -31,7 +31,7 @@ const Notificaciones = () => {
     setnotificaciones(datos)
   }
   const borrar_todas_notificaciones_usuario = async () => {
-    if (misnotificaciones.length) {
+    if (misnotificaciones.length > 0) {
       await borrar_todas_notificaciones()
       setnotificaciones([])
     } else {
@@ -44,12 +44,9 @@ const Notificaciones = () => {
       await marcar_visto()
       console.log('todo marcado visto')
     }
-    if (misnotificaciones.length) {
-      marcar_visto_todo()
-    }
+    marcar_visto_todo()
     setnotificaciones(data)
   }, []) // se ejecuta solo una vez
-  console.log(misnotificaciones.length > 0)
 
   return (
     <div className='     bg-opacity-90'>
