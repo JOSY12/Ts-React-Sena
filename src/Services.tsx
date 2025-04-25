@@ -203,8 +203,10 @@ export const contador_notificaciones = async () => {
 }
 
 export const marcar_visto = async () => {
+  const id = toast.loading('marcando')
   try {
     await axiosbackend.put(`/u/marcar_visto`)
+    toast.dismiss(id)
   } catch (error) {
     toast.error('Error al cargar datos')
     return error

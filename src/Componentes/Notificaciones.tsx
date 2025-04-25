@@ -25,8 +25,13 @@ const Notificaciones = () => {
 
   const Recargar_notificaciones = async () => {
     const datos = await usuario_notificaciones()
-    if (!datos.length) {
-      toast.success(`tienes ${datos.length} notificaciones nuevas`)
+
+    if (datos.length === misnotificaciones.length) {
+      toast.success('nada nuevo que cargar')
+    } else {
+      const cantidad = datos.length - misnotificaciones.length
+
+      toast.success(`tienes ${cantidad} notificaciones nuevas `)
     }
     setnotificaciones(datos)
   }
@@ -42,7 +47,6 @@ const Notificaciones = () => {
   useEffect(() => {
     const marcar_visto_todo = async () => {
       await marcar_visto()
-      console.log('todo marcado visto')
     }
     marcar_visto_todo()
     setnotificaciones(data)
