@@ -1,19 +1,14 @@
-import { useState } from 'react'
-
+import { useEffect, useState } from 'react'
 import Usuarios_card_administracion from './Usuarios_card_administracion'
 import { useLoaderData } from 'react-router-dom'
-type Usuario = {
-  id: string
-  nombre: string
-  apellido: string
-  foto_perfil: string
-  rol: string
-  administrador: boolean
-  baneado: boolean
-}
+import { Usuario } from '../types'
 const DashboardGeneral = () => {
   const data = useLoaderData()
-  const [usuarios] = useState<Usuario[]>(data)
+  const [usuarios, setusuarios] = useState<Usuario[]>([])
+
+  useEffect(() => {
+    setusuarios(data)
+  }, [])
 
   return (
     <div className='flex  bg-gray-100'>
@@ -29,7 +24,7 @@ const DashboardGeneral = () => {
         </div>
 
         <nav className='mt-10  '>
-          <a className='flex items-center px-6 py-2 mt-4 text-gray-100 bg-gray-700 bg-opacity-25'>
+          <button className='flex cursor-pointer w-full items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -52,12 +47,9 @@ const DashboardGeneral = () => {
             </svg>
 
             <span className='mx-3'>General</span>
-          </a>
+          </button>
 
-          <a
-            className='flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-            href='#'
-          >
+          <button className='flex cursor-pointer w-full items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -74,12 +66,9 @@ const DashboardGeneral = () => {
             </svg>
 
             <span className='mx-3'>Productos</span>
-          </a>
+          </button>
 
-          <a
-            className='flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-            href='#'
-          >
+          <button className='flex cursor-pointer w-full items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -96,12 +85,9 @@ const DashboardGeneral = () => {
             </svg>
 
             <span className='mx-3'>Tablas</span>
-          </a>
+          </button>
 
-          <a
-            className='flex items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'
-            href='#'
-          >
+          <button className='flex cursor-pointer w-full items-center px-6 py-2 mt-4 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -118,7 +104,7 @@ const DashboardGeneral = () => {
             </svg>
 
             <span className='mx-3'>Productos</span>
-          </a>
+          </button>
         </nav>
       </div>
       {/* fin navbar lateral */}
@@ -268,7 +254,7 @@ const DashboardGeneral = () => {
 
                     <div className='mx-5'>
                       <h4 className='text-2xl font-semibold text-gray-700'>
-                        8,282
+                        {usuarios.length}
                       </h4>
                       <div className='text-gray-500'>Usuarios</div>
                     </div>
@@ -368,17 +354,20 @@ const DashboardGeneral = () => {
                     </thead>
                     <tbody className='bg-white'>
                       {/* informacion de usuarios */}
-                      {usuarios.map((e) => (
-                        <Usuarios_card_administracion
-                          key={e.id}
-                          nombre={e.nombre}
-                          apellido={e.apellido}
-                          foto_perfil={e.foto_perfil}
-                          rol={e.rol}
-                          administrador={e.administrador}
-                          baneado={e.baneado}
-                        />
-                      ))}
+                      {usuarios && usuarios.length > 0
+                        ? usuarios.map((e) => (
+                            <Usuarios_card_administracion
+                              key={e.id}
+                              id={e.id}
+                              nombre={e.nombre}
+                              apellido={e.apellido}
+                              foto_perfil={e.foto_perfil}
+                              rol={e.rol}
+                              administrador={e.administrador}
+                              baneado={e.baneado}
+                            />
+                          ))
+                        : ''}
 
                       {/* fin de informacion de usuarios */}
                     </tbody>

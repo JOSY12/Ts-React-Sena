@@ -10,11 +10,7 @@ import { FaSignInAlt } from 'react-icons/fa'
 import { IoPersonAddSharp } from 'react-icons/io5'
 
 import { useClerk } from '@clerk/clerk-react'
-
-type activador = {
-  activar: () => void
-  cantidad: string
-}
+import { activador } from './types'
 
 const Sidebar = ({ activar, cantidad }: activador) => {
   const { isSignedIn } = useAuth()

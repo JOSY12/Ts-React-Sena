@@ -1,8 +1,4 @@
-type productoprops = {
-  nombre: string
-  precio: number
-  imagen: string
-}
+import { productoprops } from './types'
 
 const Producto = ({ nombre, precio, imagen }: productoprops) => {
   return (

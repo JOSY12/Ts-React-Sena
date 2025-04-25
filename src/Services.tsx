@@ -16,6 +16,7 @@ export const todos_usuarios = async (): Promise<any> => {
   const id = toast.loading('cargando')
   try {
     const res = await axiosbackend.get('/u/usuarios')
+    console.log(res)
     toast.success('Usuarios obtenidos exitosamente', { id })
     return res.data.Usuarios
   } catch (error: unknown) {
@@ -203,12 +204,9 @@ export const contador_notificaciones = async () => {
 }
 
 export const marcar_visto = async () => {
-  const id = toast.loading('marcando')
   try {
     await axiosbackend.put(`/u/marcar_visto`)
-    toast.dismiss(id)
   } catch (error) {
-    toast.error('Error al cargar datos')
     return error
   }
 }

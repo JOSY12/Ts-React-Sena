@@ -1,13 +1,8 @@
-type Usuario = {
-  nombre: string
-  apellido: string
-  foto_perfil: string
-  rol: string
-  administrador: boolean
-  baneado: boolean
-}
+import { Usuario } from '../types'
 
 const Usuarios_card_administracion = ({
+  id,
+
   nombre,
   apellido,
   foto_perfil,
@@ -20,6 +15,7 @@ const Usuarios_card_administracion = ({
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>
         <div className='flex items-center'>
           <div className='flex-shrink-0 w-10 h-10'>
+            {id}
             <img
               className='w-10 h-10 rounded-full'
               src={foto_perfil}
@@ -53,7 +49,7 @@ const Usuarios_card_administracion = ({
       </td>
 
       <td className='px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200'>
-        {rol}
+        {rol !== 'administrador' ? 'administrador' : 'comprador'}
       </td>
 
       <td className='px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200'>
