@@ -6,26 +6,29 @@ import { todos_usuarios } from '../../Services'
 const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
+
   useEffect(() => {
-    let intervalo: NodeJS.Timeout
+    let activo = true
+    let timeoutId: number
 
-    const fetch_notificaciones = async () => {
+    const fetchUsuarios = async () => {
       const res = await todos_usuarios()
-      if (res && Array.isArray(res) && res.length) {
-        setusuarios(res)
-
-        clearInterval(intervalo)
+      if (res?.length) {
+        if (activo) setusuarios(res)
+      } else {
+        timeoutId = window.setTimeout(fetchUsuarios, 4000)
       }
     }
 
-    if (data && Array.isArray(data) && data.length) {
+    if (data?.length) {
       setusuarios(data)
     } else if (!usuarios.length) {
-      intervalo = setInterval(fetch_notificaciones, 4000)
+      timeoutId = window.setTimeout(fetchUsuarios, 4000)
     }
 
     return () => {
-      if (intervalo) clearInterval(intervalo)
+      activo = false
+      clearTimeout(timeoutId)
     }
   }, [usuarios.length])
 

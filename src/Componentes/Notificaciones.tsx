@@ -42,29 +42,33 @@ const Notificaciones = () => {
       toast.warning('no hay nada que borrar')
     }
   }
+
   useEffect(() => {
     const marcar_visto_todo = async () => {
       await marcar_visto()
     }
     marcar_visto_todo()
-    let intervalo: NodeJS.Timeout
-    const fetch_notificaciones = async () => {
-      const res = await usuario_notificaciones()
-      if (res && Array.isArray(res) && res.length) {
-        setnotificaciones(res)
+    let activo = true
+    let timeoutId: number
 
-        clearInterval(intervalo)
+    const fetchUsuarios = async () => {
+      const res = await usuario_notificaciones()
+      if (res?.length) {
+        if (activo) setnotificaciones(res)
+      } else {
+        timeoutId = window.setTimeout(fetchUsuarios, 4000)
       }
     }
 
-    if (data && Array.isArray(data) && data.length) {
+    if (data?.length) {
       setnotificaciones(data)
     } else if (!misnotificaciones.length) {
-      intervalo = setInterval(fetch_notificaciones, 4000)
+      timeoutId = window.setTimeout(fetchUsuarios, 4000)
     }
 
     return () => {
-      if (intervalo) clearInterval(intervalo)
+      activo = false
+      clearTimeout(timeoutId)
     }
   }, [misnotificaciones.length])
 
