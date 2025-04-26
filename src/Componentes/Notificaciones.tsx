@@ -90,7 +90,7 @@ const Notificaciones = () => {
             </div>
           </div>
           {/* ejemplo para multiplicar */}
-          {misnotificaciones.length ? (
+          {misnotificaciones && misnotificaciones?.length > 0 ? (
             misnotificaciones.map((n) => (
               <Notificacion
                 key={n.id}

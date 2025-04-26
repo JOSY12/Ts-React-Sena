@@ -5,7 +5,6 @@ import { Usuario } from '../types'
 const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
-  console.log(usuarios)
   useEffect(() => {
     if (data.length) {
       setusuarios(data)
@@ -347,7 +346,7 @@ const DashboardGeneral = () => {
                     </thead>
                     <tbody className='bg-white'>
                       {/* informacion de usuarios */}
-                      {usuarios.length ? (
+                      {usuarios && usuarios?.length > 0 ? (
                         usuarios.map((e, k) => (
                           <Usuarios_card_administracion
                             key={k}
