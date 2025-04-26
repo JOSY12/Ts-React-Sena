@@ -16,7 +16,6 @@ export const todos_usuarios = async (): Promise<any> => {
   const id = toast.loading('cargando')
   try {
     const res = await axiosbackend.get('/u/usuarios')
-    console.log(res)
     toast.success('Usuarios obtenidos exitosamente', { id })
     return res.data.Usuarios
   } catch (error: unknown) {

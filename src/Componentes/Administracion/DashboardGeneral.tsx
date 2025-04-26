@@ -3,7 +3,7 @@ import Usuarios_card_administracion from './Usuarios_card_administracion'
 import { useLoaderData } from 'react-router-dom'
 import { Usuario } from '../types'
 const DashboardGeneral = () => {
-  const data = useLoaderData()
+  const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
 
   useEffect(() => {
@@ -143,10 +143,7 @@ const DashboardGeneral = () => {
             </svg>
           </a>
 
-          <a
-            className=' w-full flex items-center px-6 py-2 mt-4  justify-center  text-gray-100  bg-gray-900 bg-opacity-25'
-            href='#'
-          >
+          <a className=' w-full flex items-center px-6 py-2 mt-4  justify-center  text-gray-100  bg-gray-900 bg-opacity-25'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -163,10 +160,7 @@ const DashboardGeneral = () => {
             </svg>
           </a>
 
-          <a
-            className=' w-full flex items-center px-6 py-2 mt-4 justify-center  text-gray-100  bg-gray-900 bg-opacity-25'
-            href='#'
-          >
+          <a className=' w-full flex items-center px-6 py-2 mt-4 justify-center  text-gray-100  bg-gray-900 bg-opacity-25'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -183,10 +177,7 @@ const DashboardGeneral = () => {
             </svg>
           </a>
 
-          <a
-            className='flex  w-full items-center px-6 py-2 mt-4 justify-center   text-gray-100  bg-gray-900 bg-opacity-25'
-            href='#'
-          >
+          <a className='flex  w-full items-center px-6 py-2 mt-4 justify-center   text-gray-100  bg-gray-900 bg-opacity-25'>
             <svg
               className='w-6 h-6'
               xmlns='http://www.w3.org/2000/svg'
@@ -354,20 +345,32 @@ const DashboardGeneral = () => {
                     </thead>
                     <tbody className='bg-white'>
                       {/* informacion de usuarios */}
-                      {usuarios && usuarios.length > 0
-                        ? usuarios.map((e) => (
-                            <Usuarios_card_administracion
-                              key={e.id}
-                              id={e.id}
-                              nombre={e.nombre}
-                              apellido={e.apellido}
-                              foto_perfil={e.foto_perfil}
-                              rol={e.rol}
-                              administrador={e.administrador}
-                              baneado={e.baneado}
-                            />
-                          ))
-                        : ''}
+                      {usuarios && usuarios?.length > 0 ? (
+                        usuarios.map((e, k) => (
+                          <Usuarios_card_administracion
+                            key={k}
+                            id={e.id}
+                            nombre={e.nombre}
+                            apellido={e.apellido}
+                            foto_perfil={e.foto_perfil}
+                            rol={e.rol}
+                            administrador={e.administrador}
+                            baneado={e.baneado}
+                          />
+                        ))
+                      ) : (
+                        <Usuarios_card_administracion
+                          id={''}
+                          nombre={''}
+                          apellido={''}
+                          foto_perfil={
+                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'
+                          }
+                          rol={''}
+                          administrador={false}
+                          baneado={false}
+                        />
+                      )}
 
                       {/* fin de informacion de usuarios */}
                     </tbody>

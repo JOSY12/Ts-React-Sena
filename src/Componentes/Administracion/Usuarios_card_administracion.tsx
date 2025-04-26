@@ -2,7 +2,6 @@ import { Usuario } from '../types'
 
 const Usuarios_card_administracion = ({
   id,
-
   nombre,
   apellido,
   foto_perfil,
@@ -49,7 +48,7 @@ const Usuarios_card_administracion = ({
       </td>
 
       <td className='px-6 py-4 text-sm leading-5 text-gray-500 whitespace-no-wrap border-b border-gray-200'>
-        {rol !== 'administrador' ? 'administrador' : 'comprador'}
+        {rol === 'administrador' ? 'administrador' : 'Comprador'}
       </td>
 
       <td className='px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200'>
