@@ -16,6 +16,8 @@ const Notificaciones = () => {
   const [misnotificaciones, setnotificaciones] = useState<
     notificacionesprops[]
   >([])
+  const [recargado, setrecargado] = useState(false)
+
   const borrar_notifiacacion_unica = async (id: string) => {
     await borrar_notificaciones(id)
     const filtrado = misnotificaciones.filter((e) => e.id !== id)
@@ -48,13 +50,15 @@ const Notificaciones = () => {
       await marcar_visto()
     }
     marcar_visto_todo()
+    setrecargado(true)
     let activo = true
     let timeoutId: number
-
     const fetchUsuarios = async () => {
       const res = await usuario_notificaciones()
       if (res?.length) {
-        if (activo) setnotificaciones(res)
+        if (activo) {
+          setnotificaciones(res)
+        }
       } else {
         timeoutId = window.setTimeout(fetchUsuarios, 4000)
       }
@@ -68,9 +72,10 @@ const Notificaciones = () => {
 
     return () => {
       activo = false
+      setrecargado(false)
       clearTimeout(timeoutId)
     }
-  }, [misnotificaciones.length])
+  }, [recargado])
 
   return (
     <div className='     bg-opacity-90'>

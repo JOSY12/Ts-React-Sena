@@ -6,11 +6,12 @@ import { todos_usuarios } from '../../Services'
 const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
+  const [recargado, setrecargado] = useState(false)
 
   useEffect(() => {
+    setrecargado(true)
     let activo = true
     let timeoutId: number
-
     const fetchUsuarios = async () => {
       const res = await todos_usuarios()
       if (res?.length) {
@@ -28,9 +29,11 @@ const DashboardGeneral = () => {
 
     return () => {
       activo = false
+      setrecargado(false)
+
       clearTimeout(timeoutId)
     }
-  }, [usuarios.length])
+  }, [usuarios.length, recargado])
 
   return (
     <div className='flex  bg-gray-100'>
