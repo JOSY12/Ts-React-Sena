@@ -49,7 +49,9 @@ const Notificaciones = () => {
       await marcar_visto()
     }
     marcar_visto_todo()
-    setnotificaciones(data)
+    if (data.length) {
+      setnotificaciones(data)
+    }
   }, []) // se ejecuta solo una vez
 
   return (
@@ -88,7 +90,7 @@ const Notificaciones = () => {
             </div>
           </div>
           {/* ejemplo para multiplicar */}
-          {misnotificaciones && misnotificaciones?.length > 0 ? (
+          {misnotificaciones.length ? (
             misnotificaciones.map((n) => (
               <Notificacion
                 key={n.id}

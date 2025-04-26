@@ -23,7 +23,7 @@ export const todos_usuarios = async (): Promise<any> => {
       toast.error('error al cargar usuarios', { id })
       return error.response?.data
     }
-    toast.error('error al cargar usuarios', { id })
+    toast.error(`error al cargar usuarios ${error}`, { id })
 
     return { message: 'Ocurrió un error inesperado', error }
   }
@@ -41,7 +41,7 @@ export const obtener_usuario = async () => {
 
       return error.response?.data
     }
-    toast.error('error al cargar datos del usuario')
+    toast.error(`error al cargar datos del usuario ${error}`)
 
     return { message: 'Ocurrió un error inesperado', error }
   }
@@ -80,7 +80,7 @@ export const tosta = async () => {
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -94,7 +94,7 @@ export const clerktest = async () => {
     // return res.data
   } catch (error) {
     console.log(error)
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -116,7 +116,7 @@ export const agregar_direccion = async (
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -128,7 +128,7 @@ export const eliminar_direccion = async () => {
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -152,7 +152,7 @@ export const editar_direccion = async (
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -162,7 +162,7 @@ export const usuario_notificaciones = async () => {
     const res = await axiosbackend.get(`/u/notificaciones`)
     return res.data.rows
   } catch (error) {
-    toast.error('Error al cargar datos')
+    toast.error(`Error al cargar datos ${error}`)
     return error
   }
 }
@@ -175,7 +175,7 @@ export const actualizar_notificaciones = async () => {
     toast.success('Peticion exitosa', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -188,7 +188,7 @@ export const borrar_notificaciones = async (nid: string) => {
     toast.success('Borrado exitoso', { id })
     return res.data
   } catch (error) {
-    toast.error('Error al hacer la solititud', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
@@ -218,7 +218,7 @@ export const borrar_todas_notificaciones = async () => {
     toast.success('notificaciones borradas exitosamente', { id })
     return res.data.rows
   } catch (error) {
-    toast.error('Error al borrar datos', { id })
+    toast.error(`Error al hacer la solititud ${error}`, { id })
     return error
   }
 }
