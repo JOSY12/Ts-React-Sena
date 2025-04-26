@@ -49,7 +49,8 @@ const Notificaciones = () => {
       await marcar_visto()
     }
     marcar_visto_todo()
-    if (data.length) {
+
+    if (data && Array.isArray(data) && data.length) {
       setnotificaciones(data)
     }
   }, []) // se ejecuta solo una vez

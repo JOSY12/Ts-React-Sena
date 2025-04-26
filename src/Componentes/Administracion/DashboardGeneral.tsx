@@ -6,7 +6,7 @@ const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
   useEffect(() => {
-    if (data.length) {
+    if (data && Array.isArray(data) && data.length) {
       setusuarios(data)
     }
   }, [])
