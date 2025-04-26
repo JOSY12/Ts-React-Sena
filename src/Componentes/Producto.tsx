@@ -1,74 +1,84 @@
+import { Link } from 'react-router-dom'
 import { productoprops } from './types'
+import { AiOutlineShoppingCart, AiOutlineHeart } from 'react-icons/ai'
 
-const Producto = ({ nombre, precio, imagen }: productoprops) => {
+const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
   return (
-    <div className=' w-full max-w-sm hover:scale-105 transition-all bg-white border border-gray-200 rounded-lg shadow-sm  '>
-      <a href='#'>
-        <img className='p-8 rounded-lg' src={imagen} alt='product image' />
-      </a>
-      <div className='px-5 pb-5'>
-        <a href='#'>
-          <h5 className='text-xl font-semibold tracking-tight text-gray-900  '>
-            {nombre.slice(0, 20)}
-          </h5>
-        </a>
-        <div className='flex items-center mt-2.5 mb-5'>
-          <div className='flex items-center space-x-1 rtl:space-x-reverse'>
-            {/* <svg
-              className='w-4 h-4 text-yellow-300'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 22 20'
-            >
-              <path d='M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z' />
-            </svg>
-            <svg
-              className='w-4 h-4 text-yellow-300'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 22 20'
-            >
-              <path d='M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z' />
-            </svg>
-            <svg
-              className='w-4 h-4 text-yellow-300'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 22 20'
-            >
-              <path d='M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z' />
-            </svg>
-            <svg
-              className='w-4 h-4 text-yellow-300'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 22 20'
-            >
-              <path d='M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z' />
-            </svg>
-            <svg
-              className='w-4 h-4 text-gray-200 :text-gray-600'
-              aria-hidden='true'
-              xmlns='http://www.w3.org/2000/svg'
-              fill='currentColor'
-              viewBox='0 0 22 20'
-            >
-              <path d='M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z' />
-            </svg> */}
-          </div>
-          {/* <span className='bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm  '>
-            5.0
-          </span> */}
-        </div>
-        <div className='flex items-center justify-between'>
-          <span className=' font-bold text-green-600 '>${precio}</span>
-          <button className='text-white bg-green-600 hover:bg-green-700   font-medium rounded-lg text-sm px-5 py-2.5 text-center  '>
-            Agregar a carrito
+    <div className=' hover:scale-102 transition '>
+      <div className='bg-white shadow-md rounded-lg max-w-sm    '>
+        <Link to={`/producto/${id}`}>
+          <button className='flex justify-center'>
+            <img
+              className='rounded-t-lg p-3 sm:h-60  '
+              src={imagen}
+              alt='product image'
+            ></img>
           </button>
+        </Link>
+        <div className='px-5 pb-4 '>
+          <a>
+            <h3 className='text-gray-900 font-semibold truncate text-xl tracking-tight :text-white'>
+              {nombre}
+            </h3>
+          </a>
+          <div className='flex items-center mt-2.5 mb-5'>
+            <svg
+              className='w-5 h-5 text-yellow-300'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'></path>
+            </svg>
+            <svg
+              className='w-5 h-5 text-yellow-300'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'></path>
+            </svg>
+            <svg
+              className='w-5 h-5 text-yellow-300'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'></path>
+            </svg>
+            <svg
+              className='w-5 h-5 text-yellow-300'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'></path>
+            </svg>
+            <svg
+              className='w-5 h-5 text-yellow-300'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'></path>
+            </svg>
+            <span className='bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded :bg-blue-200 :text-blue-800 ml-3'>
+              5.0
+            </span>
+          </div>
+          <div className='flex items-center justify-between'>
+            <span className='text-md font-bold text-gray-900 :text-white'>
+              ${precio}
+            </span>
+            <div className='justify-end flex   '>
+              <button className='text-black pr-6 cursor-pointer hover:text-red-600     font-medium rounded-lg text-sm      text-center  '>
+                <AiOutlineHeart size={25} />
+              </button>
+              <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
+                <AiOutlineShoppingCart size={25} />
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -16,7 +16,6 @@ const Notificaciones = () => {
   const [misnotificaciones, setnotificaciones] = useState<
     notificacionesprops[]
   >([])
-
   const borrar_notifiacacion_unica = async (id: string) => {
     await borrar_notificaciones(id)
     const filtrado = misnotificaciones.filter((e) => e.id !== id)
@@ -43,17 +42,31 @@ const Notificaciones = () => {
       toast.warning('no hay nada que borrar')
     }
   }
-
   useEffect(() => {
     const marcar_visto_todo = async () => {
       await marcar_visto()
     }
     marcar_visto_todo()
+    let intervalo: NodeJS.Timeout
+    const fetch_notificaciones = async () => {
+      const res = await usuario_notificaciones()
+      if (res && Array.isArray(res) && res.length) {
+        setnotificaciones(res)
+
+        clearInterval(intervalo)
+      }
+    }
 
     if (data && Array.isArray(data) && data.length) {
       setnotificaciones(data)
+    } else if (!misnotificaciones.length) {
+      intervalo = setInterval(fetch_notificaciones, 4000)
     }
-  }, []) // se ejecuta solo una vez
+
+    return () => {
+      if (intervalo) clearInterval(intervalo)
+    }
+  }, [misnotificaciones.length])
 
   return (
     <div className='     bg-opacity-90'>

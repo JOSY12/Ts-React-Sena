@@ -13,17 +13,17 @@ export const axiosbackend = axios.create({
 
 // funciones para peticiones backend usuarios
 export const todos_usuarios = async (): Promise<any> => {
-  const id = toast.loading('cargando')
+  toast.loading('cargando')
   try {
     const res = await axiosbackend.get('/u/usuarios')
-    toast.success('Usuarios obtenidos exitosamente', { id })
+    toast.dismiss()
     return res.data.Usuarios
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error('error al cargar usuarios', { id })
+      toast.error('error al cargar usuarios')
       return error.response?.data
     }
-    toast.error(`error al cargar usuarios ${error}`, { id })
+    toast.error(`error al cargar usuarios ${error}`, { duration: 1000 })
 
     return { message: 'Ocurrió un error inesperado', error }
   }
@@ -158,11 +158,14 @@ export const editar_direccion = async (
 }
 
 export const usuario_notificaciones = async () => {
+  toast.loading('cargando')
+
   try {
     const res = await axiosbackend.get(`/u/notificaciones`)
+    toast.dismiss()
     return res.data.rows
   } catch (error) {
-    toast.error(`Error al cargar datos ${error}`)
+    toast.error(`Error al cargar datos ${error}`, { duration: 1000 })
     return error
   }
 }

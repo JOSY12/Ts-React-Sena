@@ -1,7 +1,14 @@
 import { basedatos } from '../bd'
+import { useEffect, useState } from 'react'
 import Producto from './Producto'
+import { productoprops } from './types'
 
 const Productos = () => {
+  const [productos, setproductos] = useState<productoprops[]>([])
+  useEffect(() => {
+    setproductos([])
+  }, [productos.length])
+
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>
@@ -73,6 +80,7 @@ const Productos = () => {
               {basedatos.map((p, k) => (
                 <Producto
                   key={k}
+                  id={p.id}
                   nombre={p.nombre}
                   precio={p.precio}
                   imagen={p.imagen}

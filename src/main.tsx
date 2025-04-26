@@ -47,7 +47,26 @@ export const router = createBrowserRouter([
             path: 'notificaciones',
             element: <Notificaciones />,
             loader: async () => {
-              return await usuario_notificaciones()
+              let intervalo: NodeJS.Timeout
+              const res = await usuario_notificaciones()
+
+              const fetch_notificaciones = async () => {
+                const res = await usuario_notificaciones()
+                if (res && Array.isArray(res) && res.length) {
+                  clearInterval(intervalo)
+                  return res
+                }
+              }
+
+              if (res && Array.isArray(res) && res.length) {
+                return res
+              } else if (!res.length) {
+                intervalo = setInterval(fetch_notificaciones, 4000)
+              }
+
+              return () => {
+                if (intervalo) clearInterval(intervalo)
+              }
             }
           },
           { path: 'carrito', element: <Carrito /> },
@@ -63,7 +82,26 @@ export const router = createBrowserRouter([
                 path: 'admin',
                 element: <DashboardGeneral />,
                 loader: async () => {
-                  return await todos_usuarios()
+                  let intervalo: NodeJS.Timeout
+                  const res = await todos_usuarios()
+
+                  const fetch_notificaciones = async () => {
+                    const res = await todos_usuarios()
+                    if (res && Array.isArray(res) && res.length) {
+                      clearInterval(intervalo)
+                      return res
+                    }
+                  }
+
+                  if (res && Array.isArray(res) && res.length) {
+                    return res
+                  } else if (!res.length) {
+                    intervalo = setInterval(fetch_notificaciones, 4000)
+                  }
+
+                  return () => {
+                    if (intervalo) clearInterval(intervalo)
+                  }
                 }
               }
             ]

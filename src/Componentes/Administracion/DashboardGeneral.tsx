@@ -2,14 +2,32 @@ import { useEffect, useState } from 'react'
 import Usuarios_card_administracion from './Usuarios_card_administracion'
 import { useLoaderData } from 'react-router-dom'
 import { Usuario } from '../types'
+import { todos_usuarios } from '../../Services'
 const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
   useEffect(() => {
+    let intervalo: NodeJS.Timeout
+
+    const fetch_notificaciones = async () => {
+      const res = await todos_usuarios()
+      if (res && Array.isArray(res) && res.length) {
+        setusuarios(res)
+
+        clearInterval(intervalo)
+      }
+    }
+
     if (data && Array.isArray(data) && data.length) {
       setusuarios(data)
+    } else if (!usuarios.length) {
+      intervalo = setInterval(fetch_notificaciones, 4000)
     }
-  }, [])
+
+    return () => {
+      if (intervalo) clearInterval(intervalo)
+    }
+  }, [usuarios.length])
 
   return (
     <div className='flex  bg-gray-100'>

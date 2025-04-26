@@ -1,5 +1,6 @@
 export const basedatos = [
   {
+    id: '',
     nombre:
       'portatil notebook hpawdawda <wdawdadawdasdasdwadasdawdasdadawdadawdasda></wdawdadawdasdasdwadasdawdasdadawdadawdasda>',
     precio: 1200,
@@ -9,6 +10,8 @@ export const basedatos = [
     total: 1200
   },
   {
+    id: '',
+
     nombre: 'control xbox',
     precio: 50,
     cantidad: 2,
@@ -17,6 +20,8 @@ export const basedatos = [
     total: 100
   },
   {
+    id: '',
+
     nombre: 'nintendo switch',
     precio: 400,
     cantidad: 2,

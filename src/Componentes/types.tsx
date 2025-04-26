@@ -11,6 +11,7 @@ export type activador = {
   cantidad: string
 }
 export type productoprops = {
+  id: string
   nombre: string
   precio: number
   imagen: string
