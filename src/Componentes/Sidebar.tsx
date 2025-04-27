@@ -29,7 +29,7 @@ const Sidebar = ({ activar, cantidad }: activador) => {
                   {/* dashboard administrativo para mis productos y usuarios*/}
                   {isSignedIn && user?.publicMetadata?.administrador && (
                     <>
-                      <Link to={'/u/verificador/admin'}>
+                      <Link to={'/u/v/admin/usuarios'}>
                         <li className='hover:bg-gray-500 rounded-2xl'>
                           <button
                             onClick={activar}

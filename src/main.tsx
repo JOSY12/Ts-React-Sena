@@ -22,6 +22,8 @@ import Registrar from './Componentes/Registrar'
 import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
 import { todos_usuarios, usuario_notificaciones } from './Services'
+import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
+import Admin_Productos from './Componentes/Administracion/Admin_Productos'
 
 export const router = createBrowserRouter([
   {
@@ -61,20 +63,39 @@ export const router = createBrowserRouter([
           { path: 'favoritos', element: <Favoritos /> },
 
           {
-            path: 'verificador',
+            path: 'v',
             element: <Limitadoradmin />,
             children: [
               {
                 path: 'admin',
                 element: <DashboardGeneral />,
-                loader: async () => {
-                  const res = await todos_usuarios()
-                  if (res.length > 0) {
-                    return res
-                  } else {
-                    return []
+
+                children: [
+                  {
+                    path: 'usuarios',
+                    element: <Admin_usuarios />,
+                    loader: async () => {
+                      const res = await todos_usuarios()
+                      if (res.length > 0) {
+                        return res
+                      } else {
+                        return []
+                      }
+                    }
+                  },
+                  {
+                    path: 'productos',
+                    element: <Admin_Productos />
+                    // loader: async () => {
+                    //   const res = await todos_usuarios()
+                    //   if (res.length > 0) {
+                    //     return res
+                    //   } else {
+                    //     return []
+                    //   }
+                    // }
                   }
-                }
+                ]
               }
             ]
           }

@@ -24,7 +24,7 @@ const Notificaciones = () => {
   }
 
   const Recargar_notificaciones = async () => {
-    const datos = await usuario_notificaciones()
+    const datos: notificacionesprops[] = await usuario_notificaciones()
     if (datos.length! > misnotificaciones.length) {
       toast.success('nada nuevo que cargar')
     } else if (datos.length) {
