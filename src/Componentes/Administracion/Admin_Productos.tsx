@@ -1,11 +1,11 @@
 const Admin_Productos = () => {
   return (
-    <div className='  mb-10 flex flex-col flex-1 overflow-hidden'>
+    <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
         <h1 className='font-medium text-2xl'>Administracion de productos</h1>
       </div>
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
-        <div className='w-full lg:w-1/3 m-1'>
+        <div className='w-full lg:w-1/2 m-1'>
           <form className='rounded-2xl w-full bg-white shadow-md p-6'>
             <div className='flex flex-wrap  -mx-3 mb-6'>
               <div className='w-full  flex lg:flex-col '>

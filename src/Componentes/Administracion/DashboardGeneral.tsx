@@ -13,7 +13,7 @@ const DashboardGeneral = () => {
 
   return (
     <>
-      <div className='flex  bg-gray-100'>
+      <div className='flex h-screen   bg-gray-100  '>
         <div className=' inset-0 z-20 transition-opacity bg-black opacity-50 lg:hidden'></div>
         {/* inicio de navbar lateral   */}
         <div
