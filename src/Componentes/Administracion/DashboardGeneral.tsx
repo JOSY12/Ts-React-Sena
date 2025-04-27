@@ -3,20 +3,31 @@ import Usuarios_card_administracion from './Usuarios_card_administracion'
 import { useLoaderData } from 'react-router-dom'
 import { Usuario } from '../types'
 import { todos_usuarios } from '../../Services'
+import { toast } from 'sonner'
+import { AiOutlineReload } from 'react-icons/ai'
+
 const DashboardGeneral = () => {
   const data = useLoaderData<Usuario[]>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
-  const [recargado, setrecargado] = useState(false)
+
+  const Recargar = async () => {
+    const res = await todos_usuarios()
+    console.log(res?.length)
+    if (res.length) {
+      setusuarios(res)
+    }
+  }
 
   useEffect(() => {
-    setrecargado(true)
-    let activo = true
+    let activo = 0
     let timeoutId: number
+
     const fetchUsuarios = async () => {
       const res = await todos_usuarios()
       if (res?.length) {
-        if (activo) setusuarios(res)
-      } else {
+        setusuarios(res)
+      } else if (!res?.length && activo < 3) {
+        activo++
         timeoutId = window.setTimeout(fetchUsuarios, 4000)
       }
     }
@@ -24,16 +35,15 @@ const DashboardGeneral = () => {
     if (data?.length) {
       setusuarios(data)
     } else if (!usuarios.length) {
+      toast.error('error al cargar los datos')
       timeoutId = window.setTimeout(fetchUsuarios, 4000)
     }
 
     return () => {
-      activo = false
-      setrecargado(false)
-
+      activo = 4
       clearTimeout(timeoutId)
     }
-  }, [usuarios.length, recargado])
+  }, [usuarios.length])
 
   return (
     <div className='flex  bg-gray-100'>
@@ -226,9 +236,18 @@ const DashboardGeneral = () => {
       <div className='flex flex-col flex-1 overflow-hidden'>
         <main className='flex-1 overflow-x-hidden overflow-y-auto bg-gray-100'>
           <div className='container px-6 py-8 mx-auto'>
-            <h3 className='text-3xl font-medium text-gray-700'>
-              Administracion
-            </h3>
+            <div className='flex justify-between'>
+              <h3 className='text-3xl font-medium text-gray-700'>
+                Administracion
+              </h3>
+              <button
+                onClick={Recargar}
+                className='tex-md cursor-pointer flex items-center    text-black'
+              >
+                <AiOutlineReload className='mr-2' />
+                Recargar datos
+              </button>
+            </div>
             {/* informacion general */}
             <div className='mt-4'>
               <div className='flex flex-wrap -mx-6'>
@@ -365,7 +384,9 @@ const DashboardGeneral = () => {
                         <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
                           Rol
                         </th>
-                        <th className='px-6 py-3 border-b border-gray-200 bg-gray-50'></th>
+                        <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-right text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                          opciones
+                        </th>
                       </tr>
                     </thead>
                     <tbody className='bg-white'>
