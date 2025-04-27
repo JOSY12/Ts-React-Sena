@@ -3,7 +3,6 @@ import Usuarios_card_administracion from './Usuarios_card_administracion'
 import { useLoaderData } from 'react-router-dom'
 import { Usuario } from '../types'
 import { todos_usuarios } from '../../Services'
-import { toast } from 'sonner'
 import { AiOutlineReload } from 'react-icons/ai'
 
 const DashboardGeneral = () => {
@@ -12,38 +11,14 @@ const DashboardGeneral = () => {
 
   const Recargar = async () => {
     const res = await todos_usuarios()
-    console.log(res?.length)
     if (res.length) {
       setusuarios(res)
     }
   }
 
   useEffect(() => {
-    let activo = 0
-    let timeoutId: number
-
-    const fetchUsuarios = async () => {
-      const res = await todos_usuarios()
-      if (res?.length) {
-        setusuarios(res)
-      } else if (!res?.length && activo < 3) {
-        activo++
-        timeoutId = window.setTimeout(fetchUsuarios, 4000)
-      }
-    }
-
-    if (data?.length) {
-      setusuarios(data)
-    } else if (!usuarios.length) {
-      toast.error('error al cargar los datos')
-      timeoutId = window.setTimeout(fetchUsuarios, 4000)
-    }
-
-    return () => {
-      activo = 4
-      clearTimeout(timeoutId)
-    }
-  }, [usuarios.length])
+    setusuarios(data)
+  }, [])
 
   return (
     <div className='flex  bg-gray-100'>

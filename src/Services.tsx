@@ -20,12 +20,15 @@ export const todos_usuarios = async (): Promise<any> => {
     return res.data.Usuarios
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error('error al cargar usuarios', { id })
+      toast.error(`error al cargar usuarios ${error.response.data} `, { id })
       return error.response?.data
     }
-    toast.error(`error al cargar usuarios ${error} `, { id, duration: 1000 })
+    toast.error(`error al cargar usuarios ${error} `, {
+      id,
+      duration: 1000
+    })
 
-    return { message: 'Ocurrió un error inesperado', error }
+    return error
   }
 }
 
@@ -164,6 +167,10 @@ export const usuario_notificaciones = async () => {
     toast.dismiss(id)
     return res.data.rows
   } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error('error al cargar notificaciones', { id })
+      return error.response?.data
+    }
     toast.error(`Error al cargar datos ${error}`, { id, duration: 1000 })
     return error
   }

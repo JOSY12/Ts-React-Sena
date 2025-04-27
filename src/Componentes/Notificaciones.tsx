@@ -16,24 +16,20 @@ const Notificaciones = () => {
   const [misnotificaciones, setnotificaciones] = useState<
     notificacionesprops[]
   >([])
-  const [recargado, setrecargado] = useState(false)
 
   const borrar_notifiacacion_unica = async (id: string) => {
     await borrar_notificaciones(id)
     const filtrado = misnotificaciones.filter((e) => e.id !== id)
     setnotificaciones(filtrado)
-    setrecargado(true)
   }
 
   const Recargar_notificaciones = async () => {
     const datos = await usuario_notificaciones()
-    if (Array.isArray(datos) && datos.length === misnotificaciones.length) {
+    if (datos.length! > misnotificaciones.length) {
       toast.success('nada nuevo que cargar')
     } else if (datos.length) {
       const cantidad = datos.length - misnotificaciones.length
       toast.success(`tienes ${cantidad} notificaciones nuevas `)
-    } else if (!Array.isArray(datos)) {
-      toast.error('error al cargar datos')
     }
     setnotificaciones(datos)
   }
@@ -50,34 +46,8 @@ const Notificaciones = () => {
       await marcar_visto()
     }
     marcar_visto_todo()
-    setrecargado(true)
-    let activo = 0
-    let timeoutId: number
-
-    const fetchUsuarios = async () => {
-      const res = await usuario_notificaciones()
-      if (res?.length) {
-        setnotificaciones(res)
-      } else if (!res?.length && activo < 3) {
-        activo++
-        timeoutId = window.setTimeout(fetchUsuarios, 4000)
-      }
-    }
-
-    if (data?.length) {
-      setnotificaciones(data)
-    } else if (!misnotificaciones.length) {
-      timeoutId = window.setTimeout(fetchUsuarios, 4000)
-    }
-
-    return () => {
-      activo = 4
-      setrecargado(false)
-      clearTimeout(timeoutId)
-    }
-  }, [recargado])
-
-  useEffect(() => {}, [misnotificaciones.length])
+    setnotificaciones(data)
+  }, [])
 
   return (
     <div className='     bg-opacity-90'>
