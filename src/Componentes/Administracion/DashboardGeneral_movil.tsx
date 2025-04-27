@@ -12,8 +12,8 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
           setactivar(!activar)
         }}
         className={`    justify-center w-full cursor-pointer  ${
-          activar ? 'bottom-0' : 'bottom-10'
-        }  flex fixed  `}
+          activar ? 'bottom-0 ' : 'bottom-10'
+        }  flex fixed lg:hidden `}
       >
         {activar ? (
           <span className='text-3xl         '>
