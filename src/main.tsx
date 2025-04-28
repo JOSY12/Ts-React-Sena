@@ -49,12 +49,7 @@ export const router = createBrowserRouter([
             path: 'notificaciones',
             element: <Notificaciones />,
             loader: async () => {
-              const res = await usuario_notificaciones()
-              if (res.length > 0) {
-                return res
-              } else {
-                return []
-              }
+              return await usuario_notificaciones()
             }
           },
           { path: 'carrito', element: <Carrito /> },
@@ -75,12 +70,7 @@ export const router = createBrowserRouter([
                     path: 'usuarios',
                     element: <Admin_usuarios />,
                     loader: async () => {
-                      const res = await todos_usuarios()
-                      if (res.length > 0) {
-                        return res
-                      } else {
-                        return []
-                      }
+                      return await todos_usuarios()
                     }
                   },
                   {

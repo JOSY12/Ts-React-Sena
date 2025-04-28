@@ -46,6 +46,21 @@ const Notificaciones = () => {
       await marcar_visto()
     }
     marcar_visto_todo()
+
+    const datos = async () => {
+      const r = await usuario_notificaciones()
+      if (Array.isArray(r)) {
+        setnotificaciones(r)
+      } else {
+        return
+      }
+    }
+    if (Array.isArray(data)) {
+      setnotificaciones(data)
+    } else {
+      datos()
+    }
+
     setnotificaciones(data)
   }, [])
 

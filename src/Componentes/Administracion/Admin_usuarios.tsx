@@ -16,8 +16,20 @@ const Admin_usuarios = () => {
   }
 
   useEffect(() => {
-    setusuarios(data)
-  }, [])
+    const datos = async () => {
+      const r = await todos_usuarios()
+      if (Array.isArray(r)) {
+        setusuarios(r)
+      } else {
+        return
+      }
+    }
+    if (Array.isArray(data)) {
+      setusuarios(data)
+    } else {
+      datos()
+    }
+  }, [usuarios.length])
 
   return (
     <div className=' mb-10 flex flex-col flex-1 overflow-hidden'>
@@ -178,7 +190,7 @@ const Admin_usuarios = () => {
                   </thead>
                   <tbody className='bg-white'>
                     {/* informacion de usuarios */}
-                    {usuarios && usuarios?.length > 0 ? (
+                    {usuarios.length > 0 ? (
                       usuarios.map((e, k) => (
                         <Usuarios_card_administracion
                           key={k}
