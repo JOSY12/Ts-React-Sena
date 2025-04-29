@@ -55,7 +55,10 @@ const Admin_Productos = () => {
                   <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
                     estado
                   </label>
-                  <select className='w-full border-1 h-12 rounded-lg group  focus:border-[#98c01d] border-black'>
+                  <select
+                    required
+                    className='w-full border-1 h-12 rounded-lg group  focus:border-[#98c01d] border-black'
+                  >
                     <option value='' className='  '>
                       disponible
                     </option>
@@ -107,7 +110,7 @@ const Admin_Productos = () => {
                   Categorias agregadas
                 </label>
                 <div className=' grid  grid-cols-2 sm:grid-cols-6 lg:grid-cols-2  xl:grid-cols-3  justify-between     rounded-2xl  '>
-                  <div className='bg-gray-300 cursor-pointer text-black hover:bg-gray-400 hover:text-white col-span-1 truncate rounded-2xl text-sm text-center   m-1 p-1   sm:w-fit  lg:w-auto '>
+                  <div className='bg-gray-300 cursor-pointer text-black hover:bg-red-400 hover:text-white col-span-1 truncate rounded-2xl text-sm text-center   m-1 p-1   sm:w-fit  lg:w-auto '>
                     <button className='mr-1  cursor-pointer '>
                       Computadoras
                     </button>
