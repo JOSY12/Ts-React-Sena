@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom'
-// import { clerktest } from '../Services'
 const Inicio = () => {
   const imageUrlcomputadoras =
     'https://concepto.de/wp-content/uploads/2020/06/Computadora-de-escritorio-scaled-e1724955496406-2048x1041.jpg'
@@ -7,9 +6,9 @@ const Inicio = () => {
     'https://media.es.wired.com/photos/646402de88218b01bf4a1a59/master/pass/Best-Android-Phones-2023-Featured-2023.jpg'
   const consolas =
     'https://hardzone.es/app/uploads-hardzone.es/2023/05/consolas.jpeg'
+
   return (
     <>
-      {/* <button onClick={clerktest}>test</button> */}
       <div className='bg-gray-100   '>
         <main className='py-5 '>
           <div className='container mx-auto px-6 '>

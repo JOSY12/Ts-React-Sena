@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { toast } from 'sonner'
+import { Foto, Fotos } from './Componentes/types'
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
 export const axiosbackend = axios.create({
   baseURL: URL,
@@ -228,6 +229,26 @@ export const borrar_todas_notificaciones = async () => {
     return res.data.rows
   } catch (error) {
     toast.error(`Error al hacer la solititud ${error}`, { id })
+    return error
+  }
+}
+
+export const subircloudinary = async ({ archivo }: Fotos) => {
+  const id = toast.loading('subiendo fotos')
+  try {
+    const datos = new FormData()
+    datos.append('file', archivo)
+    datos.append('upload_preset', 'proyecto_techsells')
+    // datos.append('public_id', nombre_producto)
+
+    const res = await axios.post(
+      'https://api.cloudinary.com/v1_1/rebelion/auto/upload',
+      datos
+    )
+    toast.success('imagen cargada', { id })
+    return { id: res.data.public_id, url: res.data.secure_url } as Foto
+  } catch (error) {
+    toast.error('error al cargar imangenes', { id })
     return error
   }
 }

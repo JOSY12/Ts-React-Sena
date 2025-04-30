@@ -25,3 +25,13 @@ export type Usuario = {
   administrador: boolean
   baneado: boolean
 }
+
+export type Foto = {
+  id: string
+  url: string
+}
+
+export type Fotos = {
+  // nombre_producto: string
+  archivo: File
+}

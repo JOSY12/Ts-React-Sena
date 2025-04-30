@@ -1,19 +1,81 @@
+import React, { useEffect, useState } from 'react'
+import { subircloudinary } from '../../Services'
+import { Foto } from '../types'
+
 const Admin_Productos = () => {
+  const [fotoslist, setfotoslist] = useState<File[]>([])
+  const [fotos, setfoto] = useState<Foto[]>([])
+  const [nombre, setnombre] = useState<string>('test')
+
+  const inputfotos = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setfotoslist(Array.from(e.target.files))
+    }
+  }
+
+  // const subirfotomultiple = async () => {
+  //   let fotoss: Foto[] = []
+  //   if (Array.isArray(fotoslist) && fotoslist.length > 0) {
+  //     for (let i = 0; i < 4; i++) {
+  //       const foto = (await subircloudinary({
+  //         nombre_producto: nombre + [i],
+  //         archivo: fotoslist[i]
+  //       })) as Foto
+  //       if (fotos.length >= 4) {
+  //         fotos.pop
+  //       }
+  //       fotoss.push(foto)
+  //     }
+  //   } else {
+  //     toast.warning('debe cargar imagenes')
+  //   }
+  // }
+
+  const subirfoto = async () => {
+    if (fotos.length < 4 && fotoslist.length > 0) {
+      const foto = (await subircloudinary({
+        // nombre_producto: nombre + fotos.length,
+        archivo: fotoslist[0]
+      })) as Foto
+      setfoto([...fotos, foto])
+    }
+    console.log(fotoslist)
+
+    setfotoslist([])
+    console.log(fotoslist)
+  }
+
+  const borrarfoto = (id: string) => {
+    const filtrado = fotos.filter((e) => e.id !== id)
+    if (filtrado) {
+      setfoto(filtrado)
+    }
+  }
+
+  useEffect(() => {
+    subirfoto()
+    console.log(nombre)
+  }, [fotoslist.length])
+
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
         <h1 className='font-medium text-2xl'>Administracion de productos</h1>
       </div>
+
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
         <div className='w-full lg:w-1/2 m-1'>
           <form className='rounded-2xl w-full bg-white shadow-md p-6'>
-            <div className='flex flex-wrap  -mx-3 mb-6'>
+            <div className='flex flex-wrap  border-b-2 border-dotted -mx-3 mb-6'>
               <div className='w-full  flex lg:flex-col '>
                 <div className='rounded-2xl   w-full   md:w-full px-3 mb-6'>
                   <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
                     nombre
                   </label>
                   <input
+                    onChange={(e) => {
+                      setnombre(e.target.value)
+                    }}
                     className='appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]'
                     type='text'
                     name='name'
@@ -133,50 +195,77 @@ const Admin_Productos = () => {
                   Agregar producto
                 </button>
               </div>
-
-              <div className='w-full px-3 mb-8'>
-                <label
-                  className='mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center justify-center rounded-xl border-2 border-dashed border-green-400 bg-white p-6 text-center'
-                  htmlFor='dropzone-file'
+              {/* <button className='self-center ml-10' onClick={subirfoto}>
+                Previsualizar
+              </button> */}
+            </div>
+            <div className='w-full  px-3 mb-8'>
+              <label
+                className='mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center justify-center rounded-xl border-2 border-dashed border-green-400 bg-white p-6 text-center'
+                htmlFor='dropzone-file'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-10 w-10 text-green-800'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                  strokeWidth='2'
                 >
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-10 w-10 text-green-800'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'
-                    strokeWidth='2'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
-                    />
-                  </svg>
-
-                  <h2 className='mt-4 text-xl font-medium text-gray-700 tracking-wide'>
-                    Cargar imagenes("maximo 4 por producto")
-                  </h2>
-
-                  <p className='mt-2 text-gray-500 tracking-wide'>
-                    carga o arrastra y suelta tus fotos SVG, PNG, JPG or GIF.
-                  </p>
-
-                  <input
-                    id='dropzone-file'
-                    type='file'
-                    className='hidden'
-                    name='category_image'
-                    accept='image/png, image/jpeg, image/webp'
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12'
                   />
-                </label>
-              </div>
+                </svg>
+
+                <h2 className='mt-4 text-xl font-medium text-gray-700 tracking-wide'>
+                  Cargar imagenes("maximo 4 por producto")
+                </h2>
+
+                <p className='mt-2 text-gray-500 tracking-wide'>
+                  carga o arrastra y suelta tus fotos SVG, PNG, JPG or GIF.
+                </p>
+
+                <input
+                  id='dropzone-file'
+                  type='file'
+                  className=' '
+                  name='category_image'
+                  onChange={inputfotos}
+                  accept='image/png, image/jpeg, image/webp'
+                />
+              </label>
+            </div>
+
+            <div
+              className={`grid ${
+                fotos.length > 0 ? '' : 'hidden'
+              } grid-cols-4 border-2 h-55 justify-center items-center align-middle rounded-2xl`}
+            >
+              {fotos.length > 0 &&
+                fotos.map((e) => {
+                  return (
+                    <img
+                      onClick={() => {
+                        borrarfoto(e.id)
+                      }}
+                      className='h-50 w-50'
+                      src={e?.url}
+                      alt='fotoproducto'
+                    />
+                  )
+                })}
             </div>
           </form>
         </div>
         <div className='w-full rounded-2xl lg:w-2/3 m-1 bg-white shadow-lg text-lg border border-gray-200'>
-          <div className='overflow-x-auto rounded-lg p-3'>
-            <table className='table-auto w-full'>
+          <div
+            className={`overflow-x-auto rounded-lg p-3 ${
+              fotos.length > 0 ? 'h-300' : ' sm:h-280  md:h-270 lg:h-265'
+            }  `}
+          >
+            <table className='table-auto w-full '>
               <thead className='text-sm font-semibold uppercase text-gray-800 bg-gray-50 mx-auto'>
                 <tr>
                   <th></th>
@@ -198,6 +287,623 @@ const Admin_Productos = () => {
                     <div className='font-semibold text-center'>Opciones</div>
                   </th>
                 </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <img
+                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
+                      className='h-8 w-8 mx-auto'
+                    />
+                  </td>
+                  <td>Sample Name</td>
+                  <td>Sample Description</td>
+                  <td className='p-2'>
+                    <div className='flex justify-center'>
+                      <a
+                        href='#'
+                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
+                      >
+                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
+                        Editar
+                      </a>
+                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
+                        <span>
+                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        </span>
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+
                 <tr>
                   <td>1</td>
                   <td>
