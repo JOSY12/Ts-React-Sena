@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { subircloudinary } from '../../Services'
 import { Foto } from '../types'
+import { useForm } from 'react-hook-form'
+import { AiFillFileAdd } from 'react-icons/ai'
 
 const Admin_Productos = () => {
   const [fotoslist, setfotoslist] = useState<File[]>([])
   const [fotos, setfoto] = useState<Foto[]>([])
-  const [nombre, setnombre] = useState<string>('test')
-
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = useForm()
   const inputfotos = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setfotoslist(Array.from(e.target.files))
     }
   }
-
+  const submit = handleSubmit((data) => {
+    console.log(data.nombre)
+  })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
   //   if (Array.isArray(fotoslist) && fotoslist.length > 0) {
@@ -30,7 +38,7 @@ const Admin_Productos = () => {
   //     toast.warning('debe cargar imagenes')
   //   }
   // }
-
+  // console.log(r)
   const subirfoto = async () => {
     if (fotos.length < 4 && fotoslist.length > 0) {
       const foto = (await subircloudinary({
@@ -51,10 +59,9 @@ const Admin_Productos = () => {
       setfoto(filtrado)
     }
   }
-
+  console.log(errors)
   useEffect(() => {
     subirfoto()
-    console.log(nombre)
   }, [fotoslist.length])
 
   return (
@@ -65,23 +72,42 @@ const Admin_Productos = () => {
 
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
         <div className='w-full lg:w-1/2 m-1'>
-          <form className='rounded-2xl w-full bg-white shadow-md p-6'>
+          <form
+            onSubmit={submit}
+            className='rounded-2xl w-full bg-white shadow-md p-6'
+          >
             <div className='flex flex-wrap  border-b-2 border-dotted -mx-3 mb-6'>
               <div className='w-full  flex lg:flex-col '>
                 <div className='rounded-2xl   w-full   md:w-full px-3 mb-6'>
                   <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
                     nombre
                   </label>
+
                   <input
-                    onChange={(e) => {
-                      setnombre(e.target.value)
-                    }}
+                    {...register('nombre', {
+                      required: {
+                        value: true,
+                        message: 'el nombre del producto es requerido'
+                      },
+                      minLength: {
+                        value: 10,
+                        message: 'minimo 10 caracteres'
+                      },
+                      maxLength: {
+                        value: 150,
+                        message: 'maximo 150 caracteres'
+                      }
+                    })}
                     className='appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]'
                     type='text'
-                    name='name'
                     placeholder='Nombre producto'
-                    required
                   />
+                  {errors.nombre?.message &&
+                    typeof errors.nombre.message === 'string' && (
+                      <span className='text-red-600 font-bold ml-2'>
+                        {errors.nombre.message}
+                      </span>
+                    )}
                 </div>
                 <div className='rounded-2xl w-full md:w-full px-3 mb-6'>
                   <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
@@ -105,10 +131,19 @@ const Admin_Productos = () => {
                      rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
                       type='number'
                       placeholder='120'
-                      required
-                      min={1}
+                      {...register('precio', {
+                        required: { value: true, message: 'precio requerido' },
+                        min: { value: 10, message: 'minimo $10' },
+                        max: { value: 9999, message: 'maximo $9999' }
+                      })}
                     />
                   </div>
+                  {errors.precio?.message &&
+                    typeof errors.precio.message === 'string' && (
+                      <span className='text-red-600 font-bold ml-2'>
+                        {errors.precio.message}
+                      </span>
+                    )}
                 </div>
               </div>
 
@@ -118,50 +153,120 @@ const Admin_Productos = () => {
                     estado
                   </label>
                   <select
-                    required
+                    {...register('estado')}
                     className='w-full border-1 h-12 rounded-lg group  focus:border-[#98c01d] border-black'
                   >
-                    <option value='' className='  '>
-                      disponible
-                    </option>
+                    <option>Disponible</option>
+                    <option>Agotado</option>
+                    <option>Pendiente</option>
                   </select>
                 </div>
-                <div className='rounded-2xl w-full md:w-full px-3 mb-6'>
-                  <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
-                    stock
-                  </label>
-                  <div
-                    className=' group
+                {watch('estado') === 'Disponible' && (
+                  <div className='rounded-2xl w-full md:w-full px-3 mb-6'>
+                    <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
+                      stock
+                    </label>
+                    <div
+                      className=' group
                    appearance-none flex  w-full
                     bg-white text-gray-900 
                     font-medium border  
                      rounded-lg  leading-tight focus:outline-none hover:border-[#98c01d]  focus:border-[#98c01d]    '
-                  >
-                    <span className='w-3 mt-3  group-hover:text-[#98c01d]       text-gray-400 font-medium   '></span>
-                    <input
-                      className='
+                    >
+                      <span className='w-3 mt-3  group-hover:text-[#98c01d]       text-gray-400 font-medium   '></span>
+                      <input
+                        {...register('stock', {
+                          required: {
+                            value: true,
+                            message: 'stock requerido'
+                          },
+                          min: { value: 5, message: 'minimo 5' },
+                          max: { value: 1000, message: 'maximo 1000 unidades' }
+                        })}
+                        className='
                    appearance-none   w-full
                     bg-white text-gray-900 
                     font-medium    
                      rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
-                      type='number'
-                      placeholder='120'
-                      required
-                      min={1}
-                    />
+                        type='number'
+                        placeholder='120'
+                      />
+                    </div>
+                    {errors.stock?.message &&
+                      typeof errors.stock.message === 'string' && (
+                        <span className='text-red-600 font-bold ml-2'>
+                          {errors.stock.message}
+                        </span>
+                      )}
                   </div>
-                </div>
+                )}
               </div>
 
               <div className='w-full md:w-full px-3 mb-6'>
-                <label className='block uppercase  tracking-wide text-gray-700 text-sm font-bold mb-2'>
-                  Categorias
-                </label>
-                <select className='w-full border-1 h-10 rounded-2xl group  focus:border-[#98c01d] border-black'>
+                <div className='flex justify-between'>
+                  <label className='block uppercase  tracking-wide text-gray-700 text-sm font-bold mb-2'>
+                    Categorias
+                  </label>
+
+                  <label
+                    htmlFor='my-modal'
+                    className=' relative group  cursor-pointer  text-green-700 rounded  '
+                  >
+                    <AiFillFileAdd className='w-6 h-6' />
+                    <span className='absolute opacity-0 group-hover:opacity-100 transition duration-200 bg-white text-black px-2 py-1 rounded shadow -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap'>
+                      agregar categoria
+                    </span>
+                  </label>
+                </div>
+                {/* modal para agregar categoria */}
+
+                <input
+                  type='checkbox'
+                  id='my-modal'
+                  className='peer hidden'
+                ></input>
+
+                <div className='peer-checked:flex hidden fixed inset-0 z-50 items-center justify-center bg-black/50'>
+                  <div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md relative'>
+                    <label
+                      htmlFor='my-modal'
+                      className='absolute top-2 right-2 text-gray-500 hover:text-red-500 cursor-pointer text-2xl'
+                    ></label>
+                    <div className='flex flex-col'>
+                      <label className='text-xl font-semibold mb-4'>
+                        Nueva categoria de productos
+                      </label>
+                      <input
+                        {...register('nuevacategoria')}
+                        className='  border-2 border-green-300'
+                        type='text'
+                      />
+                    </div>
+
+                    <label
+                      htmlFor='my-modal'
+                      className='mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer'
+                    >
+                      Cerrar
+                    </label>
+                    <label
+                      htmlFor='my-modal'
+                      className='mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer'
+                    >
+                      <button>Agregar</button>
+                    </label>
+                  </div>
+                </div>
+                {/* fin del modal */}
+                <select
+                  {...register('categoria')}
+                  className='w-full border-1 h-10 rounded-2xl group  focus:border-[#98c01d] border-black'
+                >
                   <option selected disabled>
                     Seleciona categorias
                   </option>
                   <option>Computadoras</option>
+                  <option>Telefonos</option>
                 </select>
               </div>
               <div className='w-full  md:w-full px-3 mb-6'>
@@ -184,14 +289,31 @@ const Admin_Productos = () => {
                   Descripcion
                 </label>
                 <textarea
+                  {...register('descripcion', {
+                    required: {
+                      value: true,
+                      message: 'la descripcion del producto es requerida'
+                    },
+                    minLength: {
+                      value: 10,
+                      message: 'minimo 5 caracteres por descripcion'
+                    }
+                  })}
                   className='appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]'
-                  name='description'
-                  required
                 ></textarea>
+                {errors.descripcion?.message &&
+                  typeof errors.descripcion.message === 'string' && (
+                    <span className='text-red-600 font-bold ml-2'>
+                      {errors.descripcion.message}
+                    </span>
+                  )}
               </div>
 
               <div className='w-full md:w-full px-3 mb-6'>
-                <button className='appearance-none block w-full bg-green-700 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-green-600 focus:outline-none focus:bg-white focus:border-gray-500'>
+                <button
+                  type='submit'
+                  className='appearance-none block w-full bg-green-700 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-green-600 focus:outline-none focus:bg-green-900 focus:border-gray-500'
+                >
                   Agregar producto
                 </button>
               </div>
@@ -230,12 +352,16 @@ const Admin_Productos = () => {
                 <input
                   id='dropzone-file'
                   type='file'
-                  className=' '
                   name='category_image'
                   onChange={inputfotos}
                   accept='image/png, image/jpeg, image/webp'
                 />
               </label>
+              {fotos.length < 1 && (
+                <span className='text-red-600 font-bold ml-2'>
+                  Se debe subir almenos una foto del producto
+                </span>
+              )}
             </div>
 
             <div
