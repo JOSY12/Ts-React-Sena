@@ -51,32 +51,6 @@ export const obtener_usuario = async () => {
   }
 }
 
-// export const crear_usuario = async (
-//   sub: string,
-//   name: string,
-//   email: string
-// ) => {
-//   try {
-//     if (!sub || !name || !email) {
-//       throw new Error('Todos los campos (id, nombre, email) son obligatorios.')
-//     }
-//     const res = await axiosbackend.post(`/u/crear/`, {
-//       sub,
-//       name,
-//       email
-//     })
-//     return res.data
-//   } catch (error: unknown) {
-//     if (axios.isAxiosError(error) && error.response) {
-//       return error.response.data
-//     }
-
-//     return { Error: '' }
-//   }
-// }
-
-//  peticion de pruebas toast
-
 export const tosta = async () => {
   const id = toast.loading('cargando')
   try {
@@ -89,19 +63,17 @@ export const tosta = async () => {
   }
 }
 
-export const clerktest = async () => {
-  const id = toast.loading('cargando')
-  try {
-    const res = await axiosbackend.get('/privada')
-    toast.success('Peticion exitosa', { id })
-    console.log(res)
-    // return res.data
-  } catch (error) {
-    console.log(error)
-    toast.error(`Error al hacer la solititud ${error}`, { id })
-    return error
-  }
-}
+// export const clerktest = async () => {
+//   const id = toast.loading('cargando')
+//   try {
+//     const res = await axiosbackend.get('/privada')
+//     toast.success('Peticion exitosa', { id })
+//     // return res.data
+//   } catch (error) {
+//     toast.error(`Error al hacer la solititud ${error}`, { id })
+//     return error
+//   }
+// }
 
 export const agregar_direccion = async (
   ciudad: string,
@@ -192,7 +164,6 @@ export const actualizar_notificaciones = async () => {
 
 export const borrar_notificaciones = async (nid: string) => {
   const id = toast.loading('borrando')
-  console.log(nid)
   try {
     const res = await axiosbackend.delete(`/u/notificaciones/${nid}`)
     toast.success('Borrado exitoso', { id })
@@ -249,6 +220,51 @@ export const subircloudinary = async ({ archivo }: Fotos) => {
     return { id: res.data.public_id, url: res.data.secure_url } as Foto
   } catch (error) {
     toast.error('error al cargar imangenes', { id })
+    return error
+  }
+}
+
+export const crear_producto = async (producto: any) => {
+  const id = toast.loading('creando producto')
+  try {
+    await axiosbackend.post('/p/crear_producto', producto)
+    toast.success('producto creado exitosamente', { id })
+  } catch (error) {
+    toast.error('error al crear producto', { id })
+    return error
+  }
+}
+
+export const crear_categoria = async (nombre: string) => {
+  const id = toast.loading('creando nuevo categoria')
+  try {
+    await axiosbackend.post('/p/crear_categoria', { nombre })
+    toast.success('categoria creado exitosamente', { id })
+  } catch (error) {
+    toast.error('error al crear categoria', { id })
+    return error
+  }
+}
+
+export const borrar_categoria = async (idcategoria: string) => {
+  const id = toast.loading('borrando categoria')
+  try {
+    await axiosbackend.delete(`/p/crear_categoria/:${idcategoria}`)
+    toast.success('categoria borrada exitosamente', { id })
+  } catch (error) {
+    toast.error('error al borrar categoria', { id })
+    return error
+  }
+}
+
+export const categorias = async () => {
+  const id = toast.loading('cargando categorias')
+  try {
+    const res = await axiosbackend.get('/p/categorias')
+    toast.dismiss(id)
+    return res.data
+  } catch (error) {
+    toast.error('error al cargar categorias', { id })
     return error
   }
 }

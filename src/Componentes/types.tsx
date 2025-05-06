@@ -35,3 +35,8 @@ export type Fotos = {
   // nombre_producto: string
   archivo: File
 }
+
+export type tcategorias = {
+  id: string
+  nombre: string
+}

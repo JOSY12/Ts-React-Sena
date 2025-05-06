@@ -1,25 +1,66 @@
 import React, { useEffect, useState } from 'react'
-import { subircloudinary } from '../../Services'
-import { Foto } from '../types'
+import { categorias, crear_categoria, subircloudinary } from '../../Services'
+import { tcategorias, Foto } from '../types'
 import { useForm } from 'react-hook-form'
 import { AiFillFileAdd } from 'react-icons/ai'
+import { useLoaderData } from 'react-router-dom'
 
 const Admin_Productos = () => {
+  const data = useLoaderData()
   const [fotoslist, setfotoslist] = useState<File[]>([])
   const [fotos, setfoto] = useState<Foto[]>([])
+  const [listacategorias, setcategorias] = useState<tcategorias[]>([])
+  const [categoriasproducto, setcategoriasproducto] = useState<tcategorias[]>(
+    []
+  )
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     watch
+    // reset
   } = useForm()
   const inputfotos = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setfotoslist(Array.from(e.target.files))
     }
   }
+  // const c_categorias = async () => {
+  //   const res = await categorias()
+  //   console.log(res)
+  //   setcategorias(res)
+  // }
+
+  const agregarcategoriaproducto = (id: string, nombre: string) => {
+    setcategoriasproducto([...categoriasproducto, { id: id, nombre: nombre }])
+    setcategorias(listacategorias.filter((e) => e.id !== id))
+  }
+  const solicitarcategorias = async () => {
+    const res = (await categorias()) as tcategorias[]
+    const listado = res.filter(
+      (cat) => !categoriasproducto.some((prod) => prod.id === cat.id)
+    )
+    setcategorias(listado)
+  }
+  const agregar_categoria = async () => {
+    await crear_categoria(watch('nuevacategoria'))
+    solicitarcategorias()
+  }
+
+  const quitarcategoriaproducto = (id: string) => {
+    const agregar = categoriasproducto.filter((e) => e.id === id)
+    const quitar = categoriasproducto.filter((e) => e.id !== id)
+
+    setcategoriasproducto(quitar)
+    setcategorias([
+      ...listacategorias,
+      { id: agregar[0].id, nombre: agregar[0].nombre }
+    ])
+  }
+
   const submit = handleSubmit((data) => {
-    console.log(data.nombre)
+    console.log(data)
   })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
@@ -47,10 +88,8 @@ const Admin_Productos = () => {
       })) as Foto
       setfoto([...fotos, foto])
     }
-    console.log(fotoslist)
 
     setfotoslist([])
-    console.log(fotoslist)
   }
 
   const borrarfoto = (id: string) => {
@@ -59,17 +98,23 @@ const Admin_Productos = () => {
       setfoto(filtrado)
     }
   }
-  console.log(errors)
   useEffect(() => {
     subirfoto()
   }, [fotoslist.length])
+  useEffect(() => {
+    if (data.length > 0) {
+      setcategorias(data)
+    } else {
+      setcategorias([])
+    }
+  }, [])
 
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
         <h1 className='font-medium text-2xl'>Administracion de productos</h1>
       </div>
-
+      {/* <button>SSSSSSSSSSSs</button> */}
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
         <div className='w-full lg:w-1/2 m-1'>
           <form
@@ -180,7 +225,10 @@ const Admin_Productos = () => {
                             value: true,
                             message: 'stock requerido'
                           },
-                          min: { value: 5, message: 'minimo 5' },
+                          min: {
+                            value: 5,
+                            message: 'minimo 5 unidades'
+                          },
                           max: { value: 1000, message: 'maximo 1000 unidades' }
                         })}
                         className='
@@ -189,7 +237,7 @@ const Admin_Productos = () => {
                     font-medium    
                      rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
                         type='number'
-                        placeholder='120'
+                        placeholder='30'
                       />
                     </div>
                     {errors.stock?.message &&
@@ -242,32 +290,47 @@ const Admin_Productos = () => {
                         type='text'
                       />
                     </div>
-
-                    <label
-                      htmlFor='my-modal'
-                      className='mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer'
-                    >
-                      Cerrar
-                    </label>
-                    <label
-                      htmlFor='my-modal'
-                      className='mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer'
-                    >
-                      <button>Agregar</button>
-                    </label>
+                    <div className='flex justify-evenly'>
+                      <label
+                        htmlFor='my-modal'
+                        className='mt-4 inline-block px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 cursor-pointer'
+                      >
+                        Cerrar
+                      </label>
+                      <label
+                        htmlFor='my-modal'
+                        className='mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer'
+                      >
+                        <button
+                          onClick={() => {
+                            agregar_categoria()
+                          }}
+                        >
+                          Agregar
+                        </button>
+                      </label>
+                    </div>
                   </div>
                 </div>
                 {/* fin del modal */}
-                <select
-                  {...register('categoria')}
-                  className='w-full border-1 h-10 rounded-2xl group  focus:border-[#98c01d] border-black'
+                <div
+                  className={`flex gap-2 border-1 rounded overflow-x-auto    flex-wrap   `}
                 >
-                  <option selected disabled>
-                    Seleciona categorias
-                  </option>
-                  <option>Computadoras</option>
-                  <option>Telefonos</option>
-                </select>
+                  {listacategorias.length > 0 &&
+                    categoriasproducto.length < 3 &&
+                    listacategorias.map((e) => (
+                      <button
+                        key={e.id}
+                        onClick={() => {
+                          agregarcategoriaproducto(e.id, e.nombre)
+                        }}
+                        value={e.nombre}
+                        className='border-1 border-blue-600 rounded bg-gray-200 text-black '
+                      >
+                        {e.nombre}
+                      </button>
+                    ))}
+                </div>
               </div>
               <div className='w-full  md:w-full px-3 mb-6'>
                 <label
@@ -276,13 +339,20 @@ const Admin_Productos = () => {
                 >
                   Categorias agregadas
                 </label>
-                <div className=' grid  grid-cols-2 sm:grid-cols-6 lg:grid-cols-2  xl:grid-cols-3  justify-between     rounded-2xl  '>
-                  <div className='bg-gray-300 cursor-pointer text-black hover:bg-red-400 hover:text-white col-span-1 truncate rounded-2xl text-sm text-center   m-1 p-1   sm:w-fit  lg:w-auto '>
-                    <button className='mr-1  cursor-pointer '>
-                      Computadoras
-                    </button>
+                {categoriasproducto.length > 0 && (
+                  <div className='flex gap-2 flex-wrap        '>
+                    {categoriasproducto.map((e) => (
+                      <button
+                        onClick={() => {
+                          quitarcategoriaproducto(e.id)
+                        }}
+                        className=' bg-gray-200 rounded cursor-pointer '
+                      >
+                        {e.nombre}
+                      </button>
+                    ))}
                   </div>
-                </div>
+                )}
               </div>
               <div className='w-full px-3 mb-6'>
                 <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
@@ -321,7 +391,7 @@ const Admin_Productos = () => {
                 Previsualizar
               </button> */}
             </div>
-            <div className='w-full  px-3 mb-8'>
+            <div className='w-full justify-center items-center text-center px-3  mb-10'>
               <label
                 className='mx-auto cursor-pointer flex w-full max-w-lg flex-col items-center justify-center rounded-xl border-2 border-dashed border-green-400 bg-white p-6 text-center'
                 htmlFor='dropzone-file'
@@ -358,13 +428,13 @@ const Admin_Productos = () => {
                 />
               </label>
               {fotos.length < 1 && (
-                <span className='text-red-600 font-bold ml-2'>
+                <span className='text-red-600  font-bold ml-2'>
                   Se debe subir almenos una foto del producto
                 </span>
               )}
             </div>
 
-            <div
+            {/* <div
               className={`grid ${
                 fotos.length > 0 ? '' : 'hidden'
               } grid-cols-4 border-2 h-55 justify-center items-center align-middle rounded-2xl`}
@@ -382,684 +452,117 @@ const Admin_Productos = () => {
                     />
                   )
                 })}
-            </div>
+            </div> */}
           </form>
         </div>
-        <div className='w-full rounded-2xl lg:w-2/3 m-1 bg-white shadow-lg text-lg border border-gray-200'>
+        <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white h-310 shadow-lg text-lg border border-gray-200'>
           <div
-            className={`overflow-x-auto rounded-lg p-3 ${
-              fotos.length > 0 ? 'h-300' : ' sm:h-280  md:h-270 lg:h-265'
-            }  `}
+            className={`overflow-x-auto rounded-2xl p-3 h-310  overflow-y-auto   `}
           >
-            <table className='table-auto w-full '>
-              <thead className='text-sm font-semibold uppercase text-gray-800 bg-gray-50 mx-auto'>
-                <tr>
-                  <th></th>
-                  <th>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='fill-current w-5 h-5 mx-auto'
-                    >
-                      <path d='M6 22h12a2 2 0 0 0 2-2V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2zm7-18 5 5h-5V4zm-4.5 7a1.5 1.5 0 1 1-.001 3.001A1.5 1.5 0 0 1 8.5 11zm.5 5 1.597 1.363L13 13l4 6H7l2-3z'></path>
-                    </svg>
-                  </th>
-                  <th className='p-2'>
-                    <div className='text-left font-semibold'>Producto</div>
-                  </th>
-                  <th className='p-2'>
-                    <div className='font-semibold text-left'>Descripcion</div>
-                  </th>
-                  <th className='p-2'>
-                    <div className='font-semibold text-center'>Opciones</div>
-                  </th>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
+            {/* empieza el preview de creacion de productos deberia ser opcional? */}
+            <div className='min-w-screen  min-h-screen  h-300    bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
+              <div className='w-full max-w-6xl rounded bg-white shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
+                <div className='md:flex items-center -mx-10'>
+                  <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0'>
+                    <div className='relative'>
+                      <img
+                        src={
+                          fotos.length > 0
+                            ? fotos[0].url
+                            : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
+                        }
+                        className='relative z-10'
+                        alt=''
+                      ></img>
+                      <div className='flex justify-between'>
+                        {fotos.length > 0 ? (
+                          fotos.map((e) => (
+                            <div className='       bg-green-400 h-20  w-30'>
+                              <button
+                                onClick={() => {
+                                  borrarfoto(e.id)
+                                }}
+                              >
+                                <img
+                                  src={e.url}
+                                  alt=''
+                                  className='h-30 w-30 absolute  hover:bg-red-600'
+                                />
+                                <div className='  w-30 h-30 hover:bg-red-500 opacity-60 hover:text-red-500'></div>
+                              </button>
+                            </div>
+                          ))
+                        ) : (
+                          <img
+                            src={
+                              'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
+                            }
+                            className='h-20 w-30'
+                            alt=''
+                          ></img>
+                        )}
+                      </div>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
+                  </div>
+                  <div className='w-full md:w-1/2 px-10'>
+                    <div className='mb-10'>
+                      <div className='mb-5'>
+                        <h1 className='font-bold uppercase truncate text-2xl mb-1'>
+                          {watch('nombre')}
+                        </h1>
+                        <p className='text-sm  break-all '>
+                          {watch('categorias')}
+                        </p>
+                      </div>
+                      <p className='text-sm  break-all '>
+                        {watch('descripcion')}
+                        {/* <a
+                          href='#'
+                          className='opacity-50 text-gray-900 hover:opacity-100 inline-block text-xs leading-none border-b border-gray-900'
+                        >
+                          MORE <i className='mdi mdi-arrow-right'></i>
+                        </a> */}
+                      </p>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                    <div className='justify-between flex'>
+                      <div className='inline-block align-bottom mr-5'>
+                        <span className='text-2xl leading-none align-baseline'>
+                          $
                         </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
+                        <span className='font-bold text-5xl leading-none align-baseline'>
+                          {watch('precio')}
                         </span>
-                        Borrar
-                      </button>
+                        {/* <span className='text-2xl leading-none align-baseline'>
+                          .99
+                        </span> */}
+                      </div>
+                      <div className='inline-block align-bottom'>
+                        <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-10 py-2 font-semibold'>
+                          <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar
+                          ahora
+                        </button>
+                      </div>
                     </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>1</td>
-                  <td>
-                    <img
-                      src='https://images.pexels.com/photos/25652584/pexels-photo-25652584/free-photo-of-elegant-man-wearing-navy-suit.jpeg?auto=compress&cs=tinysrgb&w=400'
-                      className='h-8 w-8 mx-auto'
-                    />
-                  </td>
-                  <td>Sample Name</td>
-                  <td>Sample Description</td>
-                  <td className='p-2'>
-                    <div className='flex justify-center'>
-                      <a
-                        href='#'
-                        className='rounded-md hover:bg-green-100 text-green-600 p-2 flex justify-between items-center'
-                      >
-                        <span>{/* <FaEdit className='w-4 h-4 mr-1' /> */}</span>{' '}
-                        Editar
-                      </a>
-                      <button className='rounded-md hover:bg-red-100 text-red-600 p-2 flex justify-between items-center'>
-                        <span>
-                          {/* <FaTrash className='w-4 h-4 mr-1' /> */}
-                        </span>
-                        Borrar
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              </thead>
-            </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* termina el preview de producto en creacion */}
+            {/* <div className='flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10'>
+              <div>
+                <a
+                  title='Buy me a beer'
+                  href='https://www.buymeacoffee.com/scottwindon'
+                  target='_blank'
+                  className='block w-16 h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12'
+                >
+                  <img
+                    className='object-cover object-center w-full h-full rounded-full'
+                    src='https://i.pinimg.com/originals/60/fd/e8/60fde811b6be57094e0abc69d9c2622a.jpg'
+                  />
+                </a>
+              </div>
+            </div> */}
           </div>
         </div>
       </div>
