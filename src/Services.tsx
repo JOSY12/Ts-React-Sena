@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { toast } from 'sonner'
-import { Foto, Fotos } from './Componentes/types'
+import { Foto, Fotos, producto } from './Componentes/types'
 const URL = import.meta.env.VITE_AXIOS_BASE_URL
 export const axiosbackend = axios.create({
   baseURL: URL,
@@ -13,6 +13,26 @@ export const axiosbackend = axios.create({
 //   | { success: false; error: string }
 
 // funciones para peticiones backend usuarios
+
+export const todo_productos = async () => {
+  const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get('/p/productos')
+    toast.dismiss(id)
+    return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `, {
+      id
+    })
+
+    return error
+  }
+}
+
 export const todos_usuarios = async (): Promise<any> => {
   const id = toast.loading('cargando')
   try {
@@ -217,14 +237,14 @@ export const subircloudinary = async ({ archivo }: Fotos) => {
       datos
     )
     toast.success('imagen cargada', { id })
-    return { id: res.data.public_id, url: res.data.secure_url } as Foto
+    return { public_id: res.data.public_id, url: res.data.secure_url } as Foto
   } catch (error) {
     toast.error('error al cargar imangenes', { id })
     return error
   }
 }
 
-export const crear_producto = async (producto: any) => {
+export const crear_producto = async (producto: producto) => {
   const id = toast.loading('creando producto')
   try {
     await axiosbackend.post('/p/crear_producto', producto)

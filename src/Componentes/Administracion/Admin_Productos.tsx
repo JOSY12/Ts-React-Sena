@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { categorias, crear_categoria, subircloudinary } from '../../Services'
-import { tcategorias, Foto } from '../types'
+import {
+  categorias,
+  crear_categoria,
+  crear_producto,
+  subircloudinary
+} from '../../Services'
+import { tcategorias, Foto, producto } from '../types'
 import { useForm } from 'react-hook-form'
 import { AiFillFileAdd } from 'react-icons/ai'
 import { useLoaderData } from 'react-router-dom'
+import { toast } from 'sonner'
 
 const Admin_Productos = () => {
   const data = useLoaderData()
@@ -38,6 +44,7 @@ const Admin_Productos = () => {
   }
   const solicitarcategorias = async () => {
     const res = (await categorias()) as tcategorias[]
+
     const listado = res.filter(
       (cat) => !categoriasproducto.some((prod) => prod.id === cat.id)
     )
@@ -59,8 +66,19 @@ const Admin_Productos = () => {
     ])
   }
 
-  const submit = handleSubmit((data) => {
-    console.log(data)
+  const submit = handleSubmit(async (data) => {
+    const nuevoproducto: producto = {
+      nombre: data.nombre,
+      precio: Number(data.precio),
+      stock: Number(data.stock),
+      estado: data.estado,
+      descripcion: data.descripcion,
+      fotos: fotos,
+      categorias: categoriasproducto
+    }
+    console.log(nuevoproducto)
+    const res = await crear_producto(nuevoproducto)
+    console.log(res)
   })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
@@ -93,7 +111,7 @@ const Admin_Productos = () => {
   }
 
   const borrarfoto = (id: string) => {
-    const filtrado = fotos.filter((e) => e.id !== id)
+    const filtrado = fotos.filter((e) => e.public_id !== id)
     if (filtrado) {
       setfoto(filtrado)
     }
@@ -106,6 +124,7 @@ const Admin_Productos = () => {
       setcategorias(data)
     } else {
       setcategorias([])
+      toast.warning('no hay categorias que cargar')
     }
   }, [])
 
@@ -139,8 +158,8 @@ const Admin_Productos = () => {
                         message: 'minimo 10 caracteres'
                       },
                       maxLength: {
-                        value: 150,
-                        message: 'maximo 150 caracteres'
+                        value: 70,
+                        message: 'maximo 70 caracteres'
                       }
                     })}
                     className='appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]'
@@ -324,7 +343,6 @@ const Admin_Productos = () => {
                         onClick={() => {
                           agregarcategoriaproducto(e.id, e.nombre)
                         }}
-                        value={e.nombre}
                         className='border-1 border-blue-600 rounded bg-gray-200 text-black '
                       >
                         {e.nombre}
@@ -455,12 +473,12 @@ const Admin_Productos = () => {
             </div> */}
           </form>
         </div>
-        <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white h-310 shadow-lg text-lg border border-gray-200'>
+        <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white shadow-lg text-lg border border-gray-200'>
           <div
-            className={`overflow-x-auto rounded-2xl p-3 h-310  overflow-y-auto   `}
+            className={`overflow-x-auto rounded-2xl p-3    overflow-y-auto   `}
           >
             {/* empieza el preview de creacion de productos deberia ser opcional? */}
-            <div className='min-w-screen  min-h-screen  h-300    bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
+            <div className='min-w-screen  min-h-screen       bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
               <div className='w-full max-w-6xl rounded bg-white shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
                 <div className='md:flex items-center -mx-10'>
                   <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0'>
@@ -480,7 +498,7 @@ const Admin_Productos = () => {
                             <div className='       bg-green-400 h-20  w-30'>
                               <button
                                 onClick={() => {
-                                  borrarfoto(e.id)
+                                  borrarfoto(e.public_id)
                                 }}
                               >
                                 <img
@@ -507,11 +525,18 @@ const Admin_Productos = () => {
                   <div className='w-full md:w-1/2 px-10'>
                     <div className='mb-10'>
                       <div className='mb-5'>
-                        <h1 className='font-bold uppercase truncate text-2xl mb-1'>
+                        <h1 className='font-semibold uppercase break-all s text-lg mb-1'>
                           {watch('nombre')}
                         </h1>
-                        <p className='text-sm  break-all '>
+                        <p className='text-sm flex  flex-wrap break-all '>
                           {watch('categorias')}
+                          {categoriasproducto &&
+                            categoriasproducto.length > 0 &&
+                            categoriasproducto.map((e) => (
+                              <span key={e.id} className='m-2 italic '>
+                                {e.nombre}
+                              </span>
+                            ))}
                         </p>
                       </div>
                       <p className='text-sm  break-all '>

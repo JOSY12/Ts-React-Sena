@@ -27,13 +27,23 @@ export type Usuario = {
 }
 
 export type Foto = {
-  id: string
+  public_id: string
   url: string
 }
 
 export type Fotos = {
   // nombre_producto: string
   archivo: File
+}
+
+export type producto = {
+  nombre: string
+  precio: number
+  estado: string
+  descripcion: string
+  stock: number
+  fotos: Foto[]
+  categorias: tcategorias[]
 }
 
 export type tcategorias = {

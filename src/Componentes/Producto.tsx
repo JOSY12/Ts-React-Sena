@@ -17,11 +17,12 @@ const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
         </Link>
         <div className='px-5 pb-4 '>
           <a>
-            <h3 className='text-gray-900 font-semibold truncate text-xl tracking-tight :text-white'>
+            <h3 className='text-gray-900 font-semibold truncate text-sm tracking-tight :text-white'>
               {nombre}
             </h3>
           </a>
-          <div className='flex items-center mt-2.5 mb-5'>
+          {/* putuacion y comentarios  */}
+          {/* <div className='flex items-center mt-2.5 mb-5'>
             <svg
               className='w-5 h-5 text-yellow-300'
               fill='currentColor'
@@ -65,7 +66,7 @@ const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
             <span className='bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded :bg-blue-200 :text-blue-800 ml-3'>
               5.0
             </span>
-          </div>
+          </div> */}
           <div className='flex items-center justify-between'>
             <span className='text-md font-bold text-gray-900 :text-white'>
               ${precio}

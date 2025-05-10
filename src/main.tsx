@@ -21,7 +21,12 @@ import ProtectedRoute from './Componentes/Administracion/RutasProtejidas'
 import Registrar from './Componentes/Registrar'
 import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
-import { categorias, todos_usuarios, usuario_notificaciones } from './Services'
+import {
+  categorias,
+  todo_productos,
+  todos_usuarios,
+  usuario_notificaciones
+} from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
 
@@ -34,7 +39,13 @@ export const router = createBrowserRouter([
       { index: true, element: <Inicio /> }, // Ruta raíz: "/"
       { path: 'contacto', element: <Contacto /> }, // el unico lugar que el visitante puede visitar para ver los productos
 
-      { path: 'productos', element: <Productos /> }, // el unico lugar que el visitante puede visitar para ver los productos
+      {
+        path: 'productos',
+        element: <Productos />,
+        loader: async () => {
+          return await todo_productos()
+        }
+      }, // el unico lugar que el visitante puede visitar para ver los productos
       { path: 'iniciarsesion', element: <Iniciar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos
       { path: 'registrar', element: <Registrar /> }, // el unico lugar que el visitante puede visitar para ver los productos
       {

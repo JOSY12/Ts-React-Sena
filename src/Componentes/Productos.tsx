@@ -1,14 +1,21 @@
-import { basedatos } from '../bd'
+// import { basedatos } from '../bd'
 import { useEffect, useState } from 'react'
 import Producto from './Producto'
 import { productoprops } from './types'
+import { useLoaderData } from 'react-router-dom'
 
 const Productos = () => {
+  const data = useLoaderData()
   const [productos, setproductos] = useState<productoprops[]>([])
   useEffect(() => {
-    setproductos([])
+    if (data && data.length) {
+      setproductos(data)
+    } else {
+      setproductos([])
+    }
   }, [productos.length])
 
+  console.log(data)
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>
@@ -64,58 +71,47 @@ const Productos = () => {
             <div className='flex items-center   mt-4  '>
               <p className=' '>Ordenar</p>
               <select className=' text-end font-bold   '>
-                <option value='#'>Recomendado</option>
-                <option value='#'>Precio</option>
+                {/* <option value='#'>ASC</option>
+                <option value='#'>Precio</option> */}
               </select>
             </div>
 
             <div className='flex items-center justify-between text-sm tracking-widest uppercase '>
-              <p className=' '>6 Productos</p>
+              <p className=' '>{productos.length}Productos</p>
               <div className='flex items-center'></div>
             </div>
+            {productos && productos.length > 0 ? (
+              <div className='grid grid-cols-2 gap-6  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+                {/* mi tarjeta de prueba */}
+                {productos.map((p, k) => (
+                  <Producto
+                    key={k}
+                    id={p.id}
+                    nombre={p.nombre}
+                    precio={p.precio}
+                    imagen={p.imagen}
+                  />
+                ))}
 
-            <div className='grid grid-cols-2 gap-6  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-              {/* mi tarjeta de prueba */}
-
-              {basedatos.map((p, k) => (
-                <Producto
-                  key={k}
-                  id={p.id}
-                  nombre={p.nombre}
-                  precio={p.precio}
-                  imagen={p.imagen}
-                />
-              ))}
-              {/* tarjeta de prueba por eliminar o mejorar */}
-              {/* <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
-                  <div
-                    className='flex items-end justify-end h-56 w-full bg-cover'
-                    style={{
-                      backgroundImage:
-                        "url('https://images.unsplash.com/photo-1590664863685-a99ef05e9f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=345&q=80')"
-                    }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        stroke-linecap='round'
-                        stroke-linejoin='round'
-                        stroke-width='2'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'></path>
-                      </svg>
-                    </button>
+                {/* fin de tarjeta */}
+              </div>
+            ) : (
+              <div className='flex   items-center  ml-5'>
+                <div className='w-1/3'>
+                  <div className='max-w-sm rounded overflow-hidden shadow-lg animate-pulse'>
+                    <div className='h-48 bg-gray-300'></div>
+                    <div className='px-6 py-4'>
+                      <div className='h-6 bg-gray-300 mb-2'></div>
+                      <div className='h-4 bg-gray-300 w-2/3'></div>
+                    </div>
+                    <div className='px-6 pt-4 pb-2'>
+                      <div className='h-4 bg-gray-300 w-1/4 mb-2'></div>
+                      <div className='h-4 bg-gray-300 w-1/2'></div>
+                    </div>
                   </div>
-                  <div className='px-5 py-3'>
-                    <h3 className='text-gray-700 uppercase'>woman mix</h3>
-                    <span className=' mt-2'>$12</span>
-                  </div>
-                </div> */}
-              {/* fin de tarjeta */}
-            </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
