@@ -1,7 +1,7 @@
 import './App.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { RouterProvider } from 'react-router-dom'
+import { Params, RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
 import Inicio from './Componentes/Inicio'
@@ -23,12 +23,14 @@ import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
 import {
   categorias,
+  detalle_producto,
   todo_productos,
   todos_usuarios,
   usuario_notificaciones
 } from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
+import DetallesProducto from './Componentes/DetallesProducto'
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +46,16 @@ export const router = createBrowserRouter([
         element: <Productos />,
         loader: async () => {
           return await todo_productos()
+        }
+      },
+      {
+        path: 'productos/:id',
+        element: <DetallesProducto />,
+        loader: async ({ params }) => {
+          if (!params.id) {
+            throw new Error('id de producto requerido')
+          }
+          return await detalle_producto(params.id)
         }
       }, // el unico lugar que el visitante puede visitar para ver los productos
       { path: 'iniciarsesion', element: <Iniciar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos

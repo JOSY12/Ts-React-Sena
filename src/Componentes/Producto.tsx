@@ -6,7 +6,7 @@ const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
   return (
     <div className=' hover:scale-102 transition '>
       <div className='bg-white shadow-md rounded-lg max-w-sm    '>
-        <Link to={`/producto/${id}`}>
+        <Link to={`${id}`}>
           <button className='flex justify-center'>
             <img
               className='rounded-t-lg p-3 sm:h-60  '

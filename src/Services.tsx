@@ -33,6 +33,25 @@ export const todo_productos = async () => {
   }
 }
 
+export const detalle_producto = async (pid: string) => {
+  const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get(`/p/productos/${pid}`)
+    toast.dismiss(id)
+    return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `, {
+      id
+    })
+
+    return error
+  }
+}
+
 export const todos_usuarios = async (): Promise<any> => {
   const id = toast.loading('cargando')
   try {
