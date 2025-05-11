@@ -1,16 +1,26 @@
 import { Link } from 'react-router-dom'
 import { productoprops } from './types'
-import { AiOutlineShoppingCart, AiOutlineHeart } from 'react-icons/ai'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
+import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 
-const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
+import { favoritos_store } from '../Zustand/Favoritos_store'
+import { useState } from 'react'
+import { useClerk } from '@clerk/clerk-react'
+
+const Producto = ({ producto }: { producto: productoprops }) => {
+  const agregar = favoritos_store((state) => state.agregar)
+  const favorito = favoritos_store((state) => state.favorito(producto.id))
+  const quitar = favoritos_store((state) => state.quitar)
+  const [carrito] = useState(true)
+  const { isSignedIn } = useClerk()
   return (
     <div className=' hover:scale-102 transition '>
       <div className='bg-white shadow-md rounded-lg max-w-sm    '>
-        <Link to={`${id}`}>
+        <Link to={`${producto.id}`}>
           <button className='flex justify-center'>
             <img
               className='rounded-t-lg p-3 sm:h-60  '
-              src={imagen}
+              src={producto.imagen}
               alt='product image'
             ></img>
           </button>
@@ -18,7 +28,7 @@ const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
         <div className='px-5 pb-4 '>
           <a>
             <h3 className='text-gray-900 font-semibold truncate text-sm tracking-tight :text-white'>
-              {nombre}
+              {producto.nombre}
             </h3>
           </a>
           {/* putuacion y comentarios  */}
@@ -69,16 +79,31 @@ const Producto = ({ id, nombre, precio, imagen }: productoprops) => {
           </div> */}
           <div className='flex items-center justify-between'>
             <span className='text-md font-bold text-gray-900 :text-white'>
-              ${precio}
+              ${producto.precio}
             </span>
-            <div className='justify-end flex   '>
-              <button className='text-black pr-6 cursor-pointer hover:text-red-600     font-medium rounded-lg text-sm      text-center  '>
-                <AiOutlineHeart size={25} />
-              </button>
-              <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
-                <AiOutlineShoppingCart size={25} />
-              </button>
-            </div>
+            {isSignedIn && (
+              <div className='justify-end flex   '>
+                <button
+                  onClick={() => {
+                    favorito ? quitar(producto.id) : agregar(producto)
+                  }}
+                  className='  pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
+                >
+                  {favorito ? (
+                    <AiFillHeart size={25} className='text-red-600' />
+                  ) : (
+                    <AiOutlineHeart size={25} className='hover:text-red-500' />
+                  )}
+                </button>
+                <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
+                  {carrito ? (
+                    <BsCartCheckFill size={25} className='text-green-600' />
+                  ) : (
+                    <BsCartPlus size={25} className='hover:text-green-500' />
+                  )}
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

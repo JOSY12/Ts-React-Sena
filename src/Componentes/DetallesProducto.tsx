@@ -1,22 +1,27 @@
 import { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
-import { producto } from './types'
+import { comentarios_producto, producto } from './types'
 import Comentarios from './Comentarios'
 
+import Agregar_comentario from './Agregar_comentario'
 const DetallesProducto = () => {
   const data = useLoaderData()
+
   const [producto, setproducto] = useState<producto | undefined>(undefined)
-  const [estrellas, setestrellas] = useState<number>(1)
+  const [comentarios, setcomentarios] = useState<
+    comentarios_producto[] | undefined
+  >([])
 
   useEffect(() => {
     if (data) {
-      setproducto(data)
+      setproducto(data.producto[0])
+      setcomentarios(data.comentarios)
     } else {
       setproducto(undefined)
+      setcomentarios(undefined)
     }
   }, [])
 
-  console.log(estrellas)
   return (
     <>
       {producto && producto.nombre ? (
@@ -40,8 +45,8 @@ const DetallesProducto = () => {
                     <div className='flex    justify-between'>
                       {Array.isArray(producto.fotos) &&
                       producto.fotos.length > 0 ? (
-                        producto.fotos.map((e) => (
-                          <div className='       w-30'>
+                        producto.fotos.map((e, k) => (
+                          <div key={k} className='       w-30'>
                             <button>
                               {typeof e === 'string' && (
                                 <img src={e} alt='' className='h-30 w-30    ' />
@@ -73,8 +78,8 @@ const DetallesProducto = () => {
                       <p className='text-sm flex  flex-wrap break-all '>
                         {Array.isArray(producto.fotos) &&
                           producto.categorias.length > 0 &&
-                          producto.categorias.map((e) => (
-                            <span key={e.id} className='m-2 italic '>
+                          producto.categorias.map((e, k) => (
+                            <span key={k} className='m-2 italic '>
                               {e.nombre}
                             </span>
                           ))}
@@ -115,116 +120,9 @@ const DetallesProducto = () => {
               </div>
             </div>
           </div>
-
-          <div className='w-full  p-5 lg:p-10  flex mx-auto items-center justify-center   '>
-            <form className='w-full  max-w-6xl   bg-white shadow-md p-10  mx-auto text-gray-800 relative md:text-left   rounded-lg px-4 pt-2'>
-              <div className='flex flex-wrap -mx-3 mb-6'></div>
-              <h2 className='px-4 pt-3 pb-2 text-gray-800 text-lg'>
-                Agregar comentario
-              </h2>
-              <div className='w-full md:w-full px-3 mb-2 mt-2'>
-                <input
-                  type='text'
-                  required
-                  placeholder='Titulo'
-                  className='bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full    font-medium placeholder-gray-300 focus:outline-none focus:bg-white'
-                />
-              </div>
-              <div className='w-full md:w-full px-3 mb-2 mt-2'>
-                <textarea
-                  className='bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-300 focus:outline-none focus:bg-white'
-                  name='body'
-                  placeholder='ejm:El mejor producto del mundo'
-                  required
-                ></textarea>
-              </div>
-              <div className='w-full  flex items-start md:w-full px-3'>
-                <div className='flex items-start w-1/2 text-gray-700  mr-auto'>
-                  <div className='flex flex-row-reverse justify-center text-3xl'>
-                    <input
-                      type='radio'
-                      id='star5'
-                      name='rating'
-                      onClick={() => setestrellas(5)}
-                      className='peer hidden'
-                    />
-                    <label
-                      htmlFor='star5'
-                      className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-                    >
-                      ★
-                    </label>
-
-                    <input
-                      type='radio'
-                      id='star4'
-                      name='rating'
-                      onClick={() => setestrellas(4)}
-                      className='peer hidden'
-                    />
-                    <label
-                      htmlFor='star4'
-                      className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-                    >
-                      ★
-                    </label>
-
-                    <input
-                      type='radio'
-                      id='star3'
-                      name='rating'
-                      onClick={() => setestrellas(3)}
-                      className='peer hidden'
-                    />
-                    <label
-                      htmlFor='star3'
-                      className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-                    >
-                      ★
-                    </label>
-
-                    <input
-                      type='radio'
-                      id='star2'
-                      name='rating'
-                      onClick={() => setestrellas(2)}
-                      className='peer hidden'
-                    />
-                    <label
-                      htmlFor='star2'
-                      className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-                    >
-                      ★
-                    </label>
-
-                    <input
-                      type='radio'
-                      id='star1'
-                      name='rating'
-                      onClick={() => setestrellas(1)}
-                      className='peer hidden'
-                    />
-                    <label
-                      htmlFor='star1'
-                      className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-                    >
-                      ★
-                    </label>
-                  </div>
-                </div>
-                <div className='-mr-1'>
-                  <button
-                    type='submit'
-                    className='bg-white text-gray-700 font-medium py-1 px-4 border
-                  border-gray-400 rounded-lg tracking-wide mr-1
-                  hover:bg-gray-100'
-                  >
-                    Enviar comentario
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
+          {/* agregar comentario  dividible */}
+          <Agregar_comentario />
+          {/* fin del agregar comentario */}
           <div className='w-full  p-5 lg:p-10  flex mx-auto items-center justify-center   '>
             <div className='w-full  max-w-6xl   bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left   rounded-lg px-4 pt-2'>
               <div className='flex justify-start items-start'>
@@ -233,7 +131,11 @@ const DetallesProducto = () => {
                 </p>
               </div>
               {/* comentario individual para tarjetas separadas */}
-              <Comentarios />
+              {comentarios &&
+                comentarios.length > 0 &&
+                comentarios.map((comentario, k) => (
+                  <Comentarios key={k} comentario={comentario} />
+                ))}
               {/* fin de comentario unico */}
             </div>
           </div>

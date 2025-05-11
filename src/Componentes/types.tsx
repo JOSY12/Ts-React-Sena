@@ -15,6 +15,7 @@ export type productoprops = {
   nombre: string
   precio: number
   imagen: string
+  estado: string
 }
 export type Usuario = {
   id: string
@@ -49,4 +50,21 @@ export type producto = {
 export type tcategorias = {
   id: string
   nombre: string
+}
+export type comentarios_producto = {
+  calificacion: number
+  comentario: string
+  foto_perfil: string
+  nombre: string
+  producto_id: string
+  titulo: string
+  fecha_comentario: string
+}
+
+export type comentario = {
+  calificacion: number
+  comentario: string
+  producto_id: string | null
+  titulo: string
+  usuario_id: string
 }

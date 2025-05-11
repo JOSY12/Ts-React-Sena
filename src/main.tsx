@@ -1,7 +1,7 @@
 import './App.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { Params, RouterProvider } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
 import Inicio from './Componentes/Inicio'

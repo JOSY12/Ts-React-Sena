@@ -15,7 +15,6 @@ const Productos = () => {
     }
   }, [productos.length])
 
-  console.log(data)
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>
@@ -83,14 +82,8 @@ const Productos = () => {
             {productos && productos.length > 0 ? (
               <div className='grid grid-cols-2 gap-6  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {/* mi tarjeta de prueba */}
-                {productos.map((p, k) => (
-                  <Producto
-                    key={k}
-                    id={p.id}
-                    nombre={p.nombre}
-                    precio={p.precio}
-                    imagen={p.imagen}
-                  />
+                {productos.map((producto) => (
+                  <Producto key={producto.id} producto={producto} />
                 ))}
 
                 {/* fin de tarjeta */}

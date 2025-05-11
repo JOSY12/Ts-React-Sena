@@ -32,11 +32,6 @@ const Admin_Productos = () => {
       setfotoslist(Array.from(e.target.files))
     }
   }
-  // const c_categorias = async () => {
-  //   const res = await categorias()
-  //   console.log(res)
-  //   setcategorias(res)
-  // }
 
   const agregarcategoriaproducto = (id: string, nombre: string) => {
     setcategoriasproducto([...categoriasproducto, { id: id, nombre: nombre }])
@@ -76,9 +71,7 @@ const Admin_Productos = () => {
       fotos: fotos,
       categorias: categoriasproducto
     }
-    console.log(nuevoproducto)
-    const res = await crear_producto(nuevoproducto)
-    console.log(res)
+    await crear_producto(nuevoproducto)
   })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
