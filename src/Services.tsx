@@ -48,7 +48,7 @@ export const detalle_producto = async (pid: string) => {
 export const crear_comentario = async (comentario: comentario) => {
   const id = toast.loading('creando comentario')
   try {
-    const res = await axiosbackend.post(`/p/crear_comentario`, comentario)
+    await axiosbackend.post(`/p/crear_comentario`, comentario)
     toast.success('comentario hecho exitosamente', { id })
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
