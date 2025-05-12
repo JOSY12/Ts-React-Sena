@@ -3,6 +3,7 @@ import { productoprops } from './types'
 
 const Favorito = ({ producto }: { producto: productoprops }) => {
   const quitar = favoritos_store((state) => state.quitar)
+  console.log(producto)
   return (
     <div className='flex flex-col'>
       <div className='  relative'>

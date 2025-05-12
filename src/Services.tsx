@@ -322,9 +322,8 @@ export const favoritos = async () => {
 export const agregar_favorito = async (idp: string) => {
   const id = toast.loading('agreando favoritos')
   try {
-    const res = await axiosbackend.put(`/u/agregar_favorito/${idp}`)
+    await axiosbackend.put(`/u/agregar_favorito/${idp}`)
     toast.dismiss(id)
-    return res.data
   } catch (error) {
     toast.error('error al agregar favoritos', { id })
     return error
@@ -334,9 +333,8 @@ export const agregar_favorito = async (idp: string) => {
 export const quitar_favorito = async (idp: string) => {
   const id = toast.loading('quitando favoritos')
   try {
-    const res = await axiosbackend.delete(`/u/quitar_favorito/${idp}`)
+    await axiosbackend.delete(`/u/quitar_favorito/${idp}`)
     toast.dismiss(id)
-    return res.data
   } catch (error) {
     toast.error('error al quitar favoritos', { id })
     return error

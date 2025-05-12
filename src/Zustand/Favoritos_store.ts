@@ -11,7 +11,6 @@ interface favoritos_store {
   favorito: (id: string) => boolean
   solicitar_favoritos: () => void
 }
-
 export const favoritos_store = create<favoritos_store>()(
   persist(
     // inicio del persist
@@ -32,11 +31,16 @@ export const favoritos_store = create<favoritos_store>()(
         set(({ favoritos }) => ({
           favoritos: favoritos.filter((e) => e.id !== id)
         }))
+
         quitar_favorito(id)
       },
 
       favorito: (id: string) => {
-        return get().favoritos.find((e) => e.id === id) ? true : false
+        if (get().favoritos.length) {
+          return get().favoritos.find((e) => e.id === id) ? true : false
+        } else {
+          return false
+        }
       },
 
       solicitar_favoritos: async () => {

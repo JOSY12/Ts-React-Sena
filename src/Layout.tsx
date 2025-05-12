@@ -19,6 +19,7 @@ const Layout = () => {
       return config
     })
   }, [getToken])
+
   return (
     <>
       <Navbar />

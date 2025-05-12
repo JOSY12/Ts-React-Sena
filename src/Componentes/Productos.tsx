@@ -8,13 +8,12 @@ const Productos = () => {
   const data = useLoaderData()
   const [productos, setproductos] = useState<productoprops[]>([])
   useEffect(() => {
-    if (data && data.length) {
+    if (Array.isArray(data) && data.length) {
       setproductos(data)
     } else {
       setproductos([])
     }
   }, [productos.length])
-
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>
