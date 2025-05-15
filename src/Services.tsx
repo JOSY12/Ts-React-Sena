@@ -192,7 +192,6 @@ export const editar_direccion = async (
 
 export const usuario_notificaciones = async () => {
   const id = toast.loading('cargando')
-  console.log('peticion notificaciones')
   try {
     const res = await axiosbackend.get(`/u/notificaciones`)
     toast.dismiss(id)

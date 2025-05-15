@@ -12,11 +12,29 @@ import { IoPersonAddSharp } from 'react-icons/io5'
 import { useClerk } from '@clerk/clerk-react'
 import { activador } from './types'
 import { Notificaciones_store } from '../Zustand/Notificaciones_store'
+import { useEffect, useState } from 'react'
 
 const Sidebar = ({ activar }: activador) => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
-  const contar = Notificaciones_store((state) => state.contar)
+  const cantidad = Notificaciones_store((state) => state.misnotificaciones)
+  const actualizar = Notificaciones_store(
+    (state) => state.actualizar_notificaciones
+  )
+
+  const [contador, setcontador] = useState(0)
+
+  useEffect(() => {
+    actualizar()
+  }, [])
+
+  // Este efecto se dispara cada vez que cambia `no`
+  useEffect(() => {
+    if (cantidad.length) {
+      const nuevosNoVistos = cantidad.filter((e) => !e.visto).length
+      setcontador(nuevosNoVistos)
+    }
+  }, [cantidad])
 
   return (
     <>
@@ -76,9 +94,9 @@ const Sidebar = ({ activar }: activador) => {
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           Notificaciones
                         </span>
-                        {contar() > 0 ? (
+                        {contador > 0 ? (
                           <span className='inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full  not-visited:'>
-                            {contar()}
+                            {contador}
                           </span>
                         ) : (
                           ''

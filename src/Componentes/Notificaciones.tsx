@@ -13,9 +13,14 @@ const Notificaciones = () => {
   const actualizar = Notificaciones_store(
     (state) => state.actualizar_notificaciones
   )
+  const marcar_vistos = Notificaciones_store((state) => state.marcar_vistos)
 
-  useEffect(() => {
+  const recargar = () => {
+    marcar_vistos()
     actualizar()
+  }
+  useEffect(() => {
+    marcar_vistos()
   }, [])
 
   return (
@@ -42,7 +47,7 @@ const Notificaciones = () => {
 
               <div className='relative group inline-block'>
                 <button
-                  onClick={actualizar}
+                  onClick={recargar}
                   className='flex focus:outline-none cursor-pointer  mx-4 py-4 text-2xl font-semibold leading-6 text-gray-800'
                 >
                   <AiOutlineReload />

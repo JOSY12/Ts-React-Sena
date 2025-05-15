@@ -22,7 +22,7 @@ export const carrito_store = create<carrito_store>()(
         set(({ carrito }) => ({
           carrito: carrito.find((e) => e.id === id)
             ? carrito
-            : [...carrito, { id }]
+            : [...carrito, { id, cantidad: 1 }]
         }))
         await agregar_carrito(id)
       },

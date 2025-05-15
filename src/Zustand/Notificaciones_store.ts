@@ -21,6 +21,7 @@ type notificaciones_store = {
   borrar_todo: () => void
   actualizar_notificaciones: () => void
   contar: () => number
+  marcar_vistos: () => void
 }
 
 export const Notificaciones_store = create<notificaciones_store>()(
@@ -37,10 +38,13 @@ export const Notificaciones_store = create<notificaciones_store>()(
 
     actualizar_notificaciones: async () => {
       const res = await usuario_notificaciones()
-      await marcar_visto()
       set(() => ({
         misnotificaciones: res
       }))
+    },
+
+    marcar_vistos: async () => {
+      await marcar_visto()
     },
 
     quitar: async (id: string) => {
@@ -57,7 +61,11 @@ export const Notificaciones_store = create<notificaciones_store>()(
       }))
     },
     contar: () => {
-      return get().misnotificaciones.length
+      if (Array.isArray(get().misnotificaciones)) {
+        const e = get().misnotificaciones.filter((e) => e.visto === false)
+        return e.length
+      }
+      return 0
     }
   })
 )

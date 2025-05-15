@@ -1,12 +1,15 @@
+import { useState } from 'react'
 import { item_carrito } from './types'
 
 const Producto_carrito = ({
+  // estado,
   nombre,
   precio,
   imagen,
   stock,
   cantidad
 }: item_carrito) => {
+  const [actual, setcantidad] = useState<number>(cantidad)
   return (
     <div
       // key={k}
@@ -22,40 +25,47 @@ const Producto_carrito = ({
           <h2 className='  truncate text-lg font-bold text-gray-900'>
             {nombre}
           </h2>
-          <p className='mt-1 text-xs text-gray-700'>{precio}</p>
+          {/* <p className='mt-1 text-xs text-gray-700'>{estado}</p>  */}
         </div>
         <div className='mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6'>
-          <div className='flex items-center border-gray-100'>
-            <span className='cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50'>
-              {' '}
-              -{' '}
+          <div className='flex  border items-center border-gray-100'>
+            <button
+              onClick={() => {
+                actual > 1 && setcantidad(actual - 1)
+              }}
+              className='cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50'
+            >
+              -
+            </button>
+            <span className='h-8 w-8 border   content-center   bg-white text-center  '>
+              {actual}
             </span>
-            <input
-              className='h-8 w-8 border bg-white text-center text-xs outline-none'
-              type='number'
-              value={cantidad || 1}
-              // defaultValue={cantidad}
-              min='1'
-              // onChange={undefined}
-            />
-            <span className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'>
-              {' '}
-              +{' '}
-            </span>
+
+            <button
+              onClick={() => {
+                stock && actual < stock && setcantidad(actual + 1)
+              }}
+              className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'
+            >
+              +
+            </button>
           </div>
-          <div className='flex items-center space-x-4'>
-            <p className='text-sm'>{stock}</p>
+          <div className='flex items-center justify-center  '>
+            <p className='text-sm font-extralight'>{stock} disponibles </p>
+          </div>
+          <div className='flex items-center justify-center space-x-4'>
+            <p className='text-sm'>{precio} $</p>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
               viewBox='0 0 24 24'
-              strokeWidth='1.5'
+              stroke-width='1.5'
               stroke='currentColor'
               className='h-5 w-5 cursor-pointer duration-150 hover:text-red-500'
             >
               <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
+                stroke-linecap='round'
+                stroke-linejoin='round'
                 d='M6 18L18 6M6 6l12 12'
               />
             </svg>

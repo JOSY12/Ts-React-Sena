@@ -6,11 +6,11 @@ import Producto_carrito from './Producto_carrito'
 const Carrito = () => {
   const carrito = carrito_store((state) => state.carrito)
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
-  console.log(carrito)
   useEffect(() => {
     solicitar_carrito()
   }, [carrito.length])
-
+  // []terminar los items del carito no se cargan bien en pagina deploy
+  console.log(carrito)
   return (
     <>
       <div className='  bg-gray-100 pt-10'>
@@ -29,6 +29,7 @@ const Carrito = () => {
                   stock={e.stock}
                   imagen={e.imagen}
                   cantidad={e.cantidad}
+                  // estado={e.estado}
                 />
               ))}
           </div>

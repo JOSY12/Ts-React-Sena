@@ -7,7 +7,6 @@ export type notificacionesprops = {
 }
 export type activador = {
   activar: () => void
-  // cantidad: string
 }
 export type productoprops = {
   id: string
@@ -30,9 +29,9 @@ export type item_carrito = {
   nombre?: string | null
   precio?: number | null
   imagen?: string | null
-  estado?: string | null
-  stock?: number | null
-  cantidad?: number | null
+  estado?: string | 'Disponible'
+  stock?: number | 1
+  cantidad: number | 1
 }
 export type Usuario = {
   id: string
