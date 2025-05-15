@@ -7,6 +7,7 @@ import { axiosbackend } from './Services'
 import { favoritos_store } from './Zustand/Favoritos_store'
 import { useUser } from '@clerk/clerk-react'
 import { Notificaciones_store } from './Zustand/Notificaciones_store'
+import { carrito_store } from './Zustand/Carrito_store'
 const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
@@ -31,7 +32,10 @@ const Layout = () => {
   const solicitar_notificicaciones = Notificaciones_store(
     (state) => state.solicitar_notificicaciones
   )
+  const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
+
   const peticiones_usuario = async () => {
+    solicitar_carrito()
     solicitar_favoritos()
     solicitar_notificicaciones()
   }
