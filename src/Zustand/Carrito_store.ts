@@ -11,7 +11,6 @@ interface carrito_store {
   encarrito: (id: string) => boolean
   solicitar_carrito: () => void
 }
-// []agregar el store y sus types si es necesario
 export const carrito_store = create<carrito_store>()(
   persist(
     // inicio del persist
@@ -33,9 +32,7 @@ export const carrito_store = create<carrito_store>()(
         }))
         await quitar_carrito(id)
       },
-      encarrito: (id: string) => {
-        return get().carrito.find((e) => e.id === id) ? true : false
-      },
+      encarrito: (id: string) => !!get().carrito.find((e) => e.id === id),
 
       solicitar_carrito: async () => {
         const res = await carrito()
