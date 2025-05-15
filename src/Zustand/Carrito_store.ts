@@ -1,36 +1,47 @@
 import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
-import { productoprops } from '../Componentes/types'
+import { item_carrito } from '../Componentes/types'
+import { agregar_carrito, carrito, quitar_carrito } from '../Services'
 
 interface carrito_store {
-  carrito: productoprops[]
+  carrito: item_carrito[]
 
-  agregar: (producto: productoprops) => void
+  agregar: (id: string) => void
   quitar: (id: string) => void
-  favorito: (id: string) => boolean
+  encarrito: (id: string) => boolean
+  solicitar_carrito: () => void
 }
-
-export const favoritos_store = create<carrito_store>()(
+// []agregar el store y sus types si es necesario
+export const carrito_store = create<carrito_store>()(
   persist(
     // inicio del persist
     (set, get) => ({
       // inicio de store
       carrito: [],
 
-      agregar: async (producto: any) =>
+      agregar: async (id: string) => {
         set(({ carrito }) => ({
-          carrito: carrito.find((e) => e.id === producto.id)
+          carrito: carrito.find((e) => e.id === id)
             ? carrito
-            : [...carrito, producto]
-        })),
-
-      quitar: (id: string) =>
+            : [...carrito, { id }]
+        }))
+        await agregar_carrito(id)
+      },
+      quitar: async (id: string) => {
         set(({ carrito }) => ({
           carrito: carrito.filter((e) => e.id !== id)
-        })),
-
-      favorito: (id: string) => {
+        }))
+        await quitar_carrito(id)
+      },
+      encarrito: (id: string) => {
         return get().carrito.find((e) => e.id === id) ? true : false
+      },
+
+      solicitar_carrito: async () => {
+        const res = await carrito()
+        set(() => ({
+          carrito: res
+        }))
       }
 
       // fin del store

@@ -7,7 +7,6 @@ const Favoritos = () => {
   const solicitar_favoritos = favoritos_store(
     (state) => state.solicitar_favoritos
   )
-
   useEffect(() => {
     solicitar_favoritos()
   }, [])

@@ -1,21 +1,42 @@
 import { useEffect, useState } from 'react'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useParams } from 'react-router-dom'
 import { comentarios_producto, producto } from './types'
 import Comentarios from './Comentarios'
-
+import { SignedIn } from '@clerk/clerk-react'
 import Agregar_comentario from './Agregar_comentario'
+import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
+import { favoritos_store } from '../Zustand/Favoritos_store'
+import { comentarios_productos } from '../Services'
+
 const DetallesProducto = () => {
   const data = useLoaderData()
-
+  const { id } = useParams()
+  // const agregar = favoritos_store((state) => state.agregar)
+  const favorito = favoritos_store((state) => state.favorito(id || ''))
+  const quitar = favoritos_store((state) => state.quitar)
+  const [carrito] = useState(true)
   const [producto, setproducto] = useState<producto | undefined>(undefined)
   const [comentarios, setcomentarios] = useState<
     comentarios_producto[] | undefined
   >([])
 
+  const comentarioss = async (id: string) => {
+    const res = await comentarios_productos(id)
+    if (res.length) {
+      setcomentarios(res)
+    } else {
+      setcomentarios([])
+    }
+  }
+
   useEffect(() => {
+    if (id) {
+      comentarioss(id)
+    }
     if (data) {
       setproducto(data.producto[0])
-      setcomentarios(data.comentarios)
+      // setcomentarios(data.comentarios)
     } else {
       setproducto(undefined)
       setcomentarios(undefined)
@@ -28,6 +49,33 @@ const DetallesProducto = () => {
         <>
           <div className='      bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
             <div className='w-full max-w-6xl rounded bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
+              <SignedIn>
+                <div className='justify-end flex   '>
+                  <button
+                    onClick={() => {
+                      quitar(id || '')
+                    }}
+                    className='  pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
+                  >
+                    {favorito ? (
+                      <AiFillHeart size={25} className='text-red-600' />
+                    ) : (
+                      <AiOutlineHeart
+                        size={25}
+                        className='hover:text-red-500'
+                      />
+                    )}
+                  </button>
+                  <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
+                    {carrito ? (
+                      <BsCartCheckFill size={25} className='text-green-600' />
+                    ) : (
+                      <BsCartPlus size={25} className='hover:text-green-500' />
+                    )}
+                  </button>
+                </div>
+              </SignedIn>
+
               <div className='md:flex items-center -mx-10'>
                 <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0 '>
                   <div className='relative '>
@@ -109,8 +157,8 @@ const DetallesProducto = () => {
                </span> */}
                     </div>
 
-                    <div className='inline-block align-bottom'>
-                      <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-10 py-2 font-semibold'>
+                    <div className='sm:flex   justify-end flex-wrap gap-2 align-bottom'>
+                      <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-2 py-2 font-semibold'>
                         <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar
                         ahora
                       </button>
@@ -121,7 +169,9 @@ const DetallesProducto = () => {
             </div>
           </div>
           {/* agregar comentario  dividible */}
-          <Agregar_comentario />
+          <SignedIn>
+            <Agregar_comentario />
+          </SignedIn>
           {/* fin del agregar comentario */}
           <div className='w-full  p-5 lg:p-10  flex mx-auto items-center justify-center   '>
             <div className='w-full  max-w-6xl   bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left   rounded-lg px-4 pt-2'>

@@ -1,9 +1,8 @@
 import { favoritos_store } from '../Zustand/Favoritos_store'
-import { productoprops } from './types'
+import { favorito } from './types'
 
-const Favorito = ({ producto }: { producto: productoprops }) => {
+const Favorito = ({ producto }: { producto: favorito }) => {
   const quitar = favoritos_store((state) => state.quitar)
-  console.log(producto)
   return (
     <div className='flex flex-col'>
       <div className='  relative'>

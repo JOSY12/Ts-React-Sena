@@ -25,8 +25,7 @@ import {
   categorias,
   detalle_producto,
   todo_productos,
-  todos_usuarios,
-  usuario_notificaciones
+  todos_usuarios
 } from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
@@ -70,10 +69,7 @@ export const router = createBrowserRouter([
           },
           {
             path: 'notificaciones',
-            element: <Notificaciones />,
-            loader: async () => {
-              return await usuario_notificaciones()
-            }
+            element: <Notificaciones />
           },
           { path: 'carrito', element: <Carrito /> },
           { path: 'compras', element: <Compras /> },

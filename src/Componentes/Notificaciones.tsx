@@ -1,67 +1,21 @@
 import Notificacion from './Notificacion'
-import { useEffect, useState } from 'react'
-import { useLoaderData } from 'react-router-dom'
-import {
-  borrar_notificaciones,
-  borrar_todas_notificaciones,
-  marcar_visto,
-  usuario_notificaciones
-} from '../Services'
-import { notificacionesprops } from './types'
+
 import { AiOutlineReload, AiFillDelete } from 'react-icons/ai'
-import { toast } from 'sonner'
+import { Notificaciones_store } from '../Zustand/Notificaciones_store'
+import { useEffect } from 'react'
 
 const Notificaciones = () => {
-  const data = useLoaderData<notificacionesprops[]>()
-  const [misnotificaciones, setnotificaciones] = useState<
-    notificacionesprops[]
-  >([])
+  // const data = useLoaderData<notificacionesprops[]>()
+  const misnotificaciones = Notificaciones_store(
+    (state) => state.misnotificaciones
+  )
+  const borrar_todo = Notificaciones_store((state) => state.borrar_todo)
+  const actualizar = Notificaciones_store(
+    (state) => state.actualizar_notificaciones
+  )
 
-  const borrar_notifiacacion_unica = async (id: string) => {
-    await borrar_notificaciones(id)
-    const filtrado = misnotificaciones.filter((e) => e.id !== id)
-    setnotificaciones(filtrado)
-  }
-
-  const Recargar_notificaciones = async () => {
-    const datos: notificacionesprops[] = await usuario_notificaciones()
-    if (datos.length! > misnotificaciones.length) {
-      toast.success('nada nuevo que cargar')
-    } else if (datos.length) {
-      const cantidad = datos.length - misnotificaciones.length
-      toast.success(`tienes ${cantidad} notificaciones nuevas `)
-    }
-    setnotificaciones(datos)
-  }
-  const borrar_todas_notificaciones_usuario = async () => {
-    if (misnotificaciones.length > 0) {
-      await borrar_todas_notificaciones()
-      setnotificaciones([])
-    } else {
-      toast.warning('no hay nada que borrar')
-    }
-  }
   useEffect(() => {
-    const marcar_visto_todo = async () => {
-      await marcar_visto()
-    }
-    marcar_visto_todo()
-
-    const datos = async () => {
-      const r = await usuario_notificaciones()
-      if (Array.isArray(r)) {
-        setnotificaciones(r)
-      } else {
-        return
-      }
-    }
-    if (Array.isArray(data)) {
-      setnotificaciones(data)
-    } else {
-      datos()
-    }
-
-    setnotificaciones(data)
+    actualizar()
   }, [])
 
   return (
@@ -76,7 +30,7 @@ const Notificaciones = () => {
             <div className='flex'>
               <div className='relative group inline-block'>
                 <button
-                  onClick={borrar_todas_notificaciones_usuario}
+                  onClick={borrar_todo}
                   className='flex focus:outline-none cursor-pointer  mx-4 py-4 text-2xl font-semibold leading-6 text-gray-800'
                 >
                   <AiFillDelete />
@@ -88,7 +42,7 @@ const Notificaciones = () => {
 
               <div className='relative group inline-block'>
                 <button
-                  onClick={Recargar_notificaciones}
+                  onClick={actualizar}
                   className='flex focus:outline-none cursor-pointer  mx-4 py-4 text-2xl font-semibold leading-6 text-gray-800'
                 >
                   <AiOutlineReload />
@@ -109,7 +63,6 @@ const Notificaciones = () => {
                 descripcion={n.descripcion}
                 fecha_creacion={n.fecha_creacion}
                 visto={n.visto}
-                borrar={borrar_notifiacacion_unica}
               />
             ))
           ) : (

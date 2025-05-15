@@ -3,17 +3,17 @@ import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
-import { contador_notificaciones } from '../Services'
+import { Notificaciones_store } from '../Zustand/Notificaciones_store'
 const Navbar = () => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
   const [sidebar, Setsidbar] = useState<boolean>(false)
-  const [cantidad, setcantidad] = useState<string>('')
-
+  const actualizar = Notificaciones_store(
+    (state) => state.actualizar_notificaciones
+  )
   const n_vistas = async (sidebar: boolean) => {
+    actualizar()
     Setsidbar(sidebar)
-    const datos = await contador_notificaciones()
-    setcantidad(datos)
   }
 
   return (
@@ -202,12 +202,7 @@ const Navbar = () => {
               </svg>
             </button>
 
-            {sidebar && (
-              <Sidebar
-                cantidad={cantidad}
-                activar={() => Setsidbar(!sidebar)}
-              />
-            )}
+            {sidebar && <Sidebar activar={() => Setsidbar(!sidebar)} />}
           </nav>
         </section>
       </div>

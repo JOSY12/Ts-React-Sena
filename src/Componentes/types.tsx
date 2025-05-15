@@ -4,11 +4,10 @@ export type notificacionesprops = {
   descripcion: string
   fecha_creacion: string
   visto: boolean
-  borrar: (id: string) => void
 }
 export type activador = {
   activar: () => void
-  cantidad: string
+  // cantidad: string
 }
 export type productoprops = {
   id: string
@@ -16,6 +15,24 @@ export type productoprops = {
   precio: number
   imagen: string
   estado: string
+}
+
+export type favorito = {
+  id: string
+  nombre?: string
+  precio?: number
+  imagen?: string
+  estado?: string
+}
+
+export type item_carrito = {
+  id: string
+  nombre?: string | null
+  precio?: number | null
+  imagen?: string | null
+  estado?: string | null
+  stock?: number | null
+  cantidad?: number | null
 }
 export type Usuario = {
   id: string
@@ -33,7 +50,6 @@ export type Foto = {
 }
 
 export type Fotos = {
-  // nombre_producto: string
   archivo: File
 }
 

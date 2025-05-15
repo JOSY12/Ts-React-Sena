@@ -4,15 +4,17 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 
 import { favoritos_store } from '../Zustand/Favoritos_store'
-import { useState } from 'react'
-import { useClerk } from '@clerk/clerk-react'
+import { SignedIn } from '@clerk/clerk-react'
+import { carrito_store } from '../Zustand/Carrito_store'
 
 const Producto = ({ producto }: { producto: productoprops }) => {
   const agregar = favoritos_store((state) => state.agregar)
   const favorito = favoritos_store((state) => state.favorito(producto.id))
   const quitar = favoritos_store((state) => state.quitar)
-  const [carrito] = useState(true)
-  const { isSignedIn } = useClerk()
+  const encarrito = carrito_store((state) => state.encarrito(producto.id))
+  const agregar_carrito = carrito_store((state) => state.agregar)
+  const quitar_carrito = carrito_store((state) => state.quitar)
+
   return (
     <div className=' hover:scale-102 transition '>
       <div className='bg-white shadow-md rounded-lg max-w-sm    '>
@@ -81,11 +83,11 @@ const Producto = ({ producto }: { producto: productoprops }) => {
             <span className='text-md font-bold text-gray-900 :text-white'>
               ${producto.precio}
             </span>
-            {isSignedIn && (
+            <SignedIn>
               <div className='justify-end flex   '>
                 <button
                   onClick={() => {
-                    favorito ? quitar(producto.id) : agregar(producto)
+                    favorito ? quitar(producto.id) : agregar(producto.id)
                   }}
                   className='  pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
                 >
@@ -95,15 +97,22 @@ const Producto = ({ producto }: { producto: productoprops }) => {
                     <AiOutlineHeart size={25} className='hover:text-red-500' />
                   )}
                 </button>
-                <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
-                  {carrito ? (
+                <button
+                  onClick={() => {
+                    encarrito
+                      ? quitar_carrito(producto.id)
+                      : agregar_carrito(producto.id)
+                  }}
+                  className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '
+                >
+                  {encarrito ? (
                     <BsCartCheckFill size={25} className='text-green-600' />
                   ) : (
                     <BsCartPlus size={25} className='hover:text-green-500' />
                   )}
                 </button>
               </div>
-            )}
+            </SignedIn>
           </div>
         </div>
       </div>

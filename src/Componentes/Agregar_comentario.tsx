@@ -9,7 +9,6 @@ import { useState } from 'react'
 const Agregar_comentario = () => {
   const { id } = useParams()
   const { user } = useClerk()
-
   const {
     register,
     handleSubmit,
@@ -18,7 +17,6 @@ const Agregar_comentario = () => {
     // reset
   } = useForm()
   const [estrellas, setestrellas] = useState<number>(1)
-
   const submit = handleSubmit(async (data) => {
     if (id && user?.id) {
       const comentario: comentario = {
@@ -28,12 +26,12 @@ const Agregar_comentario = () => {
         producto_id: id,
         titulo: data.titulo
       }
-
       await crear_comentario(comentario)
     } else {
       toast.error('error al intentar crear comentario')
     }
   })
+
   return (
     <div className='w-full  p-5 lg:p-10  flex mx-auto items-center justify-center   '>
       <form

@@ -45,6 +45,25 @@ export const detalle_producto = async (pid: string) => {
   }
 }
 
+export const comentarios_productos = async (idproducto: string) => {
+  const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get(`/pu/comentarios/${idproducto}`)
+    toast.dismiss(id)
+    return res.data.comentarios
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `, {
+      id
+    })
+
+    return error
+  }
+}
+
 export const crear_comentario = async (comentario: comentario) => {
   const id = toast.loading('creando comentario')
   try {
@@ -173,6 +192,7 @@ export const editar_direccion = async (
 
 export const usuario_notificaciones = async () => {
   const id = toast.loading('cargando')
+  console.log('peticion notificaciones')
   try {
     const res = await axiosbackend.get(`/u/notificaciones`)
     toast.dismiss(id)
@@ -187,24 +207,24 @@ export const usuario_notificaciones = async () => {
   }
 }
 
-export const actualizar_notificaciones = async () => {
-  const id = toast.loading('cargando')
-  try {
-    // setea todo las de un usuario como leidas
-    const res = await axiosbackend.put('/u/notificaciones')
-    toast.success('Peticion exitosa', { id })
-    return res.data
-  } catch (error) {
-    toast.error(`Error al hacer la solititud ${error}`, { id })
-    return error
-  }
-}
+// export const actualizar_notificaciones = async () => {
+//   const id = toast.loading('cargando')
+//   try {
+//     // setea todo las de un usuario como leidas
+//     await axiosbackend.put('/u/notificaciones')
+//     toast.success('Peticion exitosa', { id })
+//   } catch (error) {
+//     toast.error(`Error al hacer la solititud ${error}`, { id })
+//     return error
+//   }
+// }
 
 export const borrar_notificaciones = async (nid: string) => {
   const id = toast.loading('borrando')
   try {
     const res = await axiosbackend.delete(`/u/notificaciones/${nid}`)
     toast.success('Borrado exitoso', { id })
+
     return res.data
   } catch (error) {
     toast.error(`Error al hacer la solititud ${error}`, { id })
@@ -212,14 +232,14 @@ export const borrar_notificaciones = async (nid: string) => {
   }
 }
 
-export const contador_notificaciones = async () => {
-  try {
-    const res = await axiosbackend.get(`/u/contador_notificaciones`)
-    return res.data
-  } catch (error) {
-    return error
-  }
-}
+// export const contador_notificaciones = async () => {
+//   try {
+//     const res = await axiosbackend.get(`/u/contador_notificaciones`)
+//     return res.data
+//   } catch (error) {
+//     return error
+//   }
+// }
 
 export const marcar_visto = async () => {
   try {
@@ -319,10 +339,10 @@ export const favoritos = async () => {
   }
 }
 
-export const agregar_favorito = async (idp: string) => {
+export const agregar_favorito = async (idfavorito: string) => {
   const id = toast.loading('agreando favoritos')
   try {
-    await axiosbackend.put(`/u/agregar_favorito/${idp}`)
+    await axiosbackend.post(`/u/agregar_favorito`, { idfavorito })
     toast.dismiss(id)
   } catch (error) {
     toast.error('error al agregar favoritos', { id })
@@ -345,33 +365,32 @@ export const quitar_favorito = async (idp: string) => {
 export const carrito = async () => {
   const id = toast.loading('cargando carrito')
   try {
-    const res = await axiosbackend.get('/p/carrito')
+    const res = await axiosbackend.get('/u/carrito')
     toast.dismiss(id)
-    return res.data
+
+    return res.data.rows
   } catch (error) {
     toast.error('error al cargar carrito', { id })
     return error
   }
 }
 
-export const agregar_carrito = async () => {
+export const agregar_carrito = async (idproducto: string) => {
   const id = toast.loading('agreando a carrito')
   try {
-    const res = await axiosbackend.post('/p/agregar_carrito')
+    await axiosbackend.post('/u/agregar_carrito', { idproducto })
     toast.dismiss(id)
-    return res.data
   } catch (error) {
     toast.error('error al agregar a carrito', { id })
     return error
   }
 }
 
-export const quitar_carrito = async () => {
+export const quitar_carrito = async (idproducto: string) => {
   const id = toast.loading('quitando carrito')
   try {
-    const res = await axiosbackend.post('/p/quitar_carrito')
+    await axiosbackend.delete(`/u/quitar_carrito/${idproducto}`)
     toast.dismiss(id)
-    return res.data
   } catch (error) {
     toast.error('error al quitar carrito', { id })
     return error

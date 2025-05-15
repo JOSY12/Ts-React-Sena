@@ -1,3 +1,4 @@
+import { Notificaciones_store } from '../Zustand/Notificaciones_store'
 import { notificacionesprops } from './types'
 
 const Notificacion = ({
@@ -5,15 +6,17 @@ const Notificacion = ({
   titulo,
   descripcion,
   fecha_creacion,
-  visto,
-  borrar
+  visto
 }: notificacionesprops) => {
+  const borrar = Notificaciones_store((state) => state.quitar)
+
   return (
     <div
       className={`w-full p-3 mt-4     ${
         visto ? 'bg-gray-200' : 'bg-gray-100'
       } rounded shadow flex flex-shrink-0`}
     >
+      <span className='hidden'>{id}</span>
       <div
         aria-label='group icon'
         role='img'

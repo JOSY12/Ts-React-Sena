@@ -11,10 +11,13 @@ import { IoPersonAddSharp } from 'react-icons/io5'
 
 import { useClerk } from '@clerk/clerk-react'
 import { activador } from './types'
+import { Notificaciones_store } from '../Zustand/Notificaciones_store'
 
-const Sidebar = ({ activar, cantidad }: activador) => {
+const Sidebar = ({ activar }: activador) => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
+  const contar = Notificaciones_store((state) => state.contar)
+
   return (
     <>
       <div
@@ -73,9 +76,9 @@ const Sidebar = ({ activar, cantidad }: activador) => {
                         <span className='flex-1 ml-3 whitespace-nowrap'>
                           Notificaciones
                         </span>
-                        {Number(cantidad) > 0 ? (
+                        {contar() > 0 ? (
                           <span className='inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-600 bg-blue-200 rounded-full  not-visited:'>
-                            {Number(cantidad)}
+                            {contar()}
                           </span>
                         ) : (
                           ''

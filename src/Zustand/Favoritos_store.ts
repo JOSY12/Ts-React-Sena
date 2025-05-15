@@ -1,12 +1,12 @@
 import { agregar_favorito, favoritos, quitar_favorito } from './../Services'
 import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
-import { productoprops } from '../Componentes/types'
+import { favorito } from '../Componentes/types'
 
 interface favoritos_store {
-  favoritos: productoprops[]
+  favoritos: favorito[]
 
-  agregar: (producto: productoprops) => void
+  agregar: (id: string) => void
   quitar: (id: string) => void
   favorito: (id: string) => boolean
   solicitar_favoritos: () => void
@@ -18,13 +18,13 @@ export const favoritos_store = create<favoritos_store>()(
       // inicio de store
       favoritos: [],
 
-      agregar: async (producto: productoprops) => {
+      agregar: async (id: string) => {
         set(({ favoritos }) => ({
-          favoritos: favoritos.find((e) => e.id === producto.id)
+          favoritos: favoritos.find((e) => e.id === id)
             ? favoritos
-            : [...favoritos, producto]
+            : [...favoritos, { id }]
         }))
-        agregar_favorito(producto.id)
+        await agregar_favorito(id)
       },
 
       quitar: async (id: string) => {
@@ -32,16 +32,10 @@ export const favoritos_store = create<favoritos_store>()(
           favoritos: favoritos.filter((e) => e.id !== id)
         }))
 
-        quitar_favorito(id)
+        await quitar_favorito(id)
       },
 
-      favorito: (id: string) => {
-        if (get().favoritos.length) {
-          return get().favoritos.find((e) => e.id === id) ? true : false
-        } else {
-          return false
-        }
-      },
+      favorito: (id: string) => !!get().favoritos.find((e) => e.id === id),
 
       solicitar_favoritos: async () => {
         const res = await favoritos()
