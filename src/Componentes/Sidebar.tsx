@@ -19,7 +19,7 @@ const Sidebar = ({ activar }: activador) => {
   const { user } = useClerk()
   const cantidad = Notificaciones_store((state) => state.misnotificaciones)
   const actualizar = Notificaciones_store(
-    (state) => state.actualizar_notificaciones
+    (state) => state.solicitar_notificicaciones
   )
 
   const [contador, setcontador] = useState(0)

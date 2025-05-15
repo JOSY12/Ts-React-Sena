@@ -40,7 +40,7 @@ export const favoritos_store = create<favoritos_store>()(
       solicitar_favoritos: async () => {
         const res = await favoritos()
         set(() => ({
-          favoritos: res
+          favoritos: Array.isArray(res) ? res : []
         }))
       }
 

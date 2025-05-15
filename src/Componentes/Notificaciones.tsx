@@ -11,7 +11,7 @@ const Notificaciones = () => {
   )
   const borrar_todo = Notificaciones_store((state) => state.borrar_todo)
   const actualizar = Notificaciones_store(
-    (state) => state.actualizar_notificaciones
+    (state) => state.solicitar_notificicaciones
   )
   const marcar_vistos = Notificaciones_store((state) => state.marcar_vistos)
 

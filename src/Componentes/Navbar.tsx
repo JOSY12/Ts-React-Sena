@@ -10,7 +10,7 @@ const Navbar = () => {
   const [sidebar, Setsidbar] = useState<boolean>(false)
 
   const actualizar = Notificaciones_store(
-    (state) => state.actualizar_notificaciones
+    (state) => state.solicitar_notificicaciones
   )
 
   const n_vistas = async (sidebar: boolean) => {
