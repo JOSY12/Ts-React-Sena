@@ -2,7 +2,7 @@ import { comentarios_producto } from './types'
 
 const Comentarios = ({ comentario }: { comentario: comentarios_producto }) => {
   return (
-    <div className='w-full flex justify-start items-start flex-col bg-white   p-8'>
+    <div className='w-full   flex justify-start items-start flex-col bg-white   p-8'>
       <span className='hidden'>{comentario.producto_id}</span>
       <div className='flex  md:flex-row justify-between w-full'>
         <div className='  flex-row justify-between items-start'>

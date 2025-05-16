@@ -8,18 +8,23 @@ import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import { comentarios_productos } from '../Services'
+import { carrito_store } from '../Zustand/Carrito_store'
 
 const DetallesProducto = () => {
   const data = useLoaderData()
   const { id } = useParams()
-  // const agregar = favoritos_store((state) => state.agregar)
   const favorito = favoritos_store((state) => state.favorito(id || ''))
+  const encarrito = carrito_store((state) => state.encarrito(id || ''))
   const quitar = favoritos_store((state) => state.quitar)
-  const [carrito] = useState(true)
-  const [producto, setproducto] = useState<producto | undefined>(undefined)
+  const agregar = favoritos_store((state) => state.agregar)
+  const agregar_carrito = carrito_store((state) => state.agregar)
+  const quitar_carrito = carrito_store((state) => state.quitar)
+
+  const [producto, setproducto] = useState<producto>()
   const [comentarios, setcomentarios] = useState<
     comentarios_producto[] | undefined
   >([])
+  // const [stock, setstock] = useState<number[]>([])
 
   const comentarioss = async (id: string) => {
     const res = await comentarios_productos(id)
@@ -42,7 +47,6 @@ const DetallesProducto = () => {
       setcomentarios(undefined)
     }
   }, [])
-
   return (
     <>
       {producto && producto.nombre ? (
@@ -53,9 +57,9 @@ const DetallesProducto = () => {
                 <div className='justify-end flex   '>
                   <button
                     onClick={() => {
-                      quitar(id || '')
+                      favorito ? quitar(id || '') : agregar(id || '')
                     }}
-                    className='  pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
+                    className='  group relative pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
                   >
                     {favorito ? (
                       <AiFillHeart size={25} className='text-red-600' />
@@ -65,13 +69,27 @@ const DetallesProducto = () => {
                         className='hover:text-red-500'
                       />
                     )}
+                    <span className='absolute bottom-10  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
+                      guardar en favoritos
+                    </span>
                   </button>
-                  <button className='text-black  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '>
-                    {carrito ? (
+
+                  <button
+                    onClick={() => {
+                      encarrito
+                        ? quitar_carrito(id || '')
+                        : agregar_carrito(id || '')
+                    }}
+                    className='text-black group  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '
+                  >
+                    {encarrito ? (
                       <BsCartCheckFill size={25} className='text-green-600' />
                     ) : (
                       <BsCartPlus size={25} className='hover:text-green-500' />
                     )}
+                    <span className='absolute top-11  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
+                      agregar al carrito de compras
+                    </span>
                   </button>
                 </div>
               </SignedIn>
@@ -120,18 +138,21 @@ const DetallesProducto = () => {
                       <h1 className='font-semibold uppercase break-all s text-lg mb-1'>
                         {producto.nombre}
                       </h1>
-                      <span className='  text-sm leading-none align-baseline'>
-                        diponibles: {producto?.stock}
-                      </span>
                       <p className='text-sm flex  flex-wrap break-all '>
-                        {Array.isArray(producto.fotos) &&
+                        {Array.isArray(producto.categorias) &&
                           producto.categorias.length > 0 &&
                           producto.categorias.map((e, k) => (
-                            <span key={k} className='m-2 italic '>
-                              {e.nombre}
+                            <span
+                              key={k}
+                              className='mr-1 justify-start italic '
+                            >
+                              {String(e)}
                             </span>
                           ))}
                       </p>
+                      <span className='  text-sm leading-none align-baseline'>
+                        Unidades diponibles: {producto?.stock}
+                      </span>
                     </div>
                     <p className='text-sm  break-all '>
                       {producto.descripcion}
@@ -158,6 +179,13 @@ const DetallesProducto = () => {
                     </div>
 
                     <div className='sm:flex   justify-end flex-wrap gap-2 align-bottom'>
+                      <select name='' id=''>
+                        {/* {producto?.stock.(',')} */}
+                        <option disabled selected value=''>
+                          unidades
+                        </option>
+                      </select>
+
                       <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-2 py-2 font-semibold'>
                         <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar
                         ahora
@@ -181,11 +209,35 @@ const DetallesProducto = () => {
                 </p>
               </div>
               {/* comentario individual para tarjetas separadas */}
-              {comentarios &&
-                comentarios.length > 0 &&
+              {comentarios && comentarios.length > 0 ? (
                 comentarios.map((comentario, k) => (
                   <Comentarios key={k} comentario={comentario} />
-                ))}
+                ))
+              ) : (
+                <div className='flex flex-col items-center justify-center p-8  rounded-lg  '>
+                  <svg
+                    className='w-16 h-16 mb-4 text-gray-400'
+                    fill='none'
+                    stroke='currentColor'
+                    viewBox='0 0 24 24'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth={2}
+                      d='M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z'
+                    />
+                  </svg>
+                  <h2 className='text-xl font-semibold text-gray-700 mb-2'>
+                    No hay comentarios
+                  </h2>
+                  <p className='text-gray-500 text-center'>
+                    Este producto aún no tiene comentarios. Sé el primero en
+                    dejar uno.
+                  </p>
+                </div>
+              )}
               {/* fin de comentario unico */}
             </div>
           </div>

@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
 import { Notificaciones_store } from '../Zustand/Notificaciones_store'
+import { carrito_store } from '../Zustand/Carrito_store'
+import { favoritos_store } from '../Zustand/Favoritos_store'
 const Navbar = () => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
@@ -12,6 +14,8 @@ const Navbar = () => {
   const actualizar = Notificaciones_store(
     (state) => state.solicitar_notificicaciones
   )
+  const carrito = carrito_store((state) => state.carrito)
+  const favoritos = favoritos_store((state) => state.favoritos)
 
   const n_vistas = async (sidebar: boolean) => {
     // [] terminar el contador de noficaciones no vistas
@@ -20,6 +24,9 @@ const Navbar = () => {
     Setsidbar(sidebar)
   }
 
+  useEffect(() => {
+    // actualizar()
+  }, [])
   return (
     <>
       <div className='flex flex-wrap place-items-center  '>
@@ -65,7 +72,7 @@ const Navbar = () => {
                         onClick={() => {
                           sidebar && Setsidbar(false)
                         }}
-                        className='hover:text-gray-200 cursor-pointer  '
+                        className='hover:text-gray-200  cursor-pointer  '
                       >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
@@ -81,6 +88,11 @@ const Navbar = () => {
                             d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
                           />
                         </svg>
+                        {favoritos.length > 0 && (
+                          <span className='flex absolute -mt-4 ml-1'>
+                            <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-red-400 opacity-75'></span>
+                          </span>
+                        )}
                       </button>
                     </Link>
 
@@ -107,12 +119,13 @@ const Navbar = () => {
                             d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                           />
                         </svg>
-                        <span className='flex absolute -mt-5 ml-4'>
-                          {/* animacion de carrito cando tiene items buena idea */}
-                          {/* <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
-                        {carrito.length && } */}
-                          <span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
-                        </span>
+                        {/* animacion de carrito cando tiene items buena idea */}
+                        {carrito.length > 0 && (
+                          <span className='flex absolute -mt-5 ml-4'>
+                            <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
+                            <span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
+                          </span>
+                        )}
                       </button>
                     </Link>
                   </>

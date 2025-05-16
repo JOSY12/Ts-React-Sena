@@ -79,7 +79,7 @@ const Productos = () => {
               <div className='flex items-center'></div>
             </div>
             {productos && productos.length > 0 ? (
-              <div className='grid grid-cols-2 gap-6  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+              <div className='grid sm:grid-cols-2 gap-2  m-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
                 {/* mi tarjeta de prueba */}
                 {productos.map((producto) => (
                   <Producto key={producto.id} producto={producto} />

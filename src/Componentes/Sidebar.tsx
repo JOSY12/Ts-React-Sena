@@ -18,17 +18,9 @@ const Sidebar = ({ activar }: activador) => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
   const cantidad = Notificaciones_store((state) => state.misnotificaciones)
-  const actualizar = Notificaciones_store(
-    (state) => state.solicitar_notificicaciones
-  )
 
-  const [contador, setcontador] = useState(0)
+  const [contador, setcontador] = useState<number>(0)
 
-  useEffect(() => {
-    actualizar()
-  }, [])
-
-  // Este efecto se dispara cada vez que cambia `no`
   useEffect(() => {
     if (cantidad.length) {
       const nuevosNoVistos = cantidad.filter((e) => !e.visto).length
