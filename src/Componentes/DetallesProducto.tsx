@@ -70,7 +70,7 @@ const DetallesProducto = () => {
                       />
                     )}
                     <span className='absolute bottom-10  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
-                      guardar en favoritos
+                      guardar/remover en favoritos
                     </span>
                   </button>
 
@@ -88,7 +88,7 @@ const DetallesProducto = () => {
                       <BsCartPlus size={25} className='hover:text-green-500' />
                     )}
                     <span className='absolute top-11  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
-                      agregar al carrito de compras
+                      agregar/remover al carrito de compras
                     </span>
                   </button>
                 </div>

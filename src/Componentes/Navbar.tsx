@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
@@ -24,9 +24,6 @@ const Navbar = () => {
     Setsidbar(sidebar)
   }
 
-  useEffect(() => {
-    // actualizar()
-  }, [])
   return (
     <>
       <div className='flex flex-wrap place-items-center  '>

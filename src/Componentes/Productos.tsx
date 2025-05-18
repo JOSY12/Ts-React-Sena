@@ -14,6 +14,7 @@ const Productos = () => {
       setproductos([])
     }
   }, [productos.length])
+  console.log(productos)
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>

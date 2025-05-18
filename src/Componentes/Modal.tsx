@@ -13,7 +13,7 @@ const Modal = () => {
           <AiFillFolderAdd className='size-8 ' />
         </label>
 
-        <div className='fixed  inset-0 bg-gray-200   hidden peer-checked:flex items-center justify-center z-50'>
+        <div className='fixed  inset-0    bg-gray-100 hidden peer-checked:flex items-center justify-center z-50'>
           <div className='bg-white rounded-xl shadow-lg max-w-md w-full p-2 relative'>
             <label
               htmlFor='modal-toggle'

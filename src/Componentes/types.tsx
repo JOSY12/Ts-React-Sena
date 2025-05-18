@@ -27,12 +27,12 @@ export type favorito = {
 
 export type item_carrito = {
   id: string
-  nombre?: string | null
+  nombre?: String | null
   precio?: number | null
   imagen?: string | null
-  estado?: string | 'Disponible'
+  estado?: string | 'Disponible' | 'Agotado' | 'Pendiente'
   stock?: number | 1
-  cantidad: number | 1
+  cantidad: number
 }
 export type Usuario = {
   id: string

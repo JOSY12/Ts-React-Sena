@@ -395,3 +395,17 @@ export const quitar_carrito = async (idproducto: string) => {
     return error
   }
 }
+
+export const cambiar_cantidad = async (
+  idproducto: string,
+  cantidad: number
+) => {
+  const id = toast.loading('cambiando cantidad a carrito')
+  try {
+    await axiosbackend.put('/u/carrito_cantidad', { idproducto, cantidad })
+    toast.dismiss(id)
+  } catch (error) {
+    toast.error('error al agregar a carrito', { id })
+    return error
+  }
+}

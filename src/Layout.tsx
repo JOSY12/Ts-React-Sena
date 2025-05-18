@@ -8,6 +8,7 @@ import { favoritos_store } from './Zustand/Favoritos_store'
 import { useUser } from '@clerk/clerk-react'
 import { Notificaciones_store } from './Zustand/Notificaciones_store'
 import { carrito_store } from './Zustand/Carrito_store'
+import Footer from './Componentes/Footer'
 const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
@@ -45,11 +46,15 @@ const Layout = () => {
   }, [isSignedIn])
 
   return (
-    <>
+    <div className='min-h-screen flex flex-col'>
       <Navbar />
-      <Outlet />
-      {/* <Footer /> */}
-    </>
+
+      <main className='flex-grow'>
+        <Outlet />
+      </main>
+
+      <Footer />
+    </div>
   )
 }
 

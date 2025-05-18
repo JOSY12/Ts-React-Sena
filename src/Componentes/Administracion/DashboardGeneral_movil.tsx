@@ -13,7 +13,7 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
         }}
         className={`    justify-center w-full cursor-pointer  ${
           activar ? 'bottom-0 ' : 'bottom-10'
-        }  flex fixed lg:hidden `}
+        }  flex absolute lg:hidden `}
       >
         {activar ? (
           <span className='text-3xl         '>
