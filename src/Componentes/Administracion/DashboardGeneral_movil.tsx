@@ -13,7 +13,7 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
         }}
         className={`    justify-center w-full cursor-pointer  ${
           activar ? 'bottom-0 ' : 'bottom-10'
-        }  flex absolute lg:hidden `}
+        }  flex fixed lg:hidden `}
       >
         {activar ? (
           <span className='text-3xl         '>
@@ -97,14 +97,14 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
               </svg>
             </button>
           </Link>
-          <Link className='w-1/2   ' to={'/u/v/admin/tablas'}>
+          <Link className='w-1/2   ' to={'/u/v/admin/listado_p'}>
             <button
               onClick={() =>
                 setventana({
                   ...ventanas,
                   usuarios: false,
                   productos: false,
-                  tablas: true
+                  misproductos: true
                 })
               }
               className={`w-full flex items-center  justify-center px-6 py-2   ${
@@ -129,18 +129,18 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
               </svg>
             </button>
           </Link>
-          <Link className='w-1/2   ' to={'/'}>
+          {/* <Link className='w-1/2   ' to={'/'}>
             <button
               onClick={() =>
                 setventana({
                   ...ventanas,
                   usuarios: false,
                   productos: false,
-                  tablas: true
+                  misproductos: true
                 })
               }
               className={`w-full flex items-center  justify-center px-6 py-2 ${
-                ventanas?.tablas
+                ventanas?.misproductos
                   ? 'bg-gray-700 text-gray-100 bg-opacity-25'
                   : 'text-gray-600  bg-gray-900 bg-opacity-25'
               }  `}
@@ -160,7 +160,7 @@ const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
                 ></path>
               </svg>
             </button>
-          </Link>
+          </Link> */}
         </nav>
       </div>
     </>

@@ -1,35 +1,39 @@
 import { useEffect, useState } from 'react'
 import Usuarios_card_administracion from './Usuarios_card_administracion'
-import { Usuario } from '../types'
+import { administracion, datos, Usuario } from '../types'
 import { todos_usuarios } from '../../Services'
 import { AiOutlineReload } from 'react-icons/ai'
 import { useLoaderData } from 'react-router-dom'
 const Admin_usuarios = () => {
-  const data = useLoaderData<Usuario[]>()
+  const data = useLoaderData<administracion>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
+  const [datos, setdatos] = useState<datos>()
 
   const Recargar = async () => {
-    const res: Usuario[] = await todos_usuarios()
-    if (res.length) {
-      setusuarios(res)
+    const res: any = await todos_usuarios()
+    if (res && res.usuarios.length) {
+      setusuarios(res.usuarios)
+      setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
     }
   }
-
   useEffect(() => {
     const datos = async () => {
-      const r = await todos_usuarios()
-      if (Array.isArray(r)) {
-        setusuarios(r)
+      const res: administracion = await todos_usuarios()
+      if (res && Array.isArray(res.usuarios)) {
+        console.log('r', res)
+        setusuarios(res.usuarios)
+        setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
       } else {
         return
       }
     }
-    if (Array.isArray(data)) {
-      setusuarios(data)
+    if (data && Array.isArray(data.datos)) {
+      setusuarios(data.usuarios)
+      setdatos(data.datos[0])
     } else {
       datos()
     }
-  }, [usuarios.length])
+  }, [])
 
   return (
     <div className=' mb-10 flex flex-col flex-1 overflow-hidden'>
@@ -88,7 +92,7 @@ const Admin_usuarios = () => {
 
                   <div className='mx-5'>
                     <h4 className='text-2xl font-semibold text-gray-700'>
-                      {usuarios.length}
+                      {datos ? datos.usuarios : 0}
                     </h4>
                     <div className='text-gray-500'>Usuarios</div>
                   </div>
@@ -121,7 +125,7 @@ const Admin_usuarios = () => {
 
                   <div className='mx-5'>
                     <h4 className='text-2xl font-semibold text-gray-700'>
-                      200,521
+                      {datos ? datos.compras : 0}
                     </h4>
                     <div className='text-gray-500'>Ordenes</div>
                   </div>
@@ -154,7 +158,7 @@ const Admin_usuarios = () => {
 
                   <div className='mx-5'>
                     <h4 className='text-2xl font-semibold text-gray-700'>
-                      215,542
+                      {datos ? datos.productos : 0}
                     </h4>
                     <div className='text-gray-500'>Productos disponibles</div>
                   </div>

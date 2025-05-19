@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import {
-  categorias,
-  crear_categoria,
-  crear_producto,
-  subircloudinary
-} from '../../Services'
+import { categorias, crear_categoria, subircloudinary } from '../../Services'
 import { tcategorias, Foto, producto } from '../types'
 import { useForm } from 'react-hook-form'
 import { AiFillFileAdd } from 'react-icons/ai'
 import { useLoaderData } from 'react-router-dom'
 import { toast } from 'sonner'
 
-const Admin_Productos = () => {
+const Editor_productos = () => {
   const data = useLoaderData()
   const [fotoslist, setfotoslist] = useState<File[]>([])
+
   const [fotos, setfoto] = useState<Foto[]>([])
   const [listacategorias, setcategorias] = useState<tcategorias[]>([])
   const [categoriasproducto, setcategoriasproducto] = useState<tcategorias[]>(
@@ -24,9 +20,10 @@ const Admin_Productos = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch
-    // reset
+    watch,
+    reset
   } = useForm()
+
   const inputfotos = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setfotoslist(Array.from(e.target.files))
@@ -68,33 +65,17 @@ const Admin_Productos = () => {
       stock: Number(data.stock),
       estado: data.estado,
       descripcion: data.descripcion,
+
       fotos: fotos,
       categorias: categoriasproducto
     }
-    await crear_producto(nuevoproducto)
+    console.log(nuevoproducto)
+    // await crear_producto(nuevoproducto)
   })
-  // const subirfotomultiple = async () => {
-  //   let fotoss: Foto[] = []
-  //   if (Array.isArray(fotoslist) && fotoslist.length > 0) {
-  //     for (let i = 0; i < 4; i++) {
-  //       const foto = (await subircloudinary({
-  //         nombre_producto: nombre + [i],
-  //         archivo: fotoslist[i]
-  //       })) as Foto
-  //       if (fotos.length >= 4) {
-  //         fotos.pop
-  //       }
-  //       fotoss.push(foto)
-  //     }
-  //   } else {
-  //     toast.warning('debe cargar imagenes')
-  //   }
-  // }
-  // console.log(r)
+
   const subirfoto = async () => {
     if (fotos.length < 4 && fotoslist.length > 0) {
       const foto = (await subircloudinary({
-        // nombre_producto: nombre + fotos.length,
         archivo: fotoslist[0]
       })) as Foto
       setfoto([...fotos, foto])
@@ -114,17 +95,27 @@ const Admin_Productos = () => {
   }, [fotoslist.length])
   useEffect(() => {
     if (data.length > 0) {
-      setcategorias(data)
+      setcategorias(data[0])
+      // setproducto(data[1].producto[0])
+      reset({
+        nombre: data[1].producto[0].nombre,
+        precio: data[1].producto[0].precio,
+        stock: data[1].producto[0].stock,
+        descripcion: data[1].producto[0].descripcion,
+        estado: data[1].producto[0].estado
+      })
+      setfoto(data[1].producto[0].fotos)
+      setcategoriasproducto(data[1].producto[0].categorias)
     } else {
       setcategorias([])
-      toast.warning('no hay categorias que cargar')
+      toast.warning('no hay producto/categorias que cargar')
     }
   }, [])
 
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
-        <h1 className='font-medium text-2xl'>Creacion de productos </h1>
+        <h1 className='font-medium text-2xl'>Editor de productos</h1>
       </div>
       {/* <button>SSSSSSSSSSSs</button> */}
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
@@ -172,20 +163,20 @@ const Admin_Productos = () => {
                   </label>
                   <div
                     className=' group
-                   appearance-none flex  w-full
-                    bg-white text-gray-900 
-                    font-medium border  
-                     rounded-lg  leading-tight focus:outline-none hover:border-[#98c01d]  focus:border-[#98c01d]    '
+                    appearance-none flex  w-full
+                     bg-white text-gray-900 
+                     font-medium border  
+                      rounded-lg  leading-tight focus:outline-none hover:border-[#98c01d]  focus:border-[#98c01d]    '
                   >
                     <span className='w-3 mt-3  group-hover:text-[#98c01d]    ml-1   text-gray-400 font-medium   '>
                       $
                     </span>
                     <input
                       className='
-                   appearance-none   w-full
-                    bg-white text-gray-900 
-                    font-medium    
-                     rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
+                    appearance-none   w-full
+                     bg-white text-gray-900 
+                     font-medium    
+                      rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
                       type='number'
                       placeholder='120'
                       {...register('precio', {
@@ -225,10 +216,10 @@ const Admin_Productos = () => {
                     </label>
                     <div
                       className=' group
-                   appearance-none flex  w-full
-                    bg-white text-gray-900 
-                    font-medium border  
-                     rounded-lg  leading-tight focus:outline-none hover:border-[#98c01d]  focus:border-[#98c01d]    '
+                    appearance-none flex  w-full
+                     bg-white text-gray-900 
+                     font-medium border  
+                      rounded-lg  leading-tight focus:outline-none hover:border-[#98c01d]  focus:border-[#98c01d]    '
                     >
                       <span className='w-3 mt-3  group-hover:text-[#98c01d]       text-gray-400 font-medium   '></span>
                       <input
@@ -241,13 +232,13 @@ const Admin_Productos = () => {
                             value: 5,
                             message: 'minimo 5 unidades'
                           },
-                          max: { value: 30, message: 'maximo 30 unidades' }
+                          max: { value: 1000, message: 'maximo 1000 unidades' }
                         })}
                         className='
-                   appearance-none   w-full
-                    bg-white text-gray-900 
-                    font-medium    
-                     rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
+                    appearance-none   w-full
+                     bg-white text-gray-900 
+                     font-medium    
+                      rounded-lg py-3  leading-tight focus:outline-none  focus:border-[#98c01d]    '
                         type='number'
                         placeholder='30'
                       />
@@ -330,9 +321,9 @@ const Admin_Productos = () => {
                 >
                   {listacategorias.length > 0 &&
                     categoriasproducto.length < 3 &&
-                    listacategorias.map((e) => (
+                    listacategorias.map((e, k) => (
                       <button
-                        key={e.id}
+                        key={k}
                         onClick={() => {
                           agregarcategoriaproducto(e.id, e.nombre)
                         }}
@@ -346,14 +337,15 @@ const Admin_Productos = () => {
               <div className='w-full  md:w-full px-3 mb-6'>
                 <label
                   className='block uppercase 
-                tracking-wide text-gray-700 text-sm font-bold mb-2'
+                 tracking-wide text-gray-700 text-sm font-bold mb-2'
                 >
                   Categorias agregadas
                 </label>
                 {categoriasproducto.length > 0 && (
                   <div className='flex gap-2 flex-wrap        '>
-                    {categoriasproducto.map((e) => (
+                    {categoriasproducto.map((e, k) => (
                       <button
+                        key={k}
                         onClick={() => {
                           quitarcategoriaproducto(e.id)
                         }}
@@ -395,12 +387,12 @@ const Admin_Productos = () => {
                   type='submit'
                   className='appearance-none block w-full bg-green-700 text-gray-100 font-bold border border-gray-200 rounded-lg py-3 px-3 leading-tight hover:bg-green-600 focus:outline-none focus:bg-green-900 focus:border-gray-500'
                 >
-                  Agregar producto
+                  rectificar/Actualizar
                 </button>
               </div>
               {/* <button className='self-center ml-10' onClick={subirfoto}>
-                Previsualizar
-              </button> */}
+                 Previsualizar
+               </button> */}
             </div>
             <div className='w-full justify-center items-center text-center px-3  mb-10'>
               <label
@@ -446,24 +438,24 @@ const Admin_Productos = () => {
             </div>
 
             {/* <div
-              className={`grid ${
-                fotos.length > 0 ? '' : 'hidden'
-              } grid-cols-4 border-2 h-55 justify-center items-center align-middle rounded-2xl`}
-            >
-              {fotos.length > 0 &&
-                fotos.map((e) => {
-                  return (
-                    <img
-                      onClick={() => {
-                        borrarfoto(e.id)
-                      }}
-                      className='h-50 w-50'
-                      src={e?.url}
-                      alt='fotoproducto'
-                    />
-                  )
-                })}
-            </div> */}
+               className={`grid ${
+                 fotos.length > 0 ? '' : 'hidden'
+               } grid-cols-4 border-2 h-55 justify-center items-center align-middle rounded-2xl`}
+             >
+               {fotos.length > 0 &&
+                 fotos.map((e) => {
+                   return (
+                     <img
+                       onClick={() => {
+                         borrarfoto(e.id)
+                       }}
+                       className='h-50 w-50'
+                       src={e?.url}
+                       alt='fotoproducto'
+                     />
+                   )
+                 })}
+             </div> */}
           </form>
         </div>
         <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white shadow-lg text-lg border border-gray-200'>
@@ -472,7 +464,7 @@ const Admin_Productos = () => {
           >
             {/* empieza el preview de creacion de productos deberia ser opcional? */}
             <div className='min-w-screen  min-h-screen       bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
-              <div className='w-full bg-white  max-w-6xl rounded    shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
+              <div className='w-full  bg-white   max-w-6xl rounded    shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
                 <div className='md:flex items-center -mx-10'>
                   <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0'>
                     <div className='relative'>
@@ -487,8 +479,11 @@ const Admin_Productos = () => {
                       ></img>
                       <div className='flex justify-between'>
                         {fotos.length > 0 ? (
-                          fotos.map((e) => (
-                            <div className='       bg-green-400 h-20  w-30'>
+                          fotos.map((e, k) => (
+                            <div
+                              key={k}
+                              className='       bg-green-400 h-20  w-30'
+                            >
                               <button
                                 onClick={() => {
                                   borrarfoto(e.public_id)
@@ -535,11 +530,11 @@ const Admin_Productos = () => {
                       <p className='text-sm  break-all '>
                         {watch('descripcion')}
                         {/* <a
-                          href='#'
-                          className='opacity-50 text-gray-900 hover:opacity-100 inline-block text-xs leading-none border-b border-gray-900'
-                        >
-                          MORE <i className='mdi mdi-arrow-right'></i>
-                        </a> */}
+                           href='#'
+                           className='opacity-50 text-gray-900 hover:opacity-100 inline-block text-xs leading-none border-b border-gray-900'
+                         >
+                           MORE <i className='mdi mdi-arrow-right'></i>
+                         </a> */}
                       </p>
                     </div>
                     <div className='justify-between flex'>
@@ -551,8 +546,8 @@ const Admin_Productos = () => {
                           {watch('precio')}
                         </span>
                         {/* <span className='text-2xl leading-none align-baseline'>
-                          .99
-                        </span> */}
+                           .99
+                         </span> */}
                       </div>
                       <div className='inline-block align-bottom'>
                         <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-10 py-2 font-semibold'>
@@ -567,20 +562,20 @@ const Admin_Productos = () => {
             </div>
             {/* termina el preview de producto en creacion */}
             {/* <div className='flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10'>
-              <div>
-                <a
-                  title='Buy me a beer'
-                  href='https://www.buymeacoffee.com/scottwindon'
-                  target='_blank'
-                  className='block w-16 h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12'
-                >
-                  <img
-                    className='object-cover object-center w-full h-full rounded-full'
-                    src='https://i.pinimg.com/originals/60/fd/e8/60fde811b6be57094e0abc69d9c2622a.jpg'
-                  />
-                </a>
-              </div>
-            </div> */}
+               <div>
+                 <a
+                   title='Buy me a beer'
+                   href='https://www.buymeacoffee.com/scottwindon'
+                   target='_blank'
+                   className='block w-16 h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12'
+                 >
+                   <img
+                     className='object-cover object-center w-full h-full rounded-full'
+                     src='https://i.pinimg.com/originals/60/fd/e8/60fde811b6be57094e0abc69d9c2622a.jpg'
+                   />
+                 </a>
+               </div>
+             </div> */}
           </div>
         </div>
       </div>
@@ -588,4 +583,4 @@ const Admin_Productos = () => {
   )
 }
 
-export default Admin_Productos
+export default Editor_productos

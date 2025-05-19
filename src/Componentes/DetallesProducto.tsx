@@ -21,6 +21,8 @@ const DetallesProducto = () => {
   const quitar_carrito = carrito_store((state) => state.quitar)
 
   const [producto, setproducto] = useState<producto>()
+  const [cantidad, setcantidad] = useState<number>(1)
+
   const [comentarios, setcomentarios] = useState<
     comentarios_producto[] | undefined
   >([])
@@ -34,7 +36,6 @@ const DetallesProducto = () => {
       setcomentarios([])
     }
   }
-
   useEffect(() => {
     if (id) {
       comentarioss(id)
@@ -170,7 +171,7 @@ const DetallesProducto = () => {
                         $
                       </span>
                       <span className='font-bold text-5xl leading-none align-baseline'>
-                        {producto?.precio}
+                        {(producto?.precio * cantidad).toLocaleString()}
                       </span>
 
                       {/* <span className='text-2xl leading-none align-baseline'>
@@ -179,11 +180,14 @@ const DetallesProducto = () => {
                     </div>
 
                     <div className='sm:flex   justify-end flex-wrap gap-2 align-bottom'>
-                      <select name='' id=''>
-                        {/* {producto?.stock.(',')} */}
-                        <option disabled selected value=''>
-                          unidades
-                        </option>
+                      <select
+                        onChange={(e) => setcantidad(Number(e.target.value))}
+                      >
+                        {[...Array(producto.stock)].map((_, i) => (
+                          <option value={i + 1} key={i}>
+                            {i + 1}
+                          </option>
+                        ))}
                       </select>
 
                       <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-2 py-2 font-semibold'>

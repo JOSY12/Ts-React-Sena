@@ -70,7 +70,9 @@ const Producto_carrito = ({
                 Comprar Producto
               </span>
             </button>
-            <p className='text-sm'>{precio && precio * cantidad} $</p>
+            <p className='text-sm'>
+              {precio && (precio * cantidad).toLocaleString()} $
+            </p>
             <button
               onClick={() => {
                 quitar_carrito(id)

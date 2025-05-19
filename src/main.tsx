@@ -24,12 +24,15 @@ import Contacto from './Componentes/Contacto'
 import {
   categorias,
   detalle_producto,
+  detalle_producto_editar,
   todo_productos,
   todos_usuarios
 } from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
 import DetallesProducto from './Componentes/DetallesProducto'
+import Listar_productos from './Componentes/Administracion/Listar_productos'
+import Editor_productos from './Componentes/Administracion/Editor_productos'
 
 export const router = createBrowserRouter([
   {
@@ -97,6 +100,26 @@ export const router = createBrowserRouter([
                     element: <Admin_Productos />,
                     loader: async () => {
                       return await categorias()
+                    }
+                  },
+                  {
+                    path: 'listado_p',
+                    element: <Listar_productos />,
+                    loader: async () => {
+                      return await todo_productos()
+                    }
+                  },
+                  {
+                    path: 'editor/:id',
+                    element: <Editor_productos />,
+                    loader: async ({ params }) => {
+                      if (!params.id) {
+                        throw new Error('id de producto requerido')
+                      }
+                      const detalle = await detalle_producto_editar(params.id)
+                      const categoriasData = await categorias()
+                      const data = [categoriasData, detalle]
+                      return data
                     }
                   }
                 ]

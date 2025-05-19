@@ -45,6 +45,27 @@ export const detalle_producto = async (pid: string) => {
   }
 }
 
+export const detalle_producto_editar = async (idproducto: string) => {
+  const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get(
+      `/p/detalle_producto_editar/${idproducto}`
+    )
+    toast.dismiss(id)
+    return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `, {
+      id
+    })
+
+    return error
+  }
+}
+
 export const comentarios_productos = async (idproducto: string) => {
   const id = toast.loading('cargando productos')
   try {
@@ -87,7 +108,7 @@ export const todos_usuarios = async (): Promise<any> => {
   try {
     const res = await axiosbackend.get('/u/usuarios')
     toast.dismiss(id)
-    return res.data.Usuarios
+    return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       toast.error(`error al cargar usuarios ${error.response.data} `, { id })

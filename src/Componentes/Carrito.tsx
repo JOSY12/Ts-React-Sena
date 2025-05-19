@@ -64,7 +64,7 @@ const Carrito = () => {
             <div className='mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3'>
               <div className='mb-2 flex justify-between'>
                 <p className='text-gray-700'>Subtotal</p>
-                <p className='text-gray-700'>${total()}</p>
+                <p className='text-gray-700'>${total().toLocaleString()}</p>
               </div>
               <div className='flex justify-between'>
                 <p className='text-gray-700'>envio</p>
@@ -75,7 +75,7 @@ const Carrito = () => {
                 <p className='text-lg font-bold'>Total</p>
                 <div className=''>
                   <p className='mb-1 text-lg font-bold'>
-                    ${total() + 4.99} USD
+                    ${(total() + 4.99).toLocaleString()} USD
                   </p>
                   {/* <p className='text-sm text-gray-700'>inscluding VAT</p> */}
                 </div>

@@ -191,7 +191,9 @@ const Producto = ({ producto }: { producto: productoprops }) => {
           ))}
         </div>
 
-        <span className='text-gray-500 mt-2'>${producto.precio}</span>
+        <span className='text-gray-500 mt-2'>
+          ${producto.precio.toLocaleString()}
+        </span>
       </div>
     </div>
   )

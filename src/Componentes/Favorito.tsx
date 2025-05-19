@@ -1,8 +1,13 @@
+import { carrito_store } from '../Zustand/Carrito_store'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import { favorito } from './types'
 
 const Favorito = ({ producto }: { producto: favorito }) => {
   const quitar = favoritos_store((state) => state.quitar)
+  const agregar = carrito_store((state) => state.agregar)
+  const quitar_carito = carrito_store((state) => state.quitar)
+  const encarrito = carrito_store((state) => state.encarrito(producto.id))
+
   return (
     <div className='flex flex-col'>
       <div className='  relative'>
@@ -14,9 +19,25 @@ const Favorito = ({ producto }: { producto: favorito }) => {
 
         <div className='flex absolute bottom-0 jusitfy-between flex-col lg:flex-row items-center mt-10 w-full space-y-4 lg:space-y-0 lg:space-x-4 xl:space-x-8'>
           <div className='w-full'>
-            <button className='cursor-pointer focus:outline-none  focus:ring-offset-2 focus:ring-2 text-green-600 w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-200    hover:text-white'>
-              Agregar al carrito
-            </button>
+            {encarrito ? (
+              <button
+                onClick={() => {
+                  quitar_carito(producto.id)
+                }}
+                className='cursor-pointer focus:outline-none  focus:ring-offset-2 focus:ring-2 text-green-600 w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-200    hover:text-white'
+              >
+                remover de carrito
+              </button>
+            ) : (
+              <button
+                onClick={() => {
+                  agregar(producto.id)
+                }}
+                className='cursor-pointer focus:outline-none  focus:ring-offset-2 focus:ring-2 text-green-600 w-full tracking-tight py-4 text-lg leading-4 hover:bg-black bg-gray-200    hover:text-white'
+              >
+                Agregar al carrito
+              </button>
+            )}
           </div>
         </div>
         <button
@@ -36,7 +57,7 @@ const Favorito = ({ producto }: { producto: favorito }) => {
         </div>
       </div>
       <p className='mt-2 tracking-tight text-2xl font-semibold leading-6  text-black'>
-        ${producto.precio}
+        ${producto.precio?.toLocaleString()}
       </p>
       <div className='flex flex-col jusitfy-start items-start mt-12'></div>
     </div>

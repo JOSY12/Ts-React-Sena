@@ -44,6 +44,16 @@ export type Usuario = {
   baneado: boolean
 }
 
+export type datos = {
+  compras: number
+  productos: number
+  usuarios: number
+}
+export type administracion = {
+  usuarios: Usuario[]
+  datos: datos
+}
+
 export type Foto = {
   public_id: string
   url: string
