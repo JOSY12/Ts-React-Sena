@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import { categorias, crear_categoria, subircloudinary } from '../../Services'
+import {
+  actualizar_producto,
+  categorias,
+  crear_categoria,
+  subircloudinary
+} from '../../Services'
 import { tcategorias, Foto, producto } from '../types'
 import { useForm } from 'react-hook-form'
 import { AiFillFileAdd } from 'react-icons/ai'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 const Editor_productos = () => {
   const data = useLoaderData()
   const [fotoslist, setfotoslist] = useState<File[]>([])
-
+  const { id } = useParams()
   const [fotos, setfoto] = useState<Foto[]>([])
   const [listacategorias, setcategorias] = useState<tcategorias[]>([])
   const [categoriasproducto, setcategoriasproducto] = useState<tcategorias[]>(
@@ -65,12 +70,11 @@ const Editor_productos = () => {
       stock: Number(data.stock),
       estado: data.estado,
       descripcion: data.descripcion,
-
       fotos: fotos,
       categorias: categoriasproducto
     }
-    console.log(nuevoproducto)
-    // await crear_producto(nuevoproducto)
+    console.log(id, nuevoproducto)
+    await actualizar_producto(id ? id : '', nuevoproducto)
   })
 
   const subirfoto = async () => {
@@ -94,23 +98,24 @@ const Editor_productos = () => {
     subirfoto()
   }, [fotoslist.length])
   useEffect(() => {
-    if (data.length > 0) {
-      setcategorias(data[0])
-      // setproducto(data[1].producto[0])
+    if (data?.length > 0 && data[1]?.producto?.length > 0) {
+      const producto = data[1].producto[0]
       reset({
-        nombre: data[1].producto[0].nombre,
-        precio: data[1].producto[0].precio,
-        stock: data[1].producto[0].stock,
-        descripcion: data[1].producto[0].descripcion,
-        estado: data[1].producto[0].estado
+        nombre: producto.nombre,
+        precio: producto.precio,
+        stock: producto.stock,
+        descripcion: producto.descripcion,
+        estado: producto.estado
       })
-      setfoto(data[1].producto[0].fotos)
-      setcategoriasproducto(data[1].producto[0].categorias)
+      setfoto(producto.fotos)
+      setcategoriasproducto(producto.categorias)
+      setcategorias(data[0])
     } else {
       setcategorias([])
-      toast.warning('no hay producto/categorias que cargar')
+      toast.warning('No hay producto/categorías que cargar')
     }
   }, [])
+  console.log('test')
 
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
@@ -341,6 +346,20 @@ const Editor_productos = () => {
                 >
                   Categorias agregadas
                 </label>
+                <input
+                  type='hidden'
+                  {...register('categorias', {
+                    validate: () =>
+                      categoriasproducto.length > 0 ||
+                      'Debes seleccionar al menos una categoría'
+                  })}
+                />
+                {errors.categorias?.message &&
+                  typeof errors.categorias.message === 'string' && (
+                    <span className='text-red-600 font-bold ml-2'>
+                      {errors.categorias.message}
+                    </span>
+                  )}
                 {categoriasproducto.length > 0 && (
                   <div className='flex gap-2 flex-wrap        '>
                     {categoriasproducto.map((e, k) => (
@@ -357,6 +376,7 @@ const Editor_productos = () => {
                   </div>
                 )}
               </div>
+
               <div className='w-full px-3 mb-6'>
                 <label className='block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2'>
                   Descripcion
@@ -430,32 +450,26 @@ const Editor_productos = () => {
                   accept='image/png, image/jpeg, image/webp'
                 />
               </label>
-              {fotos.length < 1 && (
+              {/* {fotos.length < 1 && (
                 <span className='text-red-600  font-bold ml-2'>
                   Se debe subir almenos una foto del producto
                 </span>
-              )}
+              )} */}
+              {errors.fotos?.message &&
+                typeof errors.fotos.message === 'string' && (
+                  <span className='text-red-600 font-bold ml-2'>
+                    {errors.fotos.message}
+                  </span>
+                )}
+              <input
+                type='hidden'
+                {...register('fotos', {
+                  validate: () =>
+                    fotos.length > 0 ||
+                    'Debes agregar al menos una foto al producto'
+                })}
+              />
             </div>
-
-            {/* <div
-               className={`grid ${
-                 fotos.length > 0 ? '' : 'hidden'
-               } grid-cols-4 border-2 h-55 justify-center items-center align-middle rounded-2xl`}
-             >
-               {fotos.length > 0 &&
-                 fotos.map((e) => {
-                   return (
-                     <img
-                       onClick={() => {
-                         borrarfoto(e.id)
-                       }}
-                       className='h-50 w-50'
-                       src={e?.url}
-                       alt='fotoproducto'
-                     />
-                   )
-                 })}
-             </div> */}
           </form>
         </div>
         <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white shadow-lg text-lg border border-gray-200'>
@@ -520,8 +534,8 @@ const Editor_productos = () => {
                           {watch('categorias')}
                           {categoriasproducto &&
                             categoriasproducto.length > 0 &&
-                            categoriasproducto.map((e) => (
-                              <span key={e.id} className='m-2 italic '>
+                            categoriasproducto.map((e, k) => (
+                              <span key={k} className='m-2 italic '>
                                 {e.nombre}
                               </span>
                             ))}

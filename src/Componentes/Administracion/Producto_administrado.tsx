@@ -9,6 +9,8 @@ const Producto_administrado = ({
   estado,
   categorias
 }: productoprops) => {
+  // []agregar el boton y modal de borrar producto
+  //  FIXME cuidado al intenter borrar el producto sin modal podria borrar sin verificiar nada
   return (
     <tr>
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>
@@ -28,16 +30,16 @@ const Producto_administrado = ({
 
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>
         <div className='text-sm leading-5 text-gray-900'>
-          <span>{precio}</span>
+          <span>{precio.toLocaleString()}</span>
         </div>
       </td>
 
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>
         <span
           className={`inline-flex px-2 text-xs font-semibold leading-5 ${
-            estado !== 'Disponible'
-              ? 'bg-red-100 text-red-800'
-              : 'bg-green-100 text-green-800'
+            estado == 'Agotado' && 'bg-red-100 text-red-800'
+          }     ${estado == 'Pendiente' && 'bg-yellow-100 text-yellow-600'}   ${
+            estado == 'Disponible' && 'bg-green-100 text-green-600'
           }  text-green-800 bg-green-100 rounded-full`}
         >
           {estado}

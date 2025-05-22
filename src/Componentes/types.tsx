@@ -15,6 +15,7 @@ export type productoprops = {
   imagen: string
   estado: string
   categorias: string[]
+  calificacion: string
 }
 
 export type favorito = {

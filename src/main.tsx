@@ -1,5 +1,5 @@
 import './App.css'
-import { StrictMode } from 'react'
+import { lazy, StrictMode, Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
@@ -30,9 +30,12 @@ import {
 } from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
-import DetallesProducto from './Componentes/DetallesProducto'
+//  import DetallesProducto from './Componentes/DetallesProducto'
 import Listar_productos from './Componentes/Administracion/Listar_productos'
 import Editor_productos from './Componentes/Administracion/Editor_productos'
+import Cargando from './Componentes/Cargando'
+
+const DetallesProducto = lazy(() => import('./Componentes/DetallesProducto'))
 
 export const router = createBrowserRouter([
   {
@@ -52,7 +55,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'productos/:id',
-        element: <DetallesProducto />,
+        element: (
+          <Suspense fallback={<Cargando />}>
+            <DetallesProducto />
+          </Suspense>
+        ),
         loader: async ({ params }) => {
           if (!params.id) {
             throw new Error('id de producto requerido')

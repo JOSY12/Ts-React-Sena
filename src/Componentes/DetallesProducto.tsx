@@ -9,6 +9,7 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import { comentarios_productos } from '../Services'
 import { carrito_store } from '../Zustand/Carrito_store'
+import Cargando from './Cargando'
 
 const DetallesProducto = () => {
   const data = useLoaderData()
@@ -19,6 +20,7 @@ const DetallesProducto = () => {
   const agregar = favoritos_store((state) => state.agregar)
   const agregar_carrito = carrito_store((state) => state.agregar)
   const quitar_carrito = carrito_store((state) => state.quitar)
+  const [isLoading, setIsLoading] = useState(true) // Estado para controlar la carga
 
   const [producto, setproducto] = useState<producto>()
   const [cantidad, setcantidad] = useState<number>(1)
@@ -42,15 +44,20 @@ const DetallesProducto = () => {
     }
     if (data) {
       setproducto(data.producto[0])
-      // setcomentarios(data.comentarios)
+      setIsLoading(false) // Marca como cargado cuando se tienen los datos
     } else {
       setproducto(undefined)
       setcomentarios(undefined)
+      setIsLoading(false) // Marca como cargado incluso si no hay datos
     }
-  }, [])
+  }, [data, id])
+  // se carga el loading si no esta el producto si no hya nada todabia que cargar
+  if (isLoading) {
+    return <Cargando /> // Muestra un componente de carga mientras se cargan los datos
+  }
   return (
     <>
-      {producto && producto.nombre ? (
+      {id && producto ? (
         <>
           <div className='      bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
             <div className='w-full max-w-6xl rounded bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
@@ -74,24 +81,28 @@ const DetallesProducto = () => {
                       guardar/remover en favoritos
                     </span>
                   </button>
-
-                  <button
-                    onClick={() => {
-                      encarrito
-                        ? quitar_carrito(id || '')
-                        : agregar_carrito(id || '')
-                    }}
-                    className='text-black group  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '
-                  >
-                    {encarrito ? (
-                      <BsCartCheckFill size={25} className='text-green-600' />
-                    ) : (
-                      <BsCartPlus size={25} className='hover:text-green-500' />
-                    )}
-                    <span className='absolute top-11  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
-                      agregar/remover al carrito de compras
-                    </span>
-                  </button>
+                  {producto.estado === 'Disponible' && (
+                    <button
+                      onClick={() => {
+                        encarrito
+                          ? quitar_carrito(id || '')
+                          : agregar_carrito(id || '')
+                      }}
+                      className='text-black group  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '
+                    >
+                      {encarrito ? (
+                        <BsCartCheckFill size={25} className='text-green-600' />
+                      ) : (
+                        <BsCartPlus
+                          size={25}
+                          className='hover:text-green-500'
+                        />
+                      )}
+                      <span className='absolute top-11  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
+                        agregar/remover al carrito de compras
+                      </span>
+                    </button>
+                  )}
                 </div>
               </SignedIn>
 
@@ -152,7 +163,10 @@ const DetallesProducto = () => {
                           ))}
                       </p>
                       <span className='  text-sm leading-none align-baseline'>
-                        Unidades diponibles: {producto?.stock}
+                        Unidades diponibles:{' '}
+                        {producto.estado === 'Disponible'
+                          ? producto?.stock
+                          : producto.estado}
                       </span>
                     </div>
                     <p className='text-sm  break-all '>
@@ -178,21 +192,29 @@ const DetallesProducto = () => {
                  .99
                </span> */}
                     </div>
-
                     <div className='sm:flex   justify-end flex-wrap gap-2 align-bottom'>
-                      <select
-                        onChange={(e) => setcantidad(Number(e.target.value))}
+                      {producto.estado == 'Disponible' && (
+                        <select
+                          onChange={(e) => setcantidad(Number(e.target.value))}
+                        >
+                          {[...Array(producto.stock)].map((_, i) => (
+                            <option value={i + 1} key={i}>
+                              {i + 1}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                      <button
+                        className={`${
+                          producto.estado == 'Disponible'
+                            ? ' bg-green-600  text-white '
+                            : ' bg-gray-600  text-gray-200 '
+                        }opacity-75 hover:opacity-100  rounded-full px-2 py-2 font-semibold`}
                       >
-                        {[...Array(producto.stock)].map((_, i) => (
-                          <option value={i + 1} key={i}>
-                            {i + 1}
-                          </option>
-                        ))}
-                      </select>
-
-                      <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-2 py-2 font-semibold'>
-                        <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar
-                        ahora
+                        {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
+                        {producto.estado == 'Disponible'
+                          ? 'Comprar ahora'
+                          : 'No Disponible'}
                       </button>
                     </div>
                   </div>
@@ -247,6 +269,7 @@ const DetallesProducto = () => {
           </div>
         </>
       ) : (
+        // <Cargando />
         <div className='h-screen w-screen flex flex-col items-center justify-center py-8 px-4 text-center bg-gray-100   shadow-md'>
           <svg
             className='w-12 h-12  text-black'

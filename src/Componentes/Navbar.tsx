@@ -18,8 +18,6 @@ const Navbar = () => {
   const favoritos = favoritos_store((state) => state.favoritos)
 
   const n_vistas = async (sidebar: boolean) => {
-    // [] terminar el contador de noficaciones no vistas
-
     actualizar()
     Setsidbar(sidebar)
   }

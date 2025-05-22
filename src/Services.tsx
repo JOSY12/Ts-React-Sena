@@ -430,3 +430,14 @@ export const cambiar_cantidad = async (
     return error
   }
 }
+
+export const actualizar_producto = async (idp: string, producto: producto) => {
+  const id = toast.loading('actualizando producto')
+  try {
+    await axiosbackend.put(`/p/productos/${idp}`, producto)
+    toast.success('producto actualizado exitosamente', { id })
+  } catch (error) {
+    toast.error('error al actualizar producto', { id })
+    return error
+  }
+}

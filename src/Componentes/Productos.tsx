@@ -14,7 +14,7 @@ const Productos = () => {
       setproductos([])
     }
   }, [productos.length])
-
+  // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>
