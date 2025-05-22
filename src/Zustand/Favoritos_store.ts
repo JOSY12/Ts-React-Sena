@@ -2,7 +2,10 @@ import { agregar_favorito, favoritos, quitar_favorito } from './../Services'
 import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
 import { favorito } from '../Componentes/types'
-
+// []refactorizar esta store y pasarla quiza unir las 2 estores carrito y favoritos en una sola store para mas limpieza y menos archivos
+// [] quiza agregar una store de datos de usuario para evitar hacer tantas peticiones que requieran la id
+// [] crear store de perfil de usuario para asi poder tener las direcciones y datos de entrega y pago en un store quiza
+// NOTE todo esto es una idea puede cambiar o no implementarse
 interface favoritos_store {
   favoritos: favorito[]
 
