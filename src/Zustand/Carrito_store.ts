@@ -77,9 +77,9 @@ export const carrito_store = create<carrito_store>()(
 
       solicitar_carrito: async () => {
         const res = await carrito()
-        set(() => ({
+        set({
           carrito: Array.isArray(res) ? res : []
-        }))
+        })
       }
 
       // fin del store

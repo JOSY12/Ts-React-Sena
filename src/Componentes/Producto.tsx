@@ -82,8 +82,10 @@ const Producto = ({ producto }: { producto: productoprops }) => {
       <div className='px-5 py-3'>
         <h3 className='text-gray-700 uppercase truncate'>{producto.nombre}</h3>
         <div className='flex text-sm gap-1'>
-          {producto.categorias.map((e) => (
-            <p className='  text-black font-extralight truncate'>-{e}</p>
+          {producto.categorias.map((e, k) => (
+            <p key={k} className='  text-black font-extralight truncate'>
+              -{e}
+            </p>
           ))}
         </div>
 

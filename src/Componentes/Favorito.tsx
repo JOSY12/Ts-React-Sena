@@ -10,9 +10,9 @@ const Favorito = ({ producto }: { producto: favorito }) => {
 
   return (
     <div className='flex flex-col'>
-      <div className='  relative'>
+      <div className=' flex relative justify-center items-center align-middle  '>
         <img
-          className='lg:h-100 bg-center bg-cover'
+          className='lg:h-100 bg-center   bg-cover'
           src={producto.imagen}
           alt={producto.nombre}
         />

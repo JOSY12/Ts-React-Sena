@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Componentes/Navbar'
-// import Footer from './Componentes/Footer'
 import { useEffect, useRef } from 'react'
 import { useAuth } from '@clerk/clerk-react'
 import { axiosbackend } from './Services'
@@ -9,6 +8,7 @@ import { useUser } from '@clerk/clerk-react'
 import { Notificaciones_store } from './Zustand/Notificaciones_store'
 import { carrito_store } from './Zustand/Carrito_store'
 import Footer from './Componentes/Footer'
+import { productos_store } from './Zustand/Productos_store'
 const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
@@ -34,6 +34,9 @@ const Layout = () => {
     (state) => state.solicitar_notificicaciones
   )
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
+  const solicitar_productos = productos_store(
+    (state) => state.solicitar_productos
+  )
 
   const peticiones_usuario = async () => {
     solicitar_carrito()
@@ -41,9 +44,13 @@ const Layout = () => {
     solicitar_notificicaciones()
   }
   useEffect(() => {
+    // solicitar_productos()
     isSignedIn && peticiones_usuario()
-    console.log('recargado layout')
   }, [isSignedIn])
+
+  useEffect(() => {
+    solicitar_productos()
+  }, [])
 
   return (
     <div className='min-h-screen flex flex-col'>

@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useLoaderData, useParams } from 'react-router-dom'
-import { comentarios_producto, producto } from './types'
+import { useParams, useLoaderData } from 'react-router-dom'
 import Comentarios from './Comentarios'
 import { SignedIn } from '@clerk/clerk-react'
 import Agregar_comentario from './Agregar_comentario'
 import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { favoritos_store } from '../Zustand/Favoritos_store'
-import { comentarios_productos } from '../Services'
 import { carrito_store } from '../Zustand/Carrito_store'
 import Cargando from './Cargando'
+import { producto_store } from '../Zustand/Producto_store'
 
 const DetallesProducto = () => {
   const data = useLoaderData()
@@ -20,44 +19,35 @@ const DetallesProducto = () => {
   const agregar = favoritos_store((state) => state.agregar)
   const agregar_carrito = carrito_store((state) => state.agregar)
   const quitar_carrito = carrito_store((state) => state.quitar)
-  const [isLoading, setIsLoading] = useState(true) // Estado para controlar la carga
+  const solicitar_comentarios = producto_store(
+    (state) => state.solicitar_comentarios
+  )
+  const producto = producto_store((state) => state.producto)
+  const comentarios = producto_store((state) => state.comentarios)
+  const solicitar_producto = producto_store((state) => state.solicitar_producto)
+  const setear_producto = producto_store((state) => state.setear_producto)
 
-  const [producto, setproducto] = useState<producto>()
+  const [isLoading, setIsLoading] = useState(true)
   const [cantidad, setcantidad] = useState<number>(1)
 
-  const [comentarios, setcomentarios] = useState<
-    comentarios_producto[] | undefined
-  >([])
-  // const [stock, setstock] = useState<number[]>([])
-
-  const comentarioss = async (id: string) => {
-    const res = await comentarios_productos(id)
-    if (res.length) {
-      setcomentarios(res)
-    } else {
-      setcomentarios([])
-    }
-  }
   useEffect(() => {
-    if (id) {
-      comentarioss(id)
-    }
     if (data) {
-      setproducto(data.producto[0])
-      setIsLoading(false) // Marca como cargado cuando se tienen los datos
+      setIsLoading(false)
+      solicitar_comentarios(id ? id : '')
+      setear_producto(data.producto[0])
     } else {
-      setproducto(undefined)
-      setcomentarios(undefined)
-      setIsLoading(false) // Marca como cargado incluso si no hay datos
+      setIsLoading(true)
+      solicitar_producto(id ? id : '')
+      solicitar_comentarios(id ? id : '')
     }
   }, [data, id])
-  // se carga el loading si no esta el producto si no hya nada todabia que cargar
+
   if (isLoading) {
-    return <Cargando /> // Muestra un componente de carga mientras se cargan los datos
+    return <Cargando />
   }
   return (
     <>
-      {id && producto ? (
+      {producto ? (
         <>
           <div className='      bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
             <div className='w-full max-w-6xl rounded bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
@@ -237,7 +227,16 @@ const DetallesProducto = () => {
               {/* comentario individual para tarjetas separadas */}
               {comentarios && comentarios.length > 0 ? (
                 comentarios.map((comentario, k) => (
-                  <Comentarios key={k} comentario={comentario} />
+                  <Comentarios
+                    key={k}
+                    producto_id={comentario.producto_id}
+                    foto_perfil={comentario.foto_perfil}
+                    nombre={comentario.nombre}
+                    fecha_comentario={comentario.fecha_comentario}
+                    titulo={comentario.titulo}
+                    calificacion={comentario.calificacion}
+                    comentario={comentario.comentario}
+                  />
                 ))
               ) : (
                 <div className='flex flex-col items-center justify-center p-8  rounded-lg  '>

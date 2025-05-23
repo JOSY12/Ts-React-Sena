@@ -1,20 +1,19 @@
 // import { basedatos } from '../bd'
-import { useEffect, useState } from 'react'
 import Producto from './Producto'
-import { productoprops } from './types'
-import { useLoaderData } from 'react-router-dom'
+import { productos_store } from '../Zustand/Productos_store'
+// import { useEffect } from 'react'
 
 const Productos = () => {
-  const data = useLoaderData()
-  const [productos, setproductos] = useState<productoprops[]>([])
-  useEffect(() => {
-    if (Array.isArray(data) && data.length) {
-      setproductos(data)
-    } else {
-      setproductos([])
-    }
-  }, [productos.length])
+  const productos = productos_store((state) => state.productos)
+  // const solicitar_productos = productos_store(
+  //   (state) => state.solicitar_productos
+  // )
+
+  // useEffect(() => {
+  //   solicitar_productos()
+  // }, [])
   // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
+
   return (
     <section className='bg-gray-100     '>
       <div className='container  pt-8  mx-auto'>

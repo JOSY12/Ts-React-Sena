@@ -7,13 +7,12 @@ type productos_store = {
   solicitar_productos: () => void
 }
 
-export const Notificaciones_store = create<productos_store>()((set) => ({
+export const productos_store = create<productos_store>()((set) => ({
   productos: [],
 
   solicitar_productos: async () => {
     const res = await todo_productos()
-    set(() => ({
-      productos: Array.isArray(res) ? res : []
-    }))
+
+    set({ productos: Array.isArray(res) ? res : [] })
   }
 }))

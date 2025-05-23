@@ -1,5 +1,5 @@
 import './App.css'
-import { lazy, StrictMode, Suspense } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
@@ -30,12 +30,9 @@ import {
 } from './Services'
 import Admin_usuarios from './Componentes/Administracion/Admin_usuarios'
 import Admin_Productos from './Componentes/Administracion/Admin_Productos'
-//  import DetallesProducto from './Componentes/DetallesProducto'
 import Listar_productos from './Componentes/Administracion/Listar_productos'
 import Editor_productos from './Componentes/Administracion/Editor_productos'
-import Cargando from './Componentes/Cargando'
-
-const DetallesProducto = lazy(() => import('./Componentes/DetallesProducto'))
+import DetallesProducto from './Componentes/DetallesProducto'
 
 export const router = createBrowserRouter([
   {
@@ -43,32 +40,20 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <PaginaError />,
     children: [
-      { index: true, element: <Inicio /> }, // Ruta raíz: "/"
-      { path: 'contacto', element: <Contacto /> }, // el unico lugar que el visitante puede visitar para ver los productos
+      { index: true, element: <Inicio /> }, // Ruta raíz: "/" osea aquie se va cuando la pagina no tiene url solo "/"
+      { path: 'contacto', element: <Contacto /> },
 
       {
         path: 'productos',
-        element: <Productos />,
-        loader: async () => {
-          return await todo_productos()
-        }
+        element: <Productos />
       },
       {
         path: 'productos/:id',
-        element: (
-          <Suspense fallback={<Cargando />}>
-            <DetallesProducto />
-          </Suspense>
-        ),
-        loader: async ({ params }) => {
-          if (!params.id) {
-            throw new Error('id de producto requerido')
-          }
-          return await detalle_producto(params.id)
-        }
-      }, // el unico lugar que el visitante puede visitar para ver los productos
-      { path: 'iniciarsesion', element: <Iniciar_sesion /> }, // el unico lugar que el visitante puede visitar para ver los productos
-      { path: 'registrar', element: <Registrar /> }, // el unico lugar que el visitante puede visitar para ver los productos
+        element: <DetallesProducto />,
+        loader: ({ params }) => detalle_producto(params.id ? params.id : '')
+      },
+      { path: 'iniciarsesion', element: <Iniciar_sesion /> },
+      { path: 'registrar', element: <Registrar /> },
       {
         path: 'u',
         element: <ProtectedRoute />,
@@ -98,23 +83,17 @@ export const router = createBrowserRouter([
                   {
                     path: 'usuarios',
                     element: <Admin_usuarios />,
-                    loader: async () => {
-                      return await todos_usuarios()
-                    }
+                    loader: todos_usuarios
                   },
                   {
                     path: 'productos',
                     element: <Admin_Productos />,
-                    loader: async () => {
-                      return await categorias()
-                    }
+                    loader: categorias
                   },
                   {
                     path: 'listado_p',
                     element: <Listar_productos />,
-                    loader: async () => {
-                      return await todo_productos()
-                    }
+                    loader: todo_productos
                   },
                   {
                     path: 'editor/:id',
@@ -136,7 +115,8 @@ export const router = createBrowserRouter([
         ]
       },
 
-      { path: '*', element: <PaginaError /> } // Ruta para manejar errores
+      { path: '*', element: <PaginaError /> } // Ruta para manejar errores, debe ponerse
+      // siempre dentro del layout visible con su navbar para que se muestre bien
     ]
   }
 ])

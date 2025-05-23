@@ -18,11 +18,11 @@ const Producto_carrito = ({
 
   return (
     <div className='justify-between mb-6 rounded-lg overflow-x-auto bg-white p-6 shadow-md sm:flex sm:justify-start'>
-      <Link to={`/productos/${id}`}>
+      <Link to={`/productos/${id}`} className='justify-center flex   '>
         <img
           src={imagen || 'asdawd'}
           alt='product-image'
-          className='w-full rounded-lg sm:w-30'
+          className=' rounded-lg w-30  h-30'
         />
       </Link>
 
