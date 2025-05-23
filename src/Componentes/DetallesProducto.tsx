@@ -40,7 +40,7 @@ const DetallesProducto = () => {
       solicitar_producto(id ? id : '')
       solicitar_comentarios(id ? id : '')
     }
-  }, [data, id])
+  }, [data, id, producto])
 
   if (isLoading) {
     return <Cargando />

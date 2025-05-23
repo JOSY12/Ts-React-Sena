@@ -1,17 +1,17 @@
 // import { basedatos } from '../bd'
 import Producto from './Producto'
 import { productos_store } from '../Zustand/Productos_store'
-// import { useEffect } from 'react'
+import { useEffect } from 'react'
 
 const Productos = () => {
   const productos = productos_store((state) => state.productos)
-  // const solicitar_productos = productos_store(
-  //   (state) => state.solicitar_productos
-  // )
 
-  // useEffect(() => {
-  //   solicitar_productos()
-  // }, [])
+  const solicitar_productos = productos_store(
+    (state) => state.solicitar_productos
+  )
+  useEffect(() => {
+    solicitar_productos()
+  }, [])
   // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
 
   return (

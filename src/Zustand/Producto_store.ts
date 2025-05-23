@@ -2,7 +2,6 @@
 import { create } from 'zustand'
 import { comentarios_productos, detalle_producto } from '../Services'
 import { producto, comentarios_producto } from '../Componentes/types'
-
 type producto_store = {
   producto: producto | null
   comentarios: comentarios_producto[]
@@ -22,7 +21,7 @@ export const producto_store = create<producto_store>((set) => ({
   },
   solicitar_comentarios: async (id) => {
     const res = await comentarios_productos(id)
-    set({ comentarios: res })
+    set({ comentarios: Array.isArray(res) ? res : [] })
   },
   setear_producto: (producto: producto) => set({ producto })
 }))

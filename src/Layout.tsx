@@ -44,7 +44,6 @@ const Layout = () => {
     solicitar_notificicaciones()
   }
   useEffect(() => {
-    // solicitar_productos()
     isSignedIn && peticiones_usuario()
   }, [isSignedIn])
 

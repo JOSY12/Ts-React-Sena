@@ -4,7 +4,6 @@ import { AiOutlineDollarCircle } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
 
 const Producto_carrito = ({
-  // estado,
   id,
   nombre,
   precio,

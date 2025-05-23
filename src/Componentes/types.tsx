@@ -35,6 +35,7 @@ export type item_carrito = {
   stock?: number | 1
   cantidad: number
 }
+
 export type Usuario = {
   id: string
   nombre: string
@@ -93,5 +94,4 @@ export type comentario = {
   comentario: string
   producto_id: string | null
   titulo: string
-  usuario_id: string
 }

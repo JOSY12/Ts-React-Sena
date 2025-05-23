@@ -19,7 +19,7 @@ const Admin_Productos = () => {
   const [categoriasproducto, setcategoriasproducto] = useState<tcategorias[]>(
     []
   )
-
+  // FIXME cambiar el modal por un modal con usestate para mejorar el clic y la eficiencia del cerrado y insertardo de datos
   const {
     register,
     handleSubmit,
@@ -71,6 +71,7 @@ const Admin_Productos = () => {
       fotos: fotos,
       categorias: categoriasproducto
     }
+    console.log(nuevoproducto)
     await crear_producto(nuevoproducto)
   })
   // const subirfotomultiple = async () => {
@@ -522,7 +523,6 @@ const Admin_Productos = () => {
                           {watch('nombre')}
                         </h1>
                         <p className='text-sm flex  flex-wrap break-all '>
-                          {watch('categorias')}
                           {categoriasproducto &&
                             categoriasproducto.length > 0 &&
                             categoriasproducto.map((e) => (
@@ -548,12 +548,22 @@ const Admin_Productos = () => {
                           $
                         </span>
                         <span className='font-bold text-5xl leading-none align-baseline'>
-                          {watch('precio')}
+                          {Number(watch('precio')).toLocaleString()}
                         </span>
                         {/* <span className='text-2xl leading-none align-baseline'>
                           .99
                         </span> */}
                       </div>
+                      <select>
+                        {[
+                          ...Array(watch('stock') && Number(watch('stock')))
+                        ].map((_, i) => (
+                          <option value={i + 1} key={i}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </select>
+
                       <div className='inline-block align-bottom'>
                         <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-10 py-2 font-semibold'>
                           <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar

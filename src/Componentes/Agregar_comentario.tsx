@@ -1,14 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { crear_comentario } from '../Services'
 import { toast } from 'sonner'
-import { useClerk } from '@clerk/clerk-react'
 import { useParams } from 'react-router-dom'
 import { comentario } from './types'
 import { useState } from 'react'
+import React from 'react'
+import { producto_store } from '../Zustand/Producto_store'
 
 const Agregar_comentario = () => {
   const { id } = useParams()
-  const { user } = useClerk()
+  const solicitar_comentarios = producto_store(
+    (state) => state.solicitar_comentarios
+  )
   const {
     register,
     handleSubmit,
@@ -18,15 +21,15 @@ const Agregar_comentario = () => {
   } = useForm()
   const [estrellas, setestrellas] = useState<number>(1)
   const submit = handleSubmit(async (data) => {
-    if (id && user?.id) {
+    if (id) {
       const comentario: comentario = {
-        usuario_id: user?.id,
         calificacion: estrellas,
         comentario: data.comentario,
         producto_id: id,
         titulo: data.titulo
       }
       await crear_comentario(comentario)
+      solicitar_comentarios(id)
     } else {
       toast.error('error al intentar crear comentario')
     }
@@ -89,79 +92,28 @@ const Agregar_comentario = () => {
             )}
         </div>
         <div className='w-full  flex items-start md:w-full px-3'>
-          <div className='flex items-start w-1/2 text-gray-700  mr-auto'>
+          <div className='flex items-start w-1/2 text-gray-700 mr-auto'>
             <div className='flex flex-row-reverse justify-center text-3xl'>
-              <input
-                type='radio'
-                id='star5'
-                name='rating'
-                onClick={() => setestrellas(5)}
-                className='peer hidden'
-              />
-              <label
-                htmlFor='star5'
-                className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-              >
-                ★
-              </label>
-
-              <input
-                type='radio'
-                id='star4'
-                name='rating'
-                onClick={() => setestrellas(4)}
-                className='peer hidden'
-              />
-              <label
-                htmlFor='star4'
-                className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-              >
-                ★
-              </label>
-
-              <input
-                type='radio'
-                id='star3'
-                name='rating'
-                onClick={() => setestrellas(3)}
-                className='peer hidden'
-              />
-              <label
-                htmlFor='star3'
-                className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-              >
-                ★
-              </label>
-
-              <input
-                type='radio'
-                id='star2'
-                name='rating'
-                onClick={() => setestrellas(2)}
-                className='peer hidden'
-              />
-              <label
-                htmlFor='star2'
-                className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-              >
-                ★
-              </label>
-
-              <input
-                type='radio'
-                id='star1'
-                name='rating'
-                onClick={() => setestrellas(1)}
-                className='peer hidden'
-              />
-              <label
-                htmlFor='star1'
-                className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
-              >
-                ★
-              </label>
+              {[5, 4, 3, 2, 1].map((num) => (
+                <React.Fragment key={num}>
+                  <input
+                    type='radio'
+                    id={`star${num}`}
+                    name='rating'
+                    onClick={() => setestrellas(num)}
+                    className='peer hidden'
+                  />
+                  <label
+                    htmlFor={`star${num}`}
+                    className='cursor-pointer text-gray-400 peer-checked:text-yellow-400'
+                  >
+                    ★
+                  </label>
+                </React.Fragment>
+              ))}
             </div>
           </div>
+
           <div className='-mr-1'>
             <button
               type='submit'
