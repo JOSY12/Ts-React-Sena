@@ -101,21 +101,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://img.global.news.samsung.com/mx/wp-content/uploads/2019/01/Notebook-9-Pro-3.jpg')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'></path>
-                      </svg>
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>Compuador dell</h3>
                     <span className='text-gray-500 mt-2'>$1999</span>
@@ -128,11 +114,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://http2.mlstatic.com/D_NQ_NP_932200-MLA54147001786_032023-O.webp')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      Ver
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>Control xbox </h3>
                     <span className='text-gray-500 mt-2'>$60</span>
@@ -145,21 +127,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://acf.geeknetic.es/imgri/imagenes/tutoriales/definiciones/2020/11/Nintendo-Switch-nysm.jpg?f=webp')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'></path>
-                      </svg>
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>
                       Consola switch 2
@@ -174,21 +142,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://megacomputer.com.co/wp-content/uploads/2024/10/1-29.webp')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'></path>
-                      </svg>
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>
                       Telefono samsung 13
@@ -208,11 +162,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfZplKlPW9kETIxL0hAqjzwBi-C31mAyckzg&s')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      Ver
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>
                       telefono samsung 12x
@@ -227,21 +177,7 @@ const Landing_page = () => {
                       backgroundImage:
                         "url('https://www.kalley.com.co/medias/7705946478533-001-1400Wx1400H?context=bWFzdGVyfGltYWdlc3w0NzMzNnxpbWFnZS93ZWJwfGFEQTVMMmd4TkM4eE5ETTJOakV5T1RVMU16UXpPQzgzTnpBMU9UUTJORGM0TlRNelh6QXdNVjh4TkRBd1YzZ3hOREF3U0F8OTUwOTg1N2IwNjcxZWZiNzBhZTc1ZmZhNTU0M2JlMDRiMGIyN2VkYzFiY2FiYzA4YzMyZWUyMGZjMzU3YTRkMQ')"
                     }}
-                  >
-                    <button className='p-2 rounded-full bg-blue-600 text-white mx-5 -mb-4 hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
-                      <svg
-                        className='h-5 w-5'
-                        fill='none'
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        viewBox='0 0 24 24'
-                        stroke='currentColor'
-                      >
-                        <path d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'></path>
-                      </svg>
-                    </button>
-                  </div>
+                  ></div>
                   <div className='px-5 py-3'>
                     <h3 className='text-gray-700 uppercase'>Teclado Gamer </h3>
                     <span className='text-gray-500 mt-2'>$60</span>

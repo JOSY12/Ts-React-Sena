@@ -479,14 +479,14 @@ const Editor_productos = () => {
               <div className='w-full  bg-white   max-w-6xl rounded    shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
                 <div className='md:flex   items-center -mx-10'>
                   <div className='w-full  md:w-1/2 px-10 mb-10 md:mb-0 '>
-                    <div className='relative'>
+                    <div className='relative z-1'>
                       <img
                         src={
                           fotos.length > 0
                             ? fotos[0].url
                             : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
                         }
-                        className='relative z-10'
+                        className='relative'
                         alt=''
                       ></img>
                       <div className='flex  justify-between'>
@@ -575,21 +575,6 @@ const Editor_productos = () => {
               </div>
             </div>
             {/* termina el preview de producto en creacion */}
-            {/* <div className='flex items-end justify-end fixed bottom-0 right-0 mb-4 mr-4 z-10'>
-               <div>
-                 <a
-                   title='Buy me a beer'
-                   href='https://www.buymeacoffee.com/scottwindon'
-                   target='_blank'
-                   className='block w-16 h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12'
-                 >
-                   <img
-                     className='object-cover object-center w-full h-full rounded-full'
-                     src='https://i.pinimg.com/originals/60/fd/e8/60fde811b6be57094e0abc69d9c2622a.jpg'
-                   />
-                 </a>
-               </div>
-             </div> */}
           </div>
         </div>
       </div>

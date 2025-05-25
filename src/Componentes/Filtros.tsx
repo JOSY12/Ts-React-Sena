@@ -24,13 +24,13 @@ const Filtros = () => {
   }, [])
   return (
     <div
-      className={`space-y-3       justify-end h-screen  lg:border-r-4 m-2 lg:py-10   lg:block xl:block text-black lg:px-4 lg:space-y-4`}
+      className={`space-y-3       justify-end h-screen  lg:border-r-4 p-20 lg:ml-10 lg:py-10   lg:block xl:block text-black lg:px-4 lg:space-y-4`}
     >
       <p className='  font-bold   mb-2    justify-center'>Categorias</p>
       <div className='flex flex-col space-y-3 ml-2   justify-center'>
         {categorias && categorias.length > 0
           ? categorias.map((e) => (
-              <div>
+              <div className='flex items-center space-x-2' key={e.id}>
                 <input
                   {...register('Categorias')}
                   id={e.id}
@@ -43,6 +43,12 @@ const Filtros = () => {
                   htmlFor={e.id}
                 >
                   {e.nombre}
+                </label>
+                <label
+                  htmlFor={e.id}
+                  className='peer-checked:opacity-100 opacity-0'
+                >
+                  <AiOutlineSearch />
                 </label>
               </div>
             ))
@@ -65,7 +71,7 @@ const Filtros = () => {
             })}
             placeholder='Minimo'
             type='number'
-            className='bg-gray-100   w-full  sm:w-30 text-black border-1 rounded-md focus:bg-white focus:outline-black'
+            className='bg-gray-100   sm:w-full   lg:w-40 text-black border-1 rounded-md focus:bg-white focus:outline-black'
           />
           <span>-</span>
           <input
@@ -92,18 +98,18 @@ const Filtros = () => {
             })}
             placeholder='Maximo'
             type='number'
-            className='bg-gray-100 w-full  sm:w-30 text-black border-1 rounded-md focus:bg-white focus:outline-black'
+            className='bg-gray-100   sm:w-full   lg:w-40 text-black border-1 rounded-md focus:bg-white focus:outline-black'
           />
         </div>
         {errors.Minimo?.message && (
-          <span className='text-red-500 text-sm'>
+          <span className='text-red-500   text-sm'>
             {errors.Minimo.message &&
               typeof errors.Minimo.message === 'string' &&
               errors.Minimo.message}
           </span>
         )}
         {errors.Maximo?.message && (
-          <span className='text-red-500 text-sm'>
+          <span className='text-red-500    text-sm'>
             {errors.Maximo.message &&
               typeof errors.Maximo.message === 'string' &&
               errors.Maximo.message}

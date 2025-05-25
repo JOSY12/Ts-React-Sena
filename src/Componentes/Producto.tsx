@@ -51,8 +51,8 @@ const Producto = ({ producto }: { producto: productoprops }) => {
               onClick={() => {
                 favorito ? quitar(producto.id) : agregar(producto.id)
               }}
-              className={`p-2     mb-2  border rounded-tl-2xl rounded-bl-2xl justify-end ${
-                favorito ? 'bg-red-100' : 'bg-gray-100'
+              className={`p-2    mb-2   rounded-tl-2xl rounded-bl-2xl justify-end ${
+                favorito ? 'bg-red-300' : 'bg-gray-100'
               }   hover:bg-red-100 `}
             >
               {favorito ? (
@@ -67,7 +67,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
                   ? quitar_carrito(producto.id)
                   : agregar_carrito(producto.id)
               }}
-              className={`p-2 border rounded-tl-2xl rounded-bl-2xl justify-end ${
+              className={`p-2   rounded-tl-2xl rounded-bl-2xl justify-end ${
                 encarrito ? 'bg-green-100' : 'bg-gray-100'
               }  hover:bg-green-100  `}
             >
