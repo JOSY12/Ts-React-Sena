@@ -118,13 +118,12 @@ const Editor_productos = () => {
   console.log('test')
 
   return (
-    <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
+    <div className='mb-10   flex-1 overflow-hidden '>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
         <h1 className='font-medium text-2xl'>Editor de productos</h1>
       </div>
-      {/* <button>SSSSSSSSSSSs</button> */}
-      <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
-        <div className='w-full lg:w-1/2 m-1'>
+      <div className='flex flex-col     mx-3 mt-6  '>
+        <div className='w-full  '>
           <form
             onSubmit={submit}
             className='rounded-2xl w-full bg-white shadow-md p-6'
@@ -472,15 +471,14 @@ const Editor_productos = () => {
             </div>
           </form>
         </div>
-        <div className='w-full rounded-2xl lg:w-2/3 m-1  bg-white shadow-lg text-lg border border-gray-200'>
-          <div
-            className={`overflow-x-auto rounded-2xl p-3    overflow-y-auto   `}
-          >
+        <div className='w-full     rounded-2xl    bg-white shadow-lg text-lg border border-gray-200'>
+          <div className={` rounded-2xl p-3     `}>
             {/* empieza el preview de creacion de productos deberia ser opcional? */}
-            <div className='min-w-screen  min-h-screen       bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
+
+            <div className='       bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
               <div className='w-full  bg-white   max-w-6xl rounded    shadow-xl p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left'>
-                <div className='md:flex items-center -mx-10'>
-                  <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0'>
+                <div className='md:flex   items-center -mx-10'>
+                  <div className='w-full  md:w-1/2 px-10 mb-10 md:mb-0 '>
                     <div className='relative'>
                       <img
                         src={
@@ -491,25 +489,27 @@ const Editor_productos = () => {
                         className='relative z-10'
                         alt=''
                       ></img>
-                      <div className='flex justify-between'>
+                      <div className='flex  justify-between'>
                         {fotos.length > 0 ? (
                           fotos.map((e, k) => (
-                            <div
-                              key={k}
-                              className='       bg-green-400 h-20  w-30'
-                            >
-                              <button
-                                onClick={() => {
-                                  borrarfoto(e.public_id)
-                                }}
+                            <div key={k} className=' justify-center w-30 h-30 '>
+                              <div
+                                key={k}
+                                className='flex justify-center bg-white   w-full  '
                               >
-                                <img
-                                  src={e.url}
-                                  alt=''
-                                  className='h-30 w-30 absolute  hover:bg-red-600'
-                                />
-                                <div className='  w-30 h-30 hover:bg-red-500 opacity-60 hover:text-red-500'></div>
-                              </button>
+                                <button
+                                  onClick={() => {
+                                    borrarfoto(e.public_id)
+                                  }}
+                                >
+                                  <img
+                                    loading='lazy'
+                                    src={e.url}
+                                    alt=''
+                                    className=' h-30    '
+                                  />
+                                </button>
+                              </div>
                             </div>
                           ))
                         ) : (

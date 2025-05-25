@@ -11,7 +11,6 @@ const Carrito = () => {
   useEffect(() => {
     solicitar_carrito()
   }, [])
-  console.log(carrito)
 
   return (
     <>

@@ -27,7 +27,7 @@ const Navbar = () => {
       <div className='flex flex-wrap place-items-center  '>
         <section className='relative m-auto'>
           <nav className='flex    bg-[#000000] text-white w-screen '>
-            <div className='px-5 xl:px-10 py-6 flex w-full items-center'>
+            <div className='px-5  xl:px-10 py-6 flex w-full items-center'>
               <a className='text-3xl font-bold  flex font-heading' href='/'>
                 <img
                   className='h-10'
@@ -72,7 +72,7 @@ const Navbar = () => {
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           className='h-6 w-6'
-                          fill='red'
+                          fill={favoritos.length > 0 ? 'red' : 'none'}
                           viewBox='0 0 24 24'
                           stroke='currentColor'
                         >

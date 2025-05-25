@@ -96,30 +96,36 @@ const DetallesProducto = () => {
                 </div>
               </SignedIn>
 
-              <div className='md:flex items-center -mx-10'>
-                <div className='w-full md:w-1/2 px-10 mb-10 md:mb-0 '>
-                  <div className='relative '>
-                    <img
-                      src={
-                        Array.isArray(producto.fotos) &&
-                        producto?.fotos.length > 0 &&
-                        typeof producto.fotos[0] === 'string'
-                          ? producto.fotos[0]
-                          : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
-                      }
-                      className='relative z-10'
-                      alt=''
-                    ></img>
-                    <div className='flex    justify-between'>
+              <div className='md:flex    items-center -mx-10'>
+                <div className='w-full  md:w-1/2 px-10 mb-10 md:mb-0 '>
+                  <div className='   relative  '>
+                    <div className='flex justify-center  '>
+                      <img
+                        src={
+                          Array.isArray(producto.fotos) &&
+                          producto?.fotos.length > 0 &&
+                          typeof producto.fotos[0] === 'string'
+                            ? producto.fotos[0]
+                            : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
+                        }
+                        className='relative -z-0'
+                        alt=''
+                      ></img>
+                    </div>
+                    <div className='  flex justify-between  '>
                       {Array.isArray(producto.fotos) &&
                       producto.fotos.length > 0 ? (
                         producto.fotos.map((e, k) => (
-                          <div key={k} className='       w-30'>
-                            <button>
+                          <div key={k} className=' justify-center w-30 h-30 '>
+                            <div className='flex justify-center bg-white   w-full  '>
                               {typeof e === 'string' && (
-                                <img src={e} alt='' className='h-30 w-30    ' />
+                                <img
+                                  loading='lazy'
+                                  src={e}
+                                  className=' h-30    '
+                                ></img>
                               )}
-                            </button>
+                            </div>
                           </div>
                         ))
                       ) : (
@@ -174,7 +180,7 @@ const DetallesProducto = () => {
                       <span className='text-2xl leading-none align-baseline'>
                         $
                       </span>
-                      <span className='font-bold text-5xl leading-none align-baseline'>
+                      <span className='font-bold text-4xl leading-none align-baseline'>
                         {(producto?.precio * cantidad).toLocaleString()}
                       </span>
 

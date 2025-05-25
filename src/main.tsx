@@ -4,10 +4,8 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import { createBrowserRouter } from 'react-router-dom'
-import Inicio from './Componentes/Inicio'
 import Perfil from './Componentes/Perfil'
 import PaginaError from './Componentes/Error'
-import Productos from './Componentes/Productos'
 import Notificaciones from './Componentes/Notificaciones'
 import Carrito from './Componentes/Carrito'
 import Compras from './Componentes/Compras'
@@ -33,6 +31,8 @@ import Admin_Productos from './Componentes/Administracion/Admin_Productos'
 import Listar_productos from './Componentes/Administracion/Listar_productos'
 import Editor_productos from './Componentes/Administracion/Editor_productos'
 import DetallesProducto from './Componentes/DetallesProducto'
+import Landing_page from './Componentes/Landing_page'
+import Inicio from './Componentes/Inicio'
 
 export const router = createBrowserRouter([
   {
@@ -40,12 +40,12 @@ export const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <PaginaError />,
     children: [
-      { index: true, element: <Inicio /> }, // Ruta raíz: "/" osea aquie se va cuando la pagina no tiene url solo "/"
+      { index: true, element: <Landing_page /> }, // Ruta raíz: "/" osea aquie se va cuando la pagina no tiene url solo "/"
       { path: 'contacto', element: <Contacto /> },
 
       {
         path: 'productos',
-        element: <Productos />
+        element: <Inicio />
       },
       {
         path: 'productos/:id',

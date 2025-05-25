@@ -18,11 +18,15 @@ const Producto_carrito = ({
   return (
     <div className='justify-between mb-6 rounded-lg overflow-x-auto bg-white p-6 shadow-md sm:flex sm:justify-start'>
       <Link to={`/productos/${id}`} className='justify-center flex   '>
-        <img
-          src={imagen || 'asdawd'}
-          alt='product-image'
-          className=' rounded-lg w-30  h-30'
-        />
+        <div className=' justify-center h-30 w-30'>
+          <div className='flex justify-center bg-white   w-full  '>
+            <img
+              loading='lazy'
+              src={imagen ? imagen : ''}
+              className=' h-30    '
+            ></img>
+          </div>
+        </div>
       </Link>
 
       <div className='truncate sm:ml-4 sm:flex sm:w-full sm:justify-between'>
@@ -32,8 +36,6 @@ const Producto_carrito = ({
               {nombre}
             </h2>
           </Link>
-
-          {/* <p className='mt-1 text-xs text-gray-700'>{estado}</p>  */}
         </div>
         <div className='mt-4  flex justify-between   sm:mt-0 sm:block sm:space-x-6'>
           <div className='flex    items-center border-gray-100'>

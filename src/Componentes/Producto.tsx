@@ -33,13 +33,15 @@ const Producto = ({ producto }: { producto: productoprops }) => {
       {/* fin calificacion */}
 
       <Link to={`/productos/${producto.id}`}>
-        <img
-          loading='lazy'
-          className='flex items-end justify-end h-56 w-full bg-cover bg-center'
-          style={{
-            backgroundImage: `url(${producto.imagen})`
-          }}
-        ></img>
+        <div className=' justify-center h-50 '>
+          <div className='flex justify-center bg-white   w-full  '>
+            <img
+              loading='lazy'
+              src={producto.imagen}
+              className=' h-50    '
+            ></img>
+          </div>
+        </div>
       </Link>
 
       <div className='absolute top-0 right-0  '>
@@ -80,7 +82,12 @@ const Producto = ({ producto }: { producto: productoprops }) => {
       </div>
 
       <div className='px-5 py-3'>
-        <h3 className='text-gray-700 uppercase truncate'>{producto.nombre}</h3>
+        <Link to={`/productos/${producto.id}`}>
+          <h3 className='text-blue-700 uppercase truncate'>
+            {producto.nombre}
+          </h3>
+        </Link>
+
         <div className='flex text-sm gap-1'>
           {producto.categorias.map((e, k) => (
             <p key={k} className='  text-black font-extralight truncate'>
@@ -89,7 +96,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
           ))}
         </div>
 
-        <span className='text-gray-500 mt-2'>
+        <span className='text-black mt-2'>
           ${producto.precio.toLocaleString()}
         </span>
       </div>
