@@ -115,7 +115,6 @@ const Editor_productos = () => {
       toast.warning('No hay producto/categorías que cargar')
     }
   }, [])
-  console.log('test')
 
   return (
     <div className='mb-10   flex-1 overflow-hidden '>

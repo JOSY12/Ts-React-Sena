@@ -24,8 +24,8 @@ const Admin_Productos = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch
-    // reset
+    watch,
+    reset
   } = useForm()
   const inputfotos = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -73,6 +73,7 @@ const Admin_Productos = () => {
     }
     console.log(nuevoproducto)
     await crear_producto(nuevoproducto)
+    reset
   })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
@@ -148,7 +149,7 @@ const Admin_Productos = () => {
                         message: 'el nombre del producto es requerido'
                       },
                       minLength: {
-                        value: 10,
+                        value: 4,
                         message: 'minimo 10 caracteres'
                       },
                       maxLength: {

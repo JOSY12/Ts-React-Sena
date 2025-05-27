@@ -7,11 +7,14 @@ export const axiosbackend = axios.create({
   withCredentials: true
 })
 // USUARIOS
-export const todo_productos = async () => {
+export const todo_productos = async (filtros: any) => {
   const id = toast.loading('cargando productos')
+  console.log('filtros', filtros)
   try {
-    const res = await axiosbackend.get('/pu/productos')
+    const res = await axiosbackend.get('/pu/productos', { params: filtros })
+    // []Comprobar si hacer categorias: filtros.categoias funciona en backend
     toast.dismiss(id)
+
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -436,6 +439,37 @@ export const actualizar_producto = async (idp: string, producto: producto) => {
   try {
     await axiosbackend.put(`/p/productos/${idp}`, producto)
     toast.success('producto actualizado exitosamente', { id })
+  } catch (error) {
+    toast.error('error al actualizar producto', { id })
+    return error
+  }
+}
+
+export const testproducto = async () => {
+  const id = toast.loading('actualizando producto')
+  try {
+    const res = await axios.get(
+      `https://dummyjson.com/products/category/mobile-accessories`
+    )
+    toast.success('producto actualizado exitosamente', { id })
+    for (let e of res.data.products) {
+      const producto = {
+        nombre: e.title,
+        descripcion: e.description,
+        precio: Math.ceil(e.price),
+        stock: e.stock > 0 ? e.stock : 10,
+        estado: 'Disponible',
+        categorias: [{ id: '1e2eb3d6-fa6a-4479-be5e-7b3176dbcecc' }],
+        fotos:
+          e.images &&
+          (e.images.map((url: string) => ({
+            url: url,
+            public_id: url.split('/').pop()?.split('.')[0] || ''
+          })) as Foto[])
+      }
+      console.log(producto)
+      // await axiosbackend.post('/p/crear_producto', producto)
+    }
   } catch (error) {
     toast.error('error al actualizar producto', { id })
     return error

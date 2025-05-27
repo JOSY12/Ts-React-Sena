@@ -3,11 +3,19 @@ import { productos_store } from '../Zustand/Productos_store'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineSearch } from 'react-icons/ai'
+import { useSearchParams } from 'react-router-dom'
 
 const Filtros = () => {
   const solicitar_categorias = productos_store(
     (state) => state.solicitar_categorias
   )
+
+  const buscar_con_filtros = productos_store(
+    (state) => state.buscar_con_filtros
+  )
+
+  const [parametrosUrl, setSearchParams] = useSearchParams()
+
   const categorias = productos_store((state) => state.categorias)
   const {
     register,
@@ -15,16 +23,47 @@ const Filtros = () => {
     watch,
     formState: { errors }
   } = useForm()
-  const submit = handleSubmit(async (data) => {
-    console.log(data)
-  })
 
+  const submit = handleSubmit(async (data) => {
+    const nuevosParametros = new URLSearchParams(parametrosUrl)
+    // agrega o quita las categorias
+    data.Categorias && data.Categorias.length > 0
+      ? nuevosParametros.set('Categorias', data.Categorias)
+      : nuevosParametros.delete('Categorias')
+    data.Minimo
+      ? nuevosParametros.set('Minimo', data.Minimo)
+      : nuevosParametros.delete('Minimo')
+    data.Maximo
+      ? nuevosParametros.set('Maximo', data.Maximo)
+      : nuevosParametros.delete('Maximo')
+    data.Nombre
+      ? nuevosParametros.set('Nombre', data.Nombre.trim())
+      : nuevosParametros.delete('Nombre')
+
+    setSearchParams(nuevosParametros)
+    // await todo_productos({
+    //   Categorias: data.Categorias,
+    //   Nombre: data.Nombre.trim(),
+    //   Minimo: data.Minimo,
+    //   Maximo: data.Maximo
+    // })
+    buscar_con_filtros({
+      Categorias: data.Categorias,
+      Nombre: data.Nombre.trim(),
+      Minimo: data.Minimo,
+      Maximo: data.Maximo
+    })
+    // Aquí puedes hacer algo con los filtros, como guardarlos en el estado global o enviarlos a un servidor
+  })
+  // [x] IMPLEMENTAR EN BACKEND FILTROS
+  // [x] AGREGAR SCRIPT PARA INGRESAR PRODUCROS DESDE ORAS APIS APIE ELEGIDA: https://dummyjson.com/products
   useEffect(() => {
     solicitar_categorias()
   }, [])
   return (
-    <div
-      className={`space-y-3       justify-end h-screen  lg:border-r-4 p-20 lg:ml-10 lg:py-10   lg:block xl:block text-black lg:px-4 lg:space-y-4`}
+    <form
+      onSubmit={submit}
+      className={`space-y-3      justify-end h-screen   p-20 lg:ml-10 lg:py-10   lg:block xl:block text-black lg:px-4 lg:space-y-4`}
     >
       <p className='  font-bold   mb-2    justify-center'>Categorias</p>
       <div className='flex flex-col space-y-3 ml-2   justify-center'>
@@ -55,15 +94,15 @@ const Filtros = () => {
           : ''}
       </div>
       <div className='flex flex-col space-y-3    justify-center'>
-        <span className='   font-bold      justify-center'>Precio</span>
-
-        <div className='flex  ml-2   '>
+        <span className=' font-bold      justify-center'>Buscar</span>
+        <div className=' flex-col sm:flex    ml-2   '>
           <input
             {...register('Minimo', {
               required: {
                 value: false,
                 message: 'El precio minimo es requerido'
               },
+
               min: {
                 value: 10,
                 message: 'El precio minimo es 10'
@@ -71,7 +110,7 @@ const Filtros = () => {
             })}
             placeholder='Minimo'
             type='number'
-            className='bg-gray-100   sm:w-full   lg:w-40 text-black border-1 rounded-md focus:bg-white focus:outline-black'
+            className='bg-gray-100   w-full  text-black border-1 rounded-md focus:bg-white focus:outline-black'
           />
           <span>-</span>
           <input
@@ -98,7 +137,7 @@ const Filtros = () => {
             })}
             placeholder='Maximo'
             type='number'
-            className='bg-gray-100   sm:w-full   lg:w-40 text-black border-1 rounded-md focus:bg-white focus:outline-black'
+            className='bg-gray-100    w-full     text-black border-1 rounded-md focus:bg-white focus:outline-black'
           />
         </div>
         {errors.Minimo?.message && (
@@ -138,7 +177,6 @@ const Filtros = () => {
           <div className=' absolute right-0 -top-2 '>
             <button
               type='submit'
-              onClick={submit}
               className='  cursor-pointer p-1 mt-2 border-2  rounded-md'
             >
               <AiOutlineSearch size={21} />
@@ -146,7 +184,7 @@ const Filtros = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }
 

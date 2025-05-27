@@ -2,15 +2,28 @@
 import Producto from './Producto'
 import { productos_store } from '../Zustand/Productos_store'
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
 const Productos = () => {
   const productos = productos_store((state) => state.productos)
+  const [parametrosUrl] = useSearchParams()
 
   const solicitar_productos = productos_store(
     (state) => state.solicitar_productos
   )
-
+  const buscar_con_filtros = productos_store(
+    (state) => state.buscar_con_filtros
+  )
   useEffect(() => {
+    const parametros = Object.fromEntries(parametrosUrl.entries())
+
+    buscar_con_filtros({
+      Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
+      Categorias: parametros.Categorias.split(','),
+      Minimo: parametros.Minimo ? parametros.Minimo : '',
+      Maximo: parametros.Maximo ? parametros.Maximo : ''
+    })
+
     solicitar_productos()
   }, [])
   // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
@@ -23,7 +36,7 @@ const Productos = () => {
           <div className='flex items-center'></div>
         </div>
         {productos && productos.length > 0 ? (
-          <div className='grid sm:grid-cols-2 gap-2  m-5 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-'>
+          <div className='grid sm:grid-cols-2 gap-2  m-5 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4'>
             {/* mi tarjeta de prueba */}
             {productos.map((producto) => (
               <Producto key={producto.id} producto={producto} />

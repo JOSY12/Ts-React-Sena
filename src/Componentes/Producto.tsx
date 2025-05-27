@@ -15,7 +15,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
   const agregar_carrito = carrito_store((state) => state.agregar)
   const quitar_carrito = carrito_store((state) => state.quitar)
   return (
-    <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden relative'>
+    <div className='w-full hover:scale-102 transition max-w-sm mx-auto rounded-md shadow-md overflow-hidden relative'>
       {/* calficacion de producto */}
       <div className='flex absolute items-center mt-2.5 mb-5'>
         <svg
