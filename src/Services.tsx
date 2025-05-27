@@ -8,59 +8,53 @@ export const axiosbackend = axios.create({
 })
 
 export const todo_productos = async (filtros: any) => {
-  const id = toast.loading('cargando productos')
+  // const id = toast.loading('cargando productos')
   try {
     const res = await axiosbackend.get('/pu/productos', { params: filtros })
     // []Comprobar si hacer categorias: filtros.categoias funciona en backend
-    toast.dismiss(id)
+    // toast.dismiss(id)
 
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      toast.error(`error al cargar Productos ${error.response.data} `)
       return error.response?.data
     }
-    toast.error(`error al cargar Productos ${error} `, {
-      id
-    })
+    toast.error(`error al cargar Productos ${error} `)
 
     return error
   }
 }
 
 export const lading_page = async () => {
-  const id = toast.loading('cargando productos')
+  // const id = toast.loading('cargando productos')
   try {
     const res = await axiosbackend.get('/pu/inicio_landing_page')
-    toast.dismiss(id)
+    // toast.dismiss(id)
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      toast.error(`error al cargar Productos ${error.response.data} `)
       return error.response?.data
     }
-    toast.error(`error al cargar Productos ${error} `, {
-      id
-    })
+    toast.error(`error al cargar Productos ${error} `)
 
     return error
   }
 }
 
 export const detalle_producto = async (pid: string) => {
-  const id = toast.loading('cargando productos')
+  // const id = toast.loading('cargando productos')
   try {
     const res = await axiosbackend.get(`/pu/productos/${pid}`)
-    toast.dismiss(id)
+    // toast.dismiss(id)
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
-      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      toast.error(`error al cargar Productos ${error.response.data} `)
       return error.response?.data
     }
-    toast.error(`error al cargar Productos ${error} `, {
-      id
-    })
+    toast.error(`error al cargar Productos ${error} `)
 
     return error
   }

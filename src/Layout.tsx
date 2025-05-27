@@ -13,6 +13,26 @@ const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
 
+  const solicitar_favoritos = favoritos_store(
+    (state) => state.solicitar_favoritos
+  )
+  const solicitar_notificicaciones = Notificaciones_store(
+    (state) => state.solicitar_notificicaciones
+  )
+  const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
+
+  const lading_page_solicitar = productos_store(
+    (state) => state.lading_page_solicitar
+  )
+  const [parametrosUrl] = useSearchParams()
+
+  const solicitar_productos = productos_store(
+    (state) => state.solicitar_productos
+  )
+  const buscar_con_filtros = productos_store(
+    (state) => state.buscar_con_filtros
+  )
+
   const interceptorAgregado = useRef(false) // 🧠 bandera para evitar repetir
   useEffect(() => {
     if (interceptorAgregado.current) return // ya se agregó
@@ -27,38 +47,17 @@ const Layout = () => {
     })
   }, [getToken])
 
-  const solicitar_favoritos = favoritos_store(
-    (state) => state.solicitar_favoritos
-  )
-  const solicitar_notificicaciones = Notificaciones_store(
-    (state) => state.solicitar_notificicaciones
-  )
-  const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
-
-  const lading_page_solicitar = productos_store(
-    (state) => state.lading_page_solicitar
-  )
-
   const peticiones_usuario = async () => {
     solicitar_carrito()
     solicitar_favoritos()
     solicitar_notificicaciones()
-    lading_page_solicitar()
   }
   useEffect(() => {
     isSignedIn && peticiones_usuario()
   }, [isSignedIn])
 
-  const [parametrosUrl] = useSearchParams()
-
-  const solicitar_productos = productos_store(
-    (state) => state.solicitar_productos
-  )
-  const buscar_con_filtros = productos_store(
-    (state) => state.buscar_con_filtros
-  )
-
   useEffect(() => {
+    lading_page_solicitar()
     const parametros = Object.fromEntries(parametrosUrl.entries())
 
     if (Object.keys(parametros).length !== 0) {
