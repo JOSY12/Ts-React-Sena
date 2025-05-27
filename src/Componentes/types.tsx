@@ -95,3 +95,10 @@ export type comentario = {
   producto_id: string | null
   titulo: string
 }
+
+export type misfiltros = {
+  Nombre: string
+  Categorias: string[]
+  Minimo: string
+  Maximo: string
+}

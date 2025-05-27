@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router-dom'
 import Navbar from './Componentes/Navbar'
 import { useEffect, useRef } from 'react'
 import { useAuth } from '@clerk/clerk-react'
@@ -34,21 +34,50 @@ const Layout = () => {
     (state) => state.solicitar_notificicaciones
   )
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
-  const solicitar_productos = productos_store(
-    (state) => state.solicitar_productos
+
+  const lading_page_solicitar = productos_store(
+    (state) => state.lading_page_solicitar
   )
 
   const peticiones_usuario = async () => {
     solicitar_carrito()
     solicitar_favoritos()
     solicitar_notificicaciones()
+    lading_page_solicitar()
   }
   useEffect(() => {
     isSignedIn && peticiones_usuario()
   }, [isSignedIn])
 
+  const [parametrosUrl] = useSearchParams()
+
+  const solicitar_productos = productos_store(
+    (state) => state.solicitar_productos
+  )
+  const buscar_con_filtros = productos_store(
+    (state) => state.buscar_con_filtros
+  )
+
   useEffect(() => {
-    solicitar_productos()
+    const parametros = Object.fromEntries(parametrosUrl.entries())
+
+    if (Object.keys(parametros).length !== 0) {
+      console.log('parametros desde layout', parametros)
+      buscar_con_filtros({
+        Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
+        Categorias: parametros.Categorias && parametros.Categorias.split(','),
+        Minimo: parametros.Minimo ? parametros.Minimo : '',
+        Maximo: parametros.Maximo ? parametros.Maximo : ''
+      })
+    } else {
+      console.log('sin parametros, solicitando todos los productos')
+      solicitar_productos({
+        Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
+        Categorias: parametros.Categoria ? parametros.Categoria.split(',') : '',
+        Minimo: parametros.Minimo ? parametros.Minimo : '',
+        Maximo: parametros.Maximo ? parametros.Maximo : ''
+      })
+    }
   }, [])
 
   return (

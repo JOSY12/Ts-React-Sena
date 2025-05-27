@@ -1,31 +1,12 @@
 // import { basedatos } from '../bd'
 import Producto from './Producto'
 import { productos_store } from '../Zustand/Productos_store'
-import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+// import { useEffect } from 'react'
+// import { useSearchParams } from 'react-router-dom'
 
 const Productos = () => {
   const productos = productos_store((state) => state.productos)
-  const [parametrosUrl] = useSearchParams()
 
-  const solicitar_productos = productos_store(
-    (state) => state.solicitar_productos
-  )
-  const buscar_con_filtros = productos_store(
-    (state) => state.buscar_con_filtros
-  )
-  useEffect(() => {
-    const parametros = Object.fromEntries(parametrosUrl.entries())
-
-    buscar_con_filtros({
-      Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
-      Categorias: parametros.Categorias.split(','),
-      Minimo: parametros.Minimo ? parametros.Minimo : '',
-      Maximo: parametros.Maximo ? parametros.Maximo : ''
-    })
-
-    solicitar_productos()
-  }, [])
   // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
   return (
     <div className='   '>

@@ -6,15 +6,33 @@ export const axiosbackend = axios.create({
   baseURL: URL,
   withCredentials: true
 })
-// USUARIOS
+
 export const todo_productos = async (filtros: any) => {
   const id = toast.loading('cargando productos')
-  console.log('filtros', filtros)
   try {
     const res = await axiosbackend.get('/pu/productos', { params: filtros })
     // []Comprobar si hacer categorias: filtros.categoias funciona en backend
     toast.dismiss(id)
 
+    return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `, { id })
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `, {
+      id
+    })
+
+    return error
+  }
+}
+
+export const lading_page = async () => {
+  const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get('/pu/inicio_landing_page')
+    toast.dismiss(id)
     return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {

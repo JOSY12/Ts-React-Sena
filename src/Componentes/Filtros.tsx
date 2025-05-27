@@ -13,7 +13,11 @@ const Filtros = () => {
   const buscar_con_filtros = productos_store(
     (state) => state.buscar_con_filtros
   )
+  const quitar = productos_store((state) => state.quitar_check)
+  const agregar = productos_store((state) => state.agregar_check)
+  const check_categoria = productos_store((state) => state.check_categoria)
 
+  const filtros = productos_store((state) => state.filtros)
   const [parametrosUrl, setSearchParams] = useSearchParams()
 
   const categorias = productos_store((state) => state.categorias)
@@ -26,7 +30,6 @@ const Filtros = () => {
 
   const submit = handleSubmit(async (data) => {
     const nuevosParametros = new URLSearchParams(parametrosUrl)
-    // agrega o quita las categorias
     data.Categorias && data.Categorias.length > 0
       ? nuevosParametros.set('Categorias', data.Categorias)
       : nuevosParametros.delete('Categorias')
@@ -41,25 +44,19 @@ const Filtros = () => {
       : nuevosParametros.delete('Nombre')
 
     setSearchParams(nuevosParametros)
-    // await todo_productos({
-    //   Categorias: data.Categorias,
-    //   Nombre: data.Nombre.trim(),
-    //   Minimo: data.Minimo,
-    //   Maximo: data.Maximo
-    // })
+
     buscar_con_filtros({
-      Categorias: data.Categorias,
+      Categorias: filtros.Categorias ? filtros.Categorias : data.Categorias,
       Nombre: data.Nombre.trim(),
       Minimo: data.Minimo,
       Maximo: data.Maximo
     })
     // Aquí puedes hacer algo con los filtros, como guardarlos en el estado global o enviarlos a un servidor
   })
-  // [x] IMPLEMENTAR EN BACKEND FILTROS
-  // [x] AGREGAR SCRIPT PARA INGRESAR PRODUCROS DESDE ORAS APIS APIE ELEGIDA: https://dummyjson.com/products
   useEffect(() => {
     solicitar_categorias()
   }, [])
+
   return (
     <form
       onSubmit={submit}
@@ -68,24 +65,32 @@ const Filtros = () => {
       <p className='  font-bold   mb-2    justify-center'>Categorias</p>
       <div className='flex flex-col space-y-3 ml-2   justify-center'>
         {categorias && categorias.length > 0
-          ? categorias.map((e) => (
-              <div className='flex items-center space-x-2' key={e.id}>
+          ? categorias.map((e, k) => (
+              <div className='flex items-center space-x-2' key={k}>
                 <input
                   {...register('Categorias')}
-                  id={e.id}
+                  id={e.nombre}
+                  onClick={() => {
+                    if (check_categoria(e.nombre)) {
+                      quitar(e.nombre)
+                    } else {
+                      agregar(e.nombre)
+                    }
+                  }}
+                  checked={filtros.Categorias.includes(e.nombre)}
                   value={e.nombre}
                   type='checkbox'
-                  className=' hidden peer '
+                  className=' hidden peer    '
                 />
                 <label
-                  className='  cursor-pointer peer-checked:text-blue-700'
-                  htmlFor={e.id}
+                  className={`  cursor-pointer peer-checked:text-blue-700   `}
+                  htmlFor={e.nombre}
                 >
                   {e.nombre}
                 </label>
                 <label
-                  htmlFor={e.id}
-                  className='peer-checked:opacity-100 opacity-0'
+                  htmlFor={e.nombre}
+                  className={`peer-checked:opacity-100 opacity-0   cursor-pointer`}
                 >
                   <AiOutlineSearch />
                 </label>
@@ -184,6 +189,13 @@ const Filtros = () => {
           </div>
         </div>
       </div>
+      {errors.Nombre?.message && (
+        <span className='text-red-500    text-sm'>
+          {errors.Nombre.message &&
+            typeof errors.Nombre.message === 'string' &&
+            errors.Nombre.message}
+        </span>
+      )}
     </form>
   )
 }

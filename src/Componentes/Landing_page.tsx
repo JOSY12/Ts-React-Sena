@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom'
+import { productos_store } from '../Zustand/Productos_store'
+import Producto_landing from './Producto_landing'
 const Landing_page = () => {
   const imageUrlcomputadoras =
     'https://concepto.de/wp-content/uploads/2020/06/Computadora-de-escritorio-scaled-e1724955496406-2048x1041.jpg'
@@ -6,6 +8,7 @@ const Landing_page = () => {
     'https://media.es.wired.com/photos/646402de88218b01bf4a1a59/master/pass/Best-Android-Phones-2023-Featured-2023.jpg'
   const consolas =
     'https://hardzone.es/app/uploads-hardzone.es/2023/05/consolas.jpeg'
+  const lading_page_datos = productos_store((state) => state.lading_page_datos)
 
   return (
     <>
@@ -89,6 +92,7 @@ const Landing_page = () => {
                 </div>
               </div>
             </div>
+            {/* MAS VENDIDOS */}
             <div className='mt-16'>
               <h3 className='text-gray-600 text-2xl font-medium'>
                 Mas vendidos
@@ -152,37 +156,13 @@ const Landing_page = () => {
                 </div>
               </div>
             </div>
+            {/* NOVEDADES */}
             <div className='mt-16'>
               <h3 className='text-gray-600 text-2xl font-medium'>Novedades</h3>
               <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
-                <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
-                  <div
-                    className='flex items-end justify-end h-56 w-full bg-cover'
-                    style={{
-                      backgroundImage:
-                        "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfZplKlPW9kETIxL0hAqjzwBi-C31mAyckzg&s')"
-                    }}
-                  ></div>
-                  <div className='px-5 py-3'>
-                    <h3 className='text-gray-700 uppercase'>
-                      telefono samsung 12x
-                    </h3>
-                    <span className='text-gray-500 mt-2'>$800</span>
-                  </div>
-                </div>
-                <div className='w-full max-w-sm mx-auto rounded-md shadow-md overflow-hidden'>
-                  <div
-                    className='flex items-end justify-end h-56 w-full bg-cover bg-center'
-                    style={{
-                      backgroundImage:
-                        "url('https://www.kalley.com.co/medias/7705946478533-001-1400Wx1400H?context=bWFzdGVyfGltYWdlc3w0NzMzNnxpbWFnZS93ZWJwfGFEQTVMMmd4TkM4eE5ETTJOakV5T1RVMU16UXpPQzgzTnpBMU9UUTJORGM0TlRNelh6QXdNVjh4TkRBd1YzZ3hOREF3U0F8OTUwOTg1N2IwNjcxZWZiNzBhZTc1ZmZhNTU0M2JlMDRiMGIyN2VkYzFiY2FiYzA4YzMyZWUyMGZjMzU3YTRkMQ')"
-                    }}
-                  ></div>
-                  <div className='px-5 py-3'>
-                    <h3 className='text-gray-700 uppercase'>Teclado Gamer </h3>
-                    <span className='text-gray-500 mt-2'>$60</span>
-                  </div>
-                </div>
+                {lading_page_datos.map((producto) => (
+                  <Producto_landing key={producto.id} producto={producto} />
+                ))}
               </div>
             </div>
           </div>
