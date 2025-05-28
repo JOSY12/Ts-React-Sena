@@ -28,7 +28,10 @@ const Navbar = () => {
         <section className='relative m-auto'>
           <nav className='flex    bg-[#000000] text-white w-screen '>
             <div className='px-5  xl:px-10 py-6 flex w-full items-center'>
-              <a className='text-3xl font-bold  flex font-heading' href='/'>
+              <a
+                className='text-3xl font-bold  flex font-heading'
+                href='/productos'
+              >
                 <img
                   className='h-10'
                   src='https://josmerweb.netlify.app/techsells-high-resolution-logo-white.png'

@@ -16,8 +16,19 @@ export type productoprops = {
   estado: string
   categorias: string[]
   calificacion: string
+  nuevo?: boolean
 }
 
+export type landing = {
+  Recientes: productoprops[]
+  Valorados: productoprops[]
+}
+export type modalprops = {
+  texto: string
+  activo: boolean
+  setmodal: React.Dispatch<React.SetStateAction<boolean>>
+  icono: React.ReactNode
+}
 export type favorito = {
   id: string
   nombre?: string
@@ -73,6 +84,7 @@ export type producto = {
   stock: number
   fotos: Foto[]
   categorias: tcategorias[]
+  nuevo?: boolean
 }
 
 export type tcategorias = {

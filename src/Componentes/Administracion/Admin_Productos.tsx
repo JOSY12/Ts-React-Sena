@@ -71,7 +71,6 @@ const Admin_Productos = () => {
       fotos: fotos,
       categorias: categoriasproducto
     }
-    console.log(nuevoproducto)
     await crear_producto(nuevoproducto)
     reset
   })
@@ -122,7 +121,8 @@ const Admin_Productos = () => {
       toast.warning('no hay categorias que cargar')
     }
   }, [])
-
+  // [] poner check box para que el usuarios verifique que ya no esta editando o creando el producto
+  // [] modificar el editor de productos y el creador de productos para que no se lancen el evento aunque no haya errores
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
@@ -338,7 +338,7 @@ const Admin_Productos = () => {
                         onClick={() => {
                           agregarcategoriaproducto(e.id, e.nombre)
                         }}
-                        className='border-1 border-blue-600 rounded bg-gray-200 text-black '
+                        className='border-1 cursor-pointer border-blue-600 rounded bg-gray-200 text-black '
                       >
                         {e.nombre}
                       </button>

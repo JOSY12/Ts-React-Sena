@@ -8,7 +8,6 @@ const Admin_usuarios = () => {
   const data = useLoaderData<administracion>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
   const [datos, setdatos] = useState<datos>()
-
   const Recargar = async () => {
     const res: any = await todos_usuarios()
     if (res && res.usuarios.length) {

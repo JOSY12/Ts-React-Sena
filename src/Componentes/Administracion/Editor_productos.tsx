@@ -73,7 +73,6 @@ const Editor_productos = () => {
       fotos: fotos,
       categorias: categoriasproducto
     }
-    console.log(id, nuevoproducto)
     await actualizar_producto(id ? id : '', nuevoproducto)
   })
 
@@ -330,7 +329,7 @@ const Editor_productos = () => {
                         onClick={() => {
                           agregarcategoriaproducto(e.id, e.nombre)
                         }}
-                        className='border-1 border-blue-600 rounded bg-gray-200 text-black '
+                        className='border-1 cursor-pointer border-blue-600 rounded bg-gray-200 text-black '
                       >
                         {e.nombre}
                       </button>
@@ -345,7 +344,6 @@ const Editor_productos = () => {
                   Categorias agregadas
                 </label>
                 <input
-                  type='hidden'
                   {...register('categorias', {
                     validate: () =>
                       categoriasproducto.length > 0 ||
@@ -448,11 +446,7 @@ const Editor_productos = () => {
                   accept='image/png, image/jpeg, image/webp'
                 />
               </label>
-              {/* {fotos.length < 1 && (
-                <span className='text-red-600  font-bold ml-2'>
-                  Se debe subir almenos una foto del producto
-                </span>
-              )} */}
+
               {errors.fotos?.message &&
                 typeof errors.fotos.message === 'string' && (
                   <span className='text-red-600 font-bold ml-2'>
@@ -488,7 +482,7 @@ const Editor_productos = () => {
                         className='relative'
                         alt=''
                       ></img>
-                      <div className='flex  justify-between'>
+                      <div className='flex  justify-evenly bg-red-400'>
                         {fotos.length > 0 ? (
                           fotos.map((e, k) => (
                             <div key={k} className=' justify-center w-30 h-30 '>
@@ -502,11 +496,18 @@ const Editor_productos = () => {
                                   }}
                                 >
                                   <img
+                                    id='foto'
                                     loading='lazy'
                                     src={e.url}
                                     alt=''
-                                    className=' h-30    '
+                                    className='peer      h-30    '
                                   />
+                                  <label
+                                    htmlFor='foto'
+                                    className='relative  peer-hover:opacity-100 opacity-0 transition duration-300   bottom-2 left-2 text-white bg-red-600 rounded-full px-2 py-1 text-xs'
+                                  >
+                                    Borrar foto
+                                  </label>
                                 </button>
                               </div>
                             </div>
@@ -550,22 +551,26 @@ const Editor_productos = () => {
                          </a> */}
                       </p>
                     </div>
-                    <div className='justify-between flex'>
-                      <div className='inline-block align-bottom mr-5'>
+                    <div className='justify-between flex  flex-wrap'>
+                      <div className='  align-bottom mr-5'>
                         <span className='text-2xl leading-none align-baseline'>
                           $
                         </span>
                         <span className='font-bold text-5xl leading-none align-baseline'>
                           {watch('precio')}
                         </span>
-                        {/* <span className='text-2xl leading-none align-baseline'>
-                           .99
-                         </span> */}
                       </div>
-                      <div className='inline-block align-bottom'>
-                        <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full px-10 py-2 font-semibold'>
-                          <i className='mdi mdi-cart -ml-2 mr-2'></i> Comprar
-                          ahora
+                      <div className=' align-bottom'>
+                        <select className='border-1 rounded-bl-2xl   py-2 rounded-tl-2xl '>
+                          {[...Array(watch('stock'))].map((_, i) => (
+                            <option value={i + 1} key={i}>
+                              {i + 1}
+                            </option>
+                          ))}
+                        </select>
+
+                        <button className='bg-green-600 opacity-75 hover:opacity-100 text-white rounded-full   rounded-tl-2xl rounded-bl-2xl   py-2 truncate font-semibold'>
+                          Comprar ahora
                         </button>
                       </div>
                     </div>

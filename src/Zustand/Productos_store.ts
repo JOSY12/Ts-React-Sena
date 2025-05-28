@@ -1,6 +1,7 @@
+import { landing, productoprops } from './../Componentes/types'
 import { categorias, lading_page, todo_productos } from './../Services'
 import { create } from 'zustand'
-import { misfiltros, productoprops, tcategorias } from '../Componentes/types'
+import { misfiltros, tcategorias } from '../Componentes/types'
 type productos_store = {
   productos: productoprops[]
   solicitar_productos: (filtro: any) => void
@@ -11,7 +12,7 @@ type productos_store = {
   quitar_check: (nombre: string) => void
   agregar_check: (nombre: string) => void
   check_categoria: (nombre: string) => boolean
-  lading_page_datos: productoprops[]
+  lading_page_datos: landing
 
   lading_page_solicitar: () => void
 }
@@ -25,7 +26,7 @@ export const productos_store = create<productos_store>()((set, get) => ({
     Minimo: '',
     Categorias: []
   },
-  lading_page_datos: [],
+  lading_page_datos: { Recientes: [], Valorados: [] },
 
   solicitar_productos: async (filtro) => {
     const res = await todo_productos(filtro)
@@ -74,7 +75,15 @@ export const productos_store = create<productos_store>()((set, get) => ({
   },
   lading_page_solicitar: async () => {
     const res = await lading_page()
-    console.log(res)
-    set({ lading_page_datos: Array.isArray(res) ? res : [] })
+    if (
+      res &&
+      typeof res === 'object' &&
+      'Recientes' in res &&
+      'Valorados' in res
+    ) {
+      set({ lading_page_datos: res as landing })
+    } else {
+      set({ lading_page_datos: { Recientes: [], Valorados: [] } })
+    }
   }
 }))

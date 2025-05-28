@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useLoaderData } from 'react-router-dom'
+import { useParams, useLoaderData, Link } from 'react-router-dom'
 import Comentarios from './Comentarios'
 import { SignedIn } from '@clerk/clerk-react'
 import Agregar_comentario from './Agregar_comentario'
@@ -26,12 +26,24 @@ const DetallesProducto = () => {
   const comentarios = producto_store((state) => state.comentarios)
   const solicitar_producto = producto_store((state) => state.solicitar_producto)
   const setear_producto = producto_store((state) => state.setear_producto)
+  const [fotoactual, setfotoactual] = useState<string>(
+    (Array.isArray(producto?.fotos) &&
+      typeof producto?.fotos[0] === 'string' &&
+      producto?.fotos[0]) ||
+      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
+  )
 
   const [isLoading, setIsLoading] = useState(true)
   const [cantidad, setcantidad] = useState<number>(1)
 
   useEffect(() => {
     if (data) {
+      setfotoactual(
+        (Array.isArray(producto?.fotos) &&
+          typeof producto?.fotos[0] === 'string' &&
+          producto?.fotos[0]) ||
+          ' '
+      )
       setIsLoading(false)
       solicitar_comentarios(id ? id : '')
       setear_producto(data.producto[0])
@@ -97,22 +109,16 @@ const DetallesProducto = () => {
               </SignedIn>
 
               <div className='md:flex    items-center -mx-10'>
-                <div className='w-full  md:w-1/2 px-10 mb-10 md:mb-0 '>
+                <div className='w-full  md:w-1/2 px-10   '>
                   <div className='   relative  '>
                     <div className='flex justify-center  '>
                       <img
-                        src={
-                          Array.isArray(producto.fotos) &&
-                          producto?.fotos.length > 0 &&
-                          typeof producto.fotos[0] === 'string'
-                            ? producto.fotos[0]
-                            : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
-                        }
-                        className='relative -z-0'
+                        src={fotoactual}
+                        className='     bg-gray-100 -z-0'
                         alt=''
                       ></img>
                     </div>
-                    <div className='  flex justify-between  '>
+                    <div className='  flex justify-evenly   '>
                       {Array.isArray(producto.fotos) &&
                       producto.fotos.length > 0 ? (
                         producto.fotos.map((e, k) => (
@@ -120,9 +126,10 @@ const DetallesProducto = () => {
                             <div className='flex justify-center bg-white   w-full  '>
                               {typeof e === 'string' && (
                                 <img
+                                  onClick={() => setfotoactual(e)}
                                   loading='lazy'
                                   src={e}
-                                  className=' h-30    '
+                                  className=' h-30  hover:scale-125  '
                                 ></img>
                               )}
                             </div>
@@ -150,12 +157,14 @@ const DetallesProducto = () => {
                         {Array.isArray(producto.categorias) &&
                           producto.categorias.length > 0 &&
                           producto.categorias.map((e, k) => (
-                            <span
-                              key={k}
-                              className='mr-1 justify-start italic '
-                            >
-                              {String(e)}
-                            </span>
+                            <Link to={`/productos?Categorias=${e}`}>
+                              <span
+                                key={k}
+                                className='mr-1 text-blue-500 justify-start italic '
+                              >
+                                {String(e)}-
+                              </span>
+                            </Link>
                           ))}
                       </p>
                       <span className='  text-sm leading-none align-baseline'>
@@ -165,7 +174,7 @@ const DetallesProducto = () => {
                           : producto.estado}
                       </span>
                     </div>
-                    <p className='text-sm  break-all '>
+                    <p className='text-sm    '>
                       {producto.descripcion}
                       {/* <a
                  href='#'
@@ -175,22 +184,19 @@ const DetallesProducto = () => {
                </a> */}
                     </p>
                   </div>
-                  <div className='justify-between flex'>
+                  <div className='justify-between flex  '>
                     <div className='inline-block align-bottom mr-5'>
-                      <span className='text-2xl leading-none align-baseline'>
+                      <span className='text-2xl  leading-none align-baseline'>
                         $
                       </span>
-                      <span className='font-bold text-4xl leading-none align-baseline'>
+                      <span className='font-bold  text-3xl sm:text-4xl  leading-none align-baseline'>
                         {(producto?.precio * cantidad).toLocaleString()}
                       </span>
-
-                      {/* <span className='text-2xl leading-none align-baseline'>
-                 .99
-               </span> */}
                     </div>
-                    <div className='sm:flex   justify-end flex-wrap gap-2 align-bottom'>
+                    <div className='    justify-end   align-bottom'>
                       {producto.estado == 'Disponible' && (
                         <select
+                          className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
                           onChange={(e) => setcantidad(Number(e.target.value))}
                         >
                           {[...Array(producto.stock)].map((_, i) => (
@@ -205,7 +211,7 @@ const DetallesProducto = () => {
                           producto.estado == 'Disponible'
                             ? ' bg-green-600  text-white '
                             : ' bg-gray-600  text-gray-200 '
-                        }opacity-75 hover:opacity-100  rounded-full px-2 py-2 font-semibold`}
+                        }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
                       >
                         {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
                         {producto.estado == 'Disponible'
