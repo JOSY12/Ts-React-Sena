@@ -487,3 +487,19 @@ export const testproducto = async () => {
     return error
   }
 }
+
+export const comprar_stripe = async (idproducto: string) => {
+  const id = toast.loading('Cargando Compra')
+  console.log(idproducto)
+  try {
+    const res = await axiosbackend.post('/stripe_compras/comprar', {
+      idproducto
+    })
+    toast.success('Redirecionando  ', { id })
+    return res.data
+  } catch (error) {
+    toast.error('error al Comprar producto', { id })
+
+    return error
+  }
+}

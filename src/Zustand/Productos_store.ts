@@ -13,7 +13,7 @@ type productos_store = {
   agregar_check: (nombre: string) => void
   check_categoria: (nombre: string) => boolean
   lading_page_datos: landing
-
+  set_productos: (productos: productoprops) => void
   lading_page_solicitar: () => void
 }
 
@@ -32,6 +32,9 @@ export const productos_store = create<productos_store>()((set, get) => ({
     const res = await todo_productos(filtro)
 
     set({ productos: Array.isArray(res) ? res : [] })
+  },
+  set_productos: async (productos) => {
+    set({ productos: Array.isArray(productos) ? productos : [] })
   },
   solicitar_categorias: async () => {
     const res = await categorias()

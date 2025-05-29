@@ -3,6 +3,7 @@ import { carrito_store } from '../Zustand/Carrito_store'
 import { Link } from 'react-router-dom'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { BsCash } from 'react-icons/bs'
+import { Stripe_store } from '../Zustand/Stripe_store'
 
 const Producto_carrito = ({
   id,
@@ -15,7 +16,7 @@ const Producto_carrito = ({
   const quitar_carrito = carrito_store((state) => state.quitar)
   const aumentar = carrito_store((state) => state.aumentar)
   const restar = carrito_store((state) => state.restar)
-
+  const pagar = Stripe_store((state) => state.pagar)
   return (
     <div className='justify-between mb-4 relative rounded-lg overflow-x-auto bg-white p-6 shadow-md sm:flex sm:justify-start'>
       <div className='absolute right-0   top-0  '>
@@ -79,7 +80,12 @@ const Producto_carrito = ({
               {precio && (precio * cantidad).toLocaleString()}$
             </p>
             <div className='flex gap-1 items-center'>
-              <button className='text-green-400 justify-center  group cursor-pointer'>
+              <button
+                onClick={() => {
+                  pagar(id)
+                }}
+                className='text-green-400 justify-center  group cursor-pointer'
+              >
                 Comprar
               </button>
               <BsCash className='text-green-400' />

@@ -1,16 +1,25 @@
 import { useEffect } from 'react'
 import { carrito_store } from '../Zustand/Carrito_store'
 import Producto_carrito from './Producto_carrito'
+import { Stripe_store } from '../Zustand/Stripe_store'
 
 // import { basedatos } from '../bd'
 const Carrito = () => {
   const carrito = carrito_store((state) => state.carrito)
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
   const total = carrito_store((state) => state.total)
+  const pagartodo = Stripe_store((state) => state.pagar)
+  const url = Stripe_store((state) => state.url)
+
   console.log(total())
   useEffect(() => {
     solicitar_carrito()
   }, [])
+
+  useEffect(() => {
+    // window.location.href = url
+    console.log(url)
+  }, [url])
 
   return (
     <>
@@ -79,7 +88,10 @@ const Carrito = () => {
                   {/* <p className='text-sm text-gray-700'>inscluding VAT</p> */}
                 </div>
               </div>
-              <button className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'>
+              <button
+                onClick={() => pagartodo('')}
+                className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'
+              >
                 Pagar ahora
               </button>
             </div>

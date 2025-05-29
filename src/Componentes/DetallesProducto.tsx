@@ -9,6 +9,7 @@ import { favoritos_store } from '../Zustand/Favoritos_store'
 import { carrito_store } from '../Zustand/Carrito_store'
 import Cargando from './Cargando'
 import { producto_store } from '../Zustand/Producto_store'
+// import { Stripe_store } from '../Zustand/Stripe_store'
 
 const DetallesProducto = () => {
   const data = useLoaderData()
@@ -17,6 +18,8 @@ const DetallesProducto = () => {
   const encarrito = carrito_store((state) => state.encarrito(id || ''))
   const quitar = favoritos_store((state) => state.quitar)
   const agregar = favoritos_store((state) => state.agregar)
+  // const pagar = Stripe_store((state) => state.pagar)
+
   const agregar_carrito = carrito_store((state) => state.agregar)
   const quitar_carrito = carrito_store((state) => state.quitar)
   const solicitar_comentarios = producto_store(
