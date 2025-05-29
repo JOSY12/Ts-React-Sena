@@ -17,8 +17,10 @@ const Carrito = () => {
   }, [])
 
   useEffect(() => {
-    // window.location.href = url
-    // console.log(url)
+    if (url) {
+      window.location.href = url
+      // console.log(url)
+    }
   }, [url])
 
   return (
