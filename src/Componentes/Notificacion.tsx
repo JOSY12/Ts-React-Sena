@@ -20,15 +20,19 @@ const Notificacion = ({
       } rounded shadow flex flex-shrink-0`}
     >
       <span className='hidden'>{id}</span>
-      <div className='focus:outline-none   border rounded-full border-gray-200 flex flex-shrink-0 items-center justify-center'>
+      <div className='focus:outline-none    rounded-full flex flex-shrink-0 items-center justify-center'>
         <img src={icono} className=' h-10  justify-center text-center' />
       </div>
       <div className='pl-3 w-full'>
         <div className='flex items-center justify-between w-full'>
           <p className='focus:outline-none text-sm leading-none'>
-            <span className='text-indigo-700 truncate'>{titulo}</span>:
+            <span className='text-indigo-700 truncate font-bold'>{titulo}</span>
+            :
             <br />
-            <span className='text-blue-600 break-all'> {descripcion}</span>
+            <span className='text-blue-600 break-all font-medium'>
+              {' '}
+              {descripcion}
+            </span>
           </p>
           <button
             onClick={() => {
