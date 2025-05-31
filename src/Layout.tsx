@@ -61,7 +61,6 @@ const Layout = () => {
     const parametros = Object.fromEntries(parametrosUrl.entries())
 
     if (Object.keys(parametros).length !== 0) {
-      console.log('parametros desde layout', parametros)
       buscar_con_filtros({
         Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
         Categorias: parametros.Categorias && parametros.Categorias.split(','),
@@ -69,7 +68,6 @@ const Layout = () => {
         Maximo: parametros.Maximo ? parametros.Maximo : ''
       })
     } else {
-      console.log('sin parametros, solicitando todos los productos')
       solicitar_productos({
         Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
         Categorias: parametros.Categoria ? parametros.Categoria.split(',') : '',

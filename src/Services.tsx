@@ -490,7 +490,6 @@ export const testproducto = async () => {
 
 export const comprar_stripe = async (idproducto: string) => {
   const id = toast.loading('Cargando Compra')
-  console.log(idproducto)
   try {
     const res = await axiosbackend.post('/stripe_compras/comprar', {
       idproducto

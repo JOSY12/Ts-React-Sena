@@ -19,7 +19,6 @@ const Admin_usuarios = () => {
     const datos = async () => {
       const res: administracion = await todos_usuarios()
       if (res && Array.isArray(res.usuarios)) {
-        console.log('r', res)
         setusuarios(res.usuarios)
         setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
       } else {
@@ -33,7 +32,6 @@ const Admin_usuarios = () => {
       datos()
     }
   }, [])
-
   return (
     <div className=' mb-10 flex flex-col flex-1 overflow-hidden'>
       <main className='flex-1 overflow-x-hidden overflow-y-auto bg-gray-100'>

@@ -11,7 +11,6 @@ const Carrito = () => {
   const pagartodo = Stripe_store((state) => state.pagar)
   const url = Stripe_store((state) => state.url)
 
-  console.log(total())
   useEffect(() => {
     solicitar_carrito()
   }, [])
@@ -19,7 +18,6 @@ const Carrito = () => {
   useEffect(() => {
     if (url) {
       window.location.href = url
-      // console.log(url)
     }
   }, [url])
 

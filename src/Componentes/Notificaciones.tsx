@@ -9,7 +9,6 @@ const Notificaciones = () => {
   const misnotificaciones = Notificaciones_store(
     (state) => state.misnotificaciones
   )
-  console.log(misnotificaciones)
   const borrar_todo = Notificaciones_store((state) => state.borrar_todo)
   const actualizar = Notificaciones_store(
     (state) => state.solicitar_notificicaciones
