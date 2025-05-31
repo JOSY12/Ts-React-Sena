@@ -66,7 +66,7 @@ const Landing_page = () => {
                   backgroundImage: `url(${consolas})`
                 }}
               >
-                <div className='  bg-opacity-50 flex items-center     border border-b-4 h-full'>
+                <div className='   bg-opacity-50 flex items-center     border border-b-4 h-full'>
                   <div className='px-10 max-w-xl h-full py-5  flex flex-col justify-between '>
                     <h2 className='text-2xl text-white  font-semibold'>
                       Consolas y juegos

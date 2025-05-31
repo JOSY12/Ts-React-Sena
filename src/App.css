@@ -1,5 +1,7 @@
 @import 'tailwindcss';
-
+.pixel {
+  font-family: 'Press Start 2P';
+}
 .cl-userProfile-root [class*='cl-cardBox'] {
   box-shadow: none !important;
 }

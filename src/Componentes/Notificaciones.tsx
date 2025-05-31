@@ -9,6 +9,7 @@ const Notificaciones = () => {
   const misnotificaciones = Notificaciones_store(
     (state) => state.misnotificaciones
   )
+  console.log(misnotificaciones)
   const borrar_todo = Notificaciones_store((state) => state.borrar_todo)
   const actualizar = Notificaciones_store(
     (state) => state.solicitar_notificicaciones
@@ -63,7 +64,9 @@ const Notificaciones = () => {
             misnotificaciones.map((n) => (
               <Notificacion
                 key={n.id}
+                fecha_relativa={n.fecha_relativa}
                 id={n.id}
+                icono={n.icono}
                 titulo={n.titulo}
                 descripcion={n.descripcion}
                 fecha_creacion={n.fecha_creacion}

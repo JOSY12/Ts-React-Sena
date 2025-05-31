@@ -1,9 +1,11 @@
 export type notificacionesprops = {
   id: string
+  icono: string
   titulo: string
   descripcion: string
   fecha_creacion: string
   visto: boolean
+  fecha_relativa: string
 }
 export type activador = {
   activar: () => void

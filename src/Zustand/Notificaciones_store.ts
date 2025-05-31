@@ -8,10 +8,12 @@ import {
 
 type notificaciones = {
   id: string
+  icono: string
   titulo: string
   descripcion: string
   fecha_creacion: string
   visto: boolean
+  fecha_relativa: string
 }
 
 type notificaciones_store = {
