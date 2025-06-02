@@ -74,16 +74,16 @@ const Carrito = () => {
                 <p className='text-gray-700'>Subtotal</p>
                 <p className='text-gray-700'>${total().toLocaleString()}</p>
               </div>
-              <div className='flex justify-between'>
+              {/* <div className='flex justify-between'>
                 <p className='text-gray-700'>envio</p>
                 <p className='text-gray-700'>$4.99</p>
-              </div>
+              </div> */}
               <hr className='my-4' />
               <div className='flex justify-between'>
                 <p className='text-lg font-bold'>Total</p>
                 <div className=''>
                   <p className='mb-1 text-lg font-bold'>
-                    ${(total() + 4.99).toLocaleString()} USD
+                    ${total().toLocaleString()} USD
                   </p>
                   {/* <p className='text-sm text-gray-700'>inscluding VAT</p> */}
                 </div>

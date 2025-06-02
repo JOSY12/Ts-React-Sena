@@ -66,7 +66,7 @@ const Notificacion = ({
             </div>
           </button>
         </div>
-        <p className='focus:outline-none text-xs leading-3 pt-1 flex justify-between text-gray-500'>
+        <div className='focus:outline-none text-xs leading-3 pt-1 flex justify-between text-gray-500'>
           <div className='flex flex-col'>
             <span className='relative rounded-2xl text-black font-normal'>
               {fecha_relativa}
@@ -81,7 +81,7 @@ const Notificacion = ({
           >
             {visto ? 'Visto' : 'nuevo'}
           </span>
-        </p>
+        </div>
       </div>
     </div>
   )

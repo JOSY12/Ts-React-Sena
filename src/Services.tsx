@@ -11,10 +11,9 @@ export const todo_productos = async (filtros: any) => {
   // const id = toast.loading('cargando productos')
   try {
     const res = await axiosbackend.get('/pu/productos', { params: filtros })
-    // []Comprobar si hacer categorias: filtros.categoias funciona en backend
-    // toast.dismiss(id)
-
-    return res.data
+    // [x]Comprobar si hacer categorias: filtros.categoias funciona en backend
+    // toast.dismiss(<id></id>)
+    return res.data.Productos
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       toast.error(`error al cargar Productos ${error.response.data} `)
@@ -32,6 +31,24 @@ export const lading_page = async () => {
     const res = await axiosbackend.get('/pu/inicio_landing_page')
     // toast.dismiss(id)
     return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `)
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `)
+
+    return error
+  }
+}
+
+export const historial_compras = async () => {
+  const id = toast.loading('cargando historial de compras')
+  try {
+    const res = await axiosbackend.get('/u/mis_compras')
+    toast.dismiss(id)
+    console.log(res)
+    return res.data.rows
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       toast.error(`error al cargar Productos ${error.response.data} `)

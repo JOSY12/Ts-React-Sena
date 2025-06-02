@@ -84,7 +84,7 @@ const Producto_carrito = ({
                 onClick={() => {
                   pagar(id)
                 }}
-                className='text-green-400 justify-center  group cursor-pointer'
+                className='text-green-400  justify-center  group cursor-pointer'
               >
                 Comprar
               </button>

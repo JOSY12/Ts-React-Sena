@@ -1,62 +1,42 @@
-export const Compra = () => {
+import { compras_hechas } from './types'
+
+export const Compra = ({
+  sesion_id_compra,
+  estado,
+  fecha_compra,
+  momento_compra
+}: compras_hechas) => {
   return (
-    <div className=' bg-yellow-200 mx-auto border-gray-500 border rounded-sm text-gray-700 mb-0.5 '>
-      <div className='xl:flex md:flex lg:flex sm:flex grid grid-col-1 items-center p-3 border-l-8 border-yellow-600'>
-        <img
-          className='bg-cover rounded-2xl h-14 w-14 mr-4'
-          src='https://img.global.news.samsung.com/mx/wp-content/uploads/2019/01/Notebook-9-Pro-3.jpg'
-          alt='img
-              '
-        />
-        <div className='   grid-cols-2  pl-3 pr-3'>
-          {/* <div className=' text-sm leading-5 font-semibold'>
-            <span className='text-xs leading-4 font-normal text-gray-500'>
-              IDC #
-            </span>
-            LTC08762304
-          </div> */}
-          <div className='text-sm leading-5 font-semibold'>
-            <span className='text-xs leading-4 font-normal text-gray-500 pr'>
-              IDP #
-            </span>
-            10937
-          </div>
-          <div className='  text-sm leading-5 font-semibold'>
-            JUN 14. 9:30 PM
-          </div>
+    <div className='flex relative group cursor-pointer hover:scale-101 hover:border-green-600 hover:border-1 transition-all  '>
+      <div
+        className={`   w-full  bg-white shadow p-2 border-t-4 border-green-600 ${
+          estado === 'Compra exitosa' ? 'border-green-600' : 'border-red-600'
+        } rounded`}
+      >
+        <div className='absolute left-40 m-2 sm:text-md text-sm bg-white border border-gray-300 px-4 py-2 opacity-0 group-hover:opacity-100'>
+          Ver compra
         </div>
-        <div className='flex-1 sm:border-l-2  '>
-          <div className='ml-3 space-y-1  sm:border-r-2 pr-3'>
-            <div className='text-base leading-6 font-normal'>computadora</div>
-            {/* <div className='text-sm leading-4 font-normal'>
-              <span className='text-xs leading-4 font-normal text-gray-500'>
-                Carrier
-              </span>
-              PAPER TRANSPORT INC.
-            </div> */}
-            <div className='text-sm leading-4 font-normal'>
-              <span className='text-xs leading-4 font-normal text-gray-500'>
-                Direccion de entrega:{'--->'}
-              </span>
-              WestRock Jacksonville - 9469 Eastport Rd, Jacksonville, FL 32218
-            </div>
+        <header className='p-2 border-b flex justify-between'>
+          <div className='flex flex-col'>
+            <h4 className='text-xs font-semibold'>Estado de compra</h4>
+            <h1 className='text-lg font-mono text-green-600'>{estado}</h1>
           </div>
-        </div>
-        <div className=' sm:border-r-2 pr-3'>
-          <div>
-            <div className='ml-3 my-3 border-gray-200 border-2 bg-gray-300 p-1'>
-              <div className='uppercase text-xs leading-4 font-medium'></div>
-              <div className='text-center text-sm leading-4 font-semibold text-gray-800'>
-                89732
-              </div>
-            </div>
+        </header>
+        <div className='flex flex-wrap  p-2 w-full gap-4'>
+          <div className='flex flex-col w-full'>
+            <h4 className='text-xs'>Direccion entrega</h4>
+            <h1 className='text-lg'>6-Frais de scolarité 2eme trimestre</h1>
           </div>
-        </div>
-        <div className='pr-3'>
-          <div className='ml-3 my-5   bg-yellow-600 p-1 '>
-            <div className='uppercase  text-xs leading-4 font-semibold text-center text-yellow-100'>
-              en camino
-            </div>
+
+          <div className='flex flex-col'>
+            <h4 className='text-xs'>Fecha de compra</h4>
+            <h1 className='text-md'>{fecha_compra}</h1>
+            <h1 className='text-md font-thin'>{momento_compra}</h1>
+          </div>
+
+          <div className='flex flex-col overflow-x-auto truncate '>
+            <h4 className='text-xs'>ID compra</h4>
+            <h1 className='text-md font-thin break-all'>{sesion_id_compra}</h1>
           </div>
         </div>
       </div>

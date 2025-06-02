@@ -1,16 +1,17 @@
 import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
-import { item_carrito } from '../Componentes/types'
+import { compras_hechas, item_carrito } from '../Componentes/types'
 import {
   agregar_carrito,
   cambiar_cantidad,
   carrito,
+  historial_compras,
   quitar_carrito
 } from '../Services'
 
 interface carrito_store {
   carrito: item_carrito[]
-
+  compras: compras_hechas[]
   agregar: (id: string) => void
   aumentar: (id: string) => void
   restar: (id: string) => void
@@ -19,6 +20,7 @@ interface carrito_store {
   encarrito: (id: string) => boolean
   solicitar_carrito: () => void
   total: () => number
+  solicitar_compras: () => void
 }
 export const carrito_store = create<carrito_store>()(
   persist(
@@ -26,6 +28,7 @@ export const carrito_store = create<carrito_store>()(
     (set, get) => ({
       // inicio de store
       carrito: [],
+      compras: [],
 
       agregar: async (id: string) => {
         set(({ carrito }) => ({
@@ -79,6 +82,12 @@ export const carrito_store = create<carrito_store>()(
         const res = await carrito()
         set({
           carrito: Array.isArray(res) ? res : []
+        })
+      },
+      solicitar_compras: async () => {
+        const res = await historial_compras()
+        set({
+          compras: Array.isArray(res) ? res : []
         })
       }
 

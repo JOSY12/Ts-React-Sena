@@ -20,6 +20,7 @@ const Layout = () => {
     (state) => state.solicitar_notificicaciones
   )
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
+  const solicitar_compras = carrito_store((state) => state.solicitar_compras)
 
   const lading_page_solicitar = productos_store(
     (state) => state.lading_page_solicitar
@@ -51,6 +52,7 @@ const Layout = () => {
     solicitar_carrito()
     solicitar_favoritos()
     solicitar_notificicaciones()
+    solicitar_compras()
   }
   useEffect(() => {
     isSignedIn && peticiones_usuario()

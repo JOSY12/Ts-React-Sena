@@ -49,6 +49,13 @@ export type item_carrito = {
   cantidad: number
 }
 
+export type compras_hechas = {
+  sesion_id_compra: string
+  estado: string
+  fecha_compra: string
+  momento_compra: string
+}
+
 export type Usuario = {
   id: string
   nombre: string
