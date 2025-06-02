@@ -3,7 +3,6 @@ import { Compra } from './Compra'
 
 const Compras = () => {
   const compras = carrito_store((state) => state.compras)
-  console.log(compras)
   return (
     <>
       <div className='min-w-screen container mx-auto bg-gray-100  p-8 antialiased'>

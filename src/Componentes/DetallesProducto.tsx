@@ -197,30 +197,43 @@ const DetallesProducto = () => {
                       </span>
                     </div>
                     <div className='    justify-end   align-bottom'>
-                      {producto.estado == 'Disponible' && (
-                        <select
-                          className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
-                          onChange={(e) => setcantidad(Number(e.target.value))}
-                        >
-                          {[...Array(producto.stock)].map((_, i) => (
-                            <option value={i + 1} key={i}>
-                              {i + 1}
-                            </option>
-                          ))}
-                        </select>
+                      {!encarrito ? (
+                        <div>
+                          {producto.estado == 'Disponible' && (
+                            <select
+                              className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
+                              onChange={(e) =>
+                                setcantidad(Number(e.target.value))
+                              }
+                            >
+                              {[...Array(producto.stock)].map((_, i) => (
+                                <option value={i + 1} key={i}>
+                                  {i + 1}
+                                </option>
+                              ))}
+                            </select>
+                          )}
+                          <button
+                            onClick={() => {
+                              if (producto.estado == 'Disponible') {
+                                agregar_carrito(id ? id : '', cantidad)
+                              }
+                            }}
+                            className={`${
+                              producto.estado == 'Disponible'
+                                ? ' bg-green-600  text-white '
+                                : ' bg-gray-600  text-gray-200 '
+                            }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
+                          >
+                            {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
+                            {producto.estado == 'Disponible'
+                              ? 'Comprar ahora'
+                              : 'No Disponible'}
+                          </button>
+                        </div>
+                      ) : (
+                        'Producto en carrito 😀'
                       )}
-                      <button
-                        className={`${
-                          producto.estado == 'Disponible'
-                            ? ' bg-green-600  text-white '
-                            : ' bg-gray-600  text-gray-200 '
-                        }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
-                      >
-                        {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
-                        {producto.estado == 'Disponible'
-                          ? 'Comprar ahora'
-                          : 'No Disponible'}
-                      </button>
                     </div>
                   </div>
                 </div>

@@ -11,8 +11,7 @@ export const todo_productos = async (filtros: any) => {
   // const id = toast.loading('cargando productos')
   try {
     const res = await axiosbackend.get('/pu/productos', { params: filtros })
-    // [x]Comprobar si hacer categorias: filtros.categoias funciona en backend
-    // toast.dismiss(<id></id>)
+
     return res.data.Productos
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -47,7 +46,6 @@ export const historial_compras = async () => {
   try {
     const res = await axiosbackend.get('/u/mis_compras')
     toast.dismiss(id)
-    console.log(res)
     return res.data.rows
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -72,6 +70,25 @@ export const detalle_producto = async (pid: string) => {
       return error.response?.data
     }
     toast.error(`error al cargar Productos ${error} `)
+
+    return error
+  }
+}
+
+export const detalle_compra = async (pid: string) => {
+  const id = toast.loading('cargando datos de compra')
+  try {
+    const res = await axiosbackend.get(`/u/detalle_compra/${pid}`)
+    toast.dismiss(id)
+    return res.data.rows
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar datos de compra ${error.response.data} `, {
+        id
+      })
+      return error.response?.data
+    }
+    toast.error(`error al cargar datos de compra ${error} `, { id })
 
     return error
   }
@@ -427,10 +444,10 @@ export const carrito = async () => {
   }
 }
 
-export const agregar_carrito = async (idproducto: string) => {
+export const agregar_carrito = async (idproducto: string, cantidad: number) => {
   const id = toast.loading('agreando a carrito')
   try {
-    await axiosbackend.post('/u/agregar_carrito', { idproducto })
+    await axiosbackend.post('/u/agregar_carrito', { idproducto, cantidad })
     toast.dismiss(id)
   } catch (error) {
     toast.error('error al agregar a carrito', { id })

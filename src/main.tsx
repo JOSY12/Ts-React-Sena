@@ -21,6 +21,7 @@ import Limitadoradmin from './Componentes/Administracion/Limitadoradmin'
 import Contacto from './Componentes/Contacto'
 import {
   categorias,
+  detalle_compra,
   detalle_producto,
   detalle_producto_editar,
   todo_productos,
@@ -33,6 +34,7 @@ import Editor_productos from './Componentes/Administracion/Editor_productos'
 import DetallesProducto from './Componentes/DetallesProducto'
 import Landing_page from './Componentes/Landing_page'
 import Inicio from './Componentes/Inicio'
+import Detalles_compra from './Componentes/Detalles_compra'
 
 export const router = createBrowserRouter([
   {
@@ -67,7 +69,15 @@ export const router = createBrowserRouter([
             element: <Notificaciones />
           },
           { path: 'carrito', element: <Carrito /> },
-          { path: 'compras', element: <Compras /> },
+          {
+            path: 'compras',
+            element: <Compras />
+          },
+          {
+            path: 'compras/:id',
+            element: <Detalles_compra />,
+            loader: ({ params }) => detalle_compra(params.id ? params.id : '')
+          },
 
           { path: 'favoritos', element: <Favoritos /> },
 

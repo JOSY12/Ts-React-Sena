@@ -5,6 +5,7 @@ import {
   agregar_carrito,
   cambiar_cantidad,
   carrito,
+  detalle_compra,
   historial_compras,
   quitar_carrito
 } from '../Services'
@@ -12,15 +13,17 @@ import {
 interface carrito_store {
   carrito: item_carrito[]
   compras: compras_hechas[]
-  agregar: (id: string) => void
+  detalle_compra: item_carrito[]
+  agregar: (id: string, cantidad?: number) => void
   aumentar: (id: string) => void
   restar: (id: string) => void
-
+  solicitar_detalle_compra: (id: string) => void
   quitar: (id: string) => void
   encarrito: (id: string) => boolean
   solicitar_carrito: () => void
   total: () => number
   solicitar_compras: () => void
+  setear_detalle_compra: (data: item_carrito[]) => void
 }
 export const carrito_store = create<carrito_store>()(
   persist(
@@ -29,14 +32,15 @@ export const carrito_store = create<carrito_store>()(
       // inicio de store
       carrito: [],
       compras: [],
+      detalle_compra: [],
 
-      agregar: async (id: string) => {
+      agregar: async (id: string, cantidad?: number) => {
         set(({ carrito }) => ({
           carrito: carrito.find((e) => e.id === id)
             ? carrito
             : [...carrito, { id, cantidad: 1 }]
         }))
-        await agregar_carrito(id)
+        await agregar_carrito(id, cantidad ?? 1)
       },
 
       aumentar: async (id: string) => {
@@ -88,6 +92,18 @@ export const carrito_store = create<carrito_store>()(
         const res = await historial_compras()
         set({
           compras: Array.isArray(res) ? res : []
+        })
+      },
+
+      solicitar_detalle_compra: async (id: string) => {
+        const res = await detalle_compra(id)
+        set({
+          detalle_compra: Array.isArray(res) ? res : []
+        })
+      },
+      setear_detalle_compra: async (data) => {
+        set({
+          detalle_compra: Array.isArray(data) ? data : []
         })
       }
 
