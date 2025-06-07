@@ -12,7 +12,7 @@ export const todo_productos = async (filtros: any) => {
   try {
     const res = await axiosbackend.get('/pu/productos', { params: filtros })
 
-    return res.data.Productos
+    return res.data
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
       toast.error(`error al cargar Productos ${error.response.data} `)

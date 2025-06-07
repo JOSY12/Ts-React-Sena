@@ -9,6 +9,7 @@ import { Notificaciones_store } from './Zustand/Notificaciones_store'
 import { carrito_store } from './Zustand/Carrito_store'
 import Footer from './Componentes/Footer'
 import { productos_store } from './Zustand/Productos_store'
+import { filtros_store } from './Zustand/Filtros_store'
 const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
@@ -30,9 +31,7 @@ const Layout = () => {
   const solicitar_productos = productos_store(
     (state) => state.solicitar_productos
   )
-  const buscar_con_filtros = productos_store(
-    (state) => state.buscar_con_filtros
-  )
+  const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
 
   const interceptorAgregado = useRef(false) // 🧠 bandera para evitar repetir
   useEffect(() => {
@@ -67,14 +66,18 @@ const Layout = () => {
         Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
         Categorias: parametros.Categorias && parametros.Categorias.split(','),
         Minimo: parametros.Minimo ? parametros.Minimo : '',
-        Maximo: parametros.Maximo ? parametros.Maximo : ''
+        Maximo: parametros.Maximo ? parametros.Maximo : '',
+        // paginas: parametros.paginas ? parseInt(parametros.paginas, 10) : 1,
+        Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
       })
     } else {
       solicitar_productos({
         Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
         Categorias: parametros.Categoria ? parametros.Categoria.split(',') : '',
         Minimo: parametros.Minimo ? parametros.Minimo : '',
-        Maximo: parametros.Maximo ? parametros.Maximo : ''
+        Maximo: parametros.Maximo ? parametros.Maximo : '',
+        // Paginas: parametros.Paginas ? parseInt(parametros.paginas, 10) : 1,
+        Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
       })
     }
   }, [])

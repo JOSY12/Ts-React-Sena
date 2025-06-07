@@ -1,6 +1,7 @@
 import { AiFillFolderAdd, AiOutlineClose } from 'react-icons/ai'
 
 const Modal = () => {
+  //[] preguntar a ia por que se cierra cuando presiono guardar y como cambiarlo igual los demas modales
   return (
     <>
       <div className=' ml-auto   '>

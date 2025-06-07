@@ -1,10 +1,13 @@
-import { productos_store } from './Productos_store'
-import { todo_productos } from './../Services'
+import { set_productos } from './Productos_store'
+import { categorias, todo_productos } from './../Services'
 import { create } from 'zustand'
-import { misfiltros } from '../Componentes/types'
-const set_productos = productos_store((state) => state.set_productos)
+import { misfiltros, tcategorias } from '../Componentes/types'
+
+//
 type filtros_store = {
   filtros: misfiltros
+  categorias: tcategorias[]
+  solicitar_categorias: () => void
   buscar_con_filtros: (datos: any) => void
   quitar_check: (nombre: string) => void
   agregar_check: (nombre: string) => void
@@ -12,26 +15,35 @@ type filtros_store = {
 }
 // [] verificar si los filtros funcionan por separados de productos_store
 export const filtros_store = create<filtros_store>()((set, get) => ({
+  categorias: [],
   filtros: {
     Nombre: '',
     Maximo: '',
     Minimo: '',
-    Categorias: []
+    Categorias: [],
+    Paginas: 1,
+    Pagina: 1
+  },
+
+  solicitar_categorias: async () => {
+    const res = await categorias()
+
+    set({ categorias: Array.isArray(res) ? res : [] })
   },
 
   buscar_con_filtros: async (datos) => {
     const res = await todo_productos(datos)
-    // [] terminar los filtros pulir el filtro de query a la perfeccion
     set({
       filtros: {
         Nombre: datos.Nombre ?? '',
         Maximo: datos.Maximo ?? '',
         Minimo: datos.Minimo ?? '',
-        Categorias: datos.Categorias ?? []
+        Categorias: datos.Categorias ?? [],
+        Paginas: res.totalPaginas ?? 1,
+        Pagina: res.Pagina ?? 1
       }
-      //   productos: Array.isArray(res) ? res : []
     })
-    set_productos(res)
+    set_productos(res.Productos)
   },
   quitar_check: (nombre) => {
     set(({ filtros }) => ({

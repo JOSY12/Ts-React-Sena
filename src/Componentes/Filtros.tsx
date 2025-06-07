@@ -1,26 +1,23 @@
 // import { basedatos } from '../bd'
-import { productos_store } from '../Zustand/Productos_store'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useSearchParams } from 'react-router-dom'
+import { filtros_store } from '../Zustand/Filtros_store'
 
 const Filtros = () => {
-  const solicitar_categorias = productos_store(
+  const solicitar_categorias = filtros_store(
     (state) => state.solicitar_categorias
   )
 
-  const buscar_con_filtros = productos_store(
-    (state) => state.buscar_con_filtros
-  )
-  const quitar = productos_store((state) => state.quitar_check)
-  const agregar = productos_store((state) => state.agregar_check)
-  const check_categoria = productos_store((state) => state.check_categoria)
+  const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
+  const quitar = filtros_store((state) => state.quitar_check)
+  const agregar = filtros_store((state) => state.agregar_check)
+  const check_categoria = filtros_store((state) => state.check_categoria)
 
-  const filtros = productos_store((state) => state.filtros)
+  const filtros = filtros_store((state) => state.filtros)
   const [parametrosUrl, setSearchParams] = useSearchParams()
-
-  const categorias = productos_store((state) => state.categorias)
+  const categorias = filtros_store((state) => state.categorias)
   const {
     register,
     handleSubmit,
@@ -43,11 +40,13 @@ const Filtros = () => {
       ? nuevosParametros.set('Nombre', data.Nombre.trim())
       : nuevosParametros.delete('Nombre')
 
+    nuevosParametros.set('Pagina', '1')
+
     setSearchParams(nuevosParametros)
 
     buscar_con_filtros({
       Categorias: filtros.Categorias ? filtros.Categorias : data.Categorias,
-      Nombre: data.Nombre.trim(),
+      Nombre: data.Nombre.trim().toLowerCase(),
       Minimo: data.Minimo,
       Maximo: data.Maximo
     })
@@ -103,11 +102,6 @@ const Filtros = () => {
         <div className=' flex-col sm:flex    ml-2   '>
           <input
             {...register('Minimo', {
-              required: {
-                value: false,
-                message: 'El precio minimo es requerido'
-              },
-
               min: {
                 value: 10,
                 message: 'El precio minimo es 10'
@@ -120,10 +114,6 @@ const Filtros = () => {
           <span>-</span>
           <input
             {...register('Maximo', {
-              required: {
-                value: false,
-                message: 'El precio maximo es requerido'
-              },
               max: {
                 value: 9999,
                 message: 'El precio maximo es 9999'
@@ -164,16 +154,7 @@ const Filtros = () => {
         <span className=' font-bold      justify-center'>Buscar</span>
         <div className='relative   ml-2   '>
           <input
-            {...register('Nombre', {
-              required: {
-                value: false,
-                message: 'El nombre es requerido'
-              },
-              minLength: {
-                value: 3,
-                message: 'El nombre debe tener al menos 3 caracteres'
-              }
-            })}
+            {...register('Nombre', {})}
             placeholder='Buscar producto'
             id={'buscador'}
             type='text'

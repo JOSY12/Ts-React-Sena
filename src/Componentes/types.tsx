@@ -122,4 +122,6 @@ export type misfiltros = {
   Categorias: string[]
   Minimo: string
   Maximo: string
+  Paginas: number
+  Pagina: number
 }

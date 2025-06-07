@@ -2,21 +2,26 @@ import Producto from './Producto'
 import { productos_store } from '../Zustand/Productos_store'
 import { useSearchParams } from 'react-router-dom'
 import { useEffect } from 'react'
+import { filtros_store } from '../Zustand/Filtros_store'
+import Paginado from './Paginado'
 
 const Productos = () => {
   const productos = productos_store((state) => state.productos)
-  const buscar_con_filtros = productos_store(
-    (state) => state.buscar_con_filtros
-  )
+  const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
 
   const [parametrosUrl] = useSearchParams()
   useEffect(() => {
     const parametros = Object.fromEntries(parametrosUrl.entries())
+    console.log(parametros)
     buscar_con_filtros({
+      Nombre: parametros.Nombre ?? '',
+      Maximo: parametros.Maximo ?? '',
+      Minimo: parametros.Minimo ?? '',
+      // Paginas: parametros.paginPaginasas ?? 1,
+      Pagina: parametros.Pagina ?? 1,
       Categorias: parametros.Categorias && parametros.Categorias.split(',')
     })
   }, [])
-  // []agregar los filtros o el componente filtros y agregar el slice de zustand para los productos y tener mejor control de ellos
   return (
     <div>
       {/* display de  productos   */}
@@ -25,6 +30,7 @@ const Productos = () => {
           <p className='ml-6 '>Productos encontrados:{productos.length}</p>
           <div className='flex items-center'></div>
         </div>
+
         {productos && productos.length > 0 ? (
           <div className='grid sm:grid-cols-2 gap-2  m-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
             {/* mi tarjeta de prueba */}
@@ -58,6 +64,7 @@ const Productos = () => {
           </div>
         )}
       </div>
+      <Paginado />
     </div>
   )
 }
