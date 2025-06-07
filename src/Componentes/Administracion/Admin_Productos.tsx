@@ -73,6 +73,10 @@ const Admin_Productos = () => {
     }
     await crear_producto(nuevoproducto)
     reset
+    setfoto([])
+    setfotoslist([])
+    setcategoriasproducto([])
+    solicitarcategorias()
   })
   // const subirfotomultiple = async () => {
   //   let fotoss: Foto[] = []
@@ -311,18 +315,26 @@ const Admin_Productos = () => {
                       >
                         Cerrar
                       </label>
-                      <label
-                        htmlFor='my-modal'
+                      <button
+                        onClick={() => {
+                          agregar_categoria()
+                          reset(
+                            {
+                              nuevacategoria: ''
+                            },
+                            {
+                              keepDirty: true
+                            }
+                          )
+                          const modalToggle = document.getElementById(
+                            'modal-toggle'
+                          ) as HTMLInputElement
+                          if (modalToggle) modalToggle.checked = false
+                        }}
                         className='mt-4 inline-block px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 cursor-pointer'
                       >
-                        <button
-                          onClick={() => {
-                            agregar_categoria()
-                          }}
-                        >
-                          Agregar
-                        </button>
-                      </label>
+                        <p>Agregar</p>
+                      </button>
                     </div>
                   </div>
                 </div>

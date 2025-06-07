@@ -74,6 +74,12 @@ const Editor_productos = () => {
       categorias: categoriasproducto
     }
     await actualizar_producto(id ? id : '', nuevoproducto)
+    toast.success('Producto actualizado')
+    reset()
+    setfoto([])
+    setcategoriasproducto([])
+    setfotoslist([])
+    // window.location.reload()
   })
 
   const subirfoto = async () => {

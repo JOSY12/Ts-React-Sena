@@ -1,7 +1,6 @@
 import { AiFillFolderAdd, AiOutlineClose } from 'react-icons/ai'
 
 const Modal = () => {
-  //[] preguntar a ia por que se cierra cuando presiono guardar y como cambiarlo igual los demas modales
   return (
     <>
       <div className=' ml-auto   '>
@@ -110,9 +109,16 @@ const Modal = () => {
 
                     <div className='flex flex-row-reverse p-3'>
                       <div className='flex-initial pl-3'>
-                        <label
-                          htmlFor='modal-toggle'
-                          className='flex cursor-pointer items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize   bg-black rounded-md hover:bg-gray-800  focus:outline-none focus:bg-gray-900  transition duration-300 transform active:scale-95 ease-in-out'
+                        <button
+                          className='flex items-center px-5 py-2.5 font-medium tracking-wide text-white capitalize bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:bg-gray-900 transition duration-300 transform active:scale-95 ease-in-out'
+                          onClick={() => {
+                            // Aquí puedes manejar la lógica para guardar los datos
+                            // Después de guardar, puedes cerrar la modal
+                            const modalToggle = document.getElementById(
+                              'modal-toggle'
+                            ) as HTMLInputElement
+                            if (modalToggle) modalToggle.checked = false
+                          }}
                         >
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
@@ -129,7 +135,7 @@ const Modal = () => {
                             <path d='M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z'></path>
                           </svg>
                           <span className='pl-2 mx-1'>Guardar</span>
-                        </label>
+                        </button>
                       </div>
                     </div>
                   </div>

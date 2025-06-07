@@ -24,7 +24,7 @@ const Producto_administrado = ({
             <div className='text-sm flex font-medium leading-5 text-gray-900'>
               {nombre}
             </div>
-            <span>id:{id}</span>
+            <span className='text-sm text-gray-600'>id:{id}</span>
           </div>
         </div>
       </td>
