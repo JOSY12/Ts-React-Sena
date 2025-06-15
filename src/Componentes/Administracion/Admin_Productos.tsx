@@ -19,7 +19,6 @@ const Admin_Productos = () => {
   const [categoriasproducto, setcategoriasproducto] = useState<tcategorias[]>(
     []
   )
-  // FIXME cambiar el modal por un modal con usestate para mejorar el clic y la eficiencia del cerrado y insertardo de datos
   const {
     register,
     handleSubmit,
@@ -72,7 +71,7 @@ const Admin_Productos = () => {
       categorias: categoriasproducto
     }
     await crear_producto(nuevoproducto)
-    reset
+    reset()
     setfoto([])
     setfotoslist([])
     setcategoriasproducto([])
@@ -125,14 +124,11 @@ const Admin_Productos = () => {
       toast.warning('no hay categorias que cargar')
     }
   }, [])
-  // [] poner check box para que el usuarios verifique que ya no esta editando o creando el producto
-  // [] modificar el editor de productos y el creador de productos para que no se lancen el evento aunque no haya errores
   return (
     <div className='mb-10 overflow-y-auto flex flex-col flex-1 overflow-hidden'>
       <div className='header my-3 h-12 px-10 flex items-center justify-between'>
         <h1 className='font-medium text-2xl'>Creacion de productos </h1>
       </div>
-      {/* <button>SSSSSSSSSSSs</button> */}
       <div className='flex flex-col     mx-3 mt-6 lg:flex-row'>
         <div className='w-full lg:w-1/2 m-1'>
           <form

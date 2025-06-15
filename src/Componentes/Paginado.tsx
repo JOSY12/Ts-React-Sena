@@ -26,17 +26,19 @@ const Paginado = () => {
   const paginaActual = parseInt(searchParams.get('Pagina') || '1', 10)
 
   return (
-    <div className='flex justify-center'>
-      {Array.from({ length: paginas }, (_, i) => i + 1).map((pagina) => (
-        <button
-          key={pagina}
-          disabled={pagina === paginaActual}
-          className='m-1 bg-white  rounded p-2 border text-2xl disabled:opacity-50'
-          onClick={() => submit(pagina)}
-        >
-          {pagina}
-        </button>
-      ))}
+    <div className='flex flex-col items-center'>
+      <div className='flex items-center gap-1'>
+        {Array.from({ length: paginas }, (_, i) => i + 1).map((pagina) => (
+          <button
+            key={pagina}
+            disabled={pagina === paginaActual}
+            className=' m-2 inline-grid place-items-center border align-middle select-none disabled:border-blue-500 disabled:text-blue-600 enabled:border-green-600   selec font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent   text-black hover:bg-stone-800/5  hover:border-stone-800/5 shadow-none hover:shadow-none'
+            onClick={() => submit(pagina)}
+          >
+            {pagina}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

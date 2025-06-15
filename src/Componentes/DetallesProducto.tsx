@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useLoaderData, Link } from 'react-router-dom'
 import Comentarios from './Comentarios'
-import { SignedIn } from '@clerk/clerk-react'
+import { SignedIn, SignedOut } from '@clerk/clerk-react'
 import Agregar_comentario from './Agregar_comentario'
 import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
@@ -179,12 +179,7 @@ const DetallesProducto = () => {
                     </div>
                     <p className='text-sm    '>
                       {producto.descripcion}
-                      {/* <a
-                 href='#'
-                 className='opacity-50 text-gray-900 hover:opacity-100 inline-block text-xs leading-none border-b border-gray-900'
-               >
-                 MORE <i className='mdi mdi-arrow-right'></i>
-               </a> */}
+                      <br />
                     </p>
                   </div>
                   <div className='justify-between flex  '>
@@ -196,45 +191,86 @@ const DetallesProducto = () => {
                         {(producto?.precio * cantidad).toLocaleString()}
                       </span>
                     </div>
-                    <div className='    justify-end   align-bottom'>
-                      {!encarrito ? (
-                        <div>
-                          {producto.estado == 'Disponible' && (
-                            <select
-                              className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
-                              onChange={(e) =>
-                                setcantidad(Number(e.target.value))
-                              }
+                    <SignedIn>
+                      <div className='    justify-end   align-bottom'>
+                        {!encarrito ? (
+                          <div>
+                            {producto.estado == 'Disponible' && (
+                              <select
+                                className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
+                                onChange={(e) =>
+                                  setcantidad(Number(e.target.value))
+                                }
+                              >
+                                {[...Array(producto.stock)].map((_, i) => (
+                                  <option value={i + 1} key={i}>
+                                    {i + 1}
+                                  </option>
+                                ))}
+                              </select>
+                            )}
+                            <button
+                              onClick={() => {
+                                if (producto.estado == 'Disponible') {
+                                  agregar_carrito(id ? id : '', cantidad)
+                                }
+                              }}
+                              className={`${
+                                producto.estado == 'Disponible'
+                                  ? ' bg-green-600  text-white '
+                                  : ' bg-gray-600  text-gray-200 '
+                              }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
                             >
-                              {[...Array(producto.stock)].map((_, i) => (
-                                <option value={i + 1} key={i}>
-                                  {i + 1}
-                                </option>
-                              ))}
-                            </select>
-                          )}
-                          <button
-                            onClick={() => {
-                              if (producto.estado == 'Disponible') {
-                                agregar_carrito(id ? id : '', cantidad)
-                              }
-                            }}
-                            className={`${
-                              producto.estado == 'Disponible'
-                                ? ' bg-green-600  text-white '
-                                : ' bg-gray-600  text-gray-200 '
-                            }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
-                          >
-                            {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
-                            {producto.estado == 'Disponible'
-                              ? 'Comprar ahora'
-                              : 'No Disponible'}
-                          </button>
-                        </div>
-                      ) : (
-                        'Producto en carrito 😀'
-                      )}
-                    </div>
+                              {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
+                              {producto.estado == 'Disponible'
+                                ? 'Comprar ahora'
+                                : 'No Disponible'}
+                            </button>
+                          </div>
+                        ) : (
+                          'Producto en carrito 😀'
+                        )}
+                      </div>
+                    </SignedIn>
+                    <SignedOut>
+                      <div className='    justify-end   align-bottom'>
+                        {!encarrito ? (
+                          <div>
+                            {producto.estado == 'Disponible' && (
+                              <select
+                                className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
+                                onChange={(e) =>
+                                  setcantidad(Number(e.target.value))
+                                }
+                              >
+                                {[...Array(producto.stock)].map((_, i) => (
+                                  <option value={i + 1} key={i}>
+                                    {i + 1}
+                                  </option>
+                                ))}
+                              </select>
+                            )}
+                            <Link to={'/iniciarsesion'}>
+                              <button
+                                onClick={() => {}}
+                                className={`${
+                                  producto.estado == 'Disponible'
+                                    ? ' bg-green-600  text-white '
+                                    : ' bg-gray-600  text-gray-200 '
+                                }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
+                              >
+                                {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
+                                {producto.estado == 'Disponible'
+                                  ? 'Comprar ahora'
+                                  : 'No Disponible'}
+                              </button>
+                            </Link>
+                          </div>
+                        ) : (
+                          'Producto en carrito 😀'
+                        )}
+                      </div>
+                    </SignedOut>
                   </div>
                 </div>
               </div>

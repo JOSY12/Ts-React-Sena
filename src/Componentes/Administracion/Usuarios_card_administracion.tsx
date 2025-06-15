@@ -19,7 +19,6 @@ const Usuarios_card_administracion = ({
     estado: baneado ? 'baneado' : 'activo',
     rol: administrador ? 'administrador' : 'comprador'
   })
-  // [] terminar la configuracion en base de datos y clerk actualizando datos de usuarios
 
   return (
     <tr>

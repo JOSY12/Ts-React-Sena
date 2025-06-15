@@ -265,7 +265,7 @@ export const usuario_notificaciones = async () => {
   try {
     const res = await axiosbackend.get(`/u/notificaciones`)
     toast.dismiss(id)
-    return res.data.rows
+    return res.data
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       toast.error('error al cargar notificaciones', { id })

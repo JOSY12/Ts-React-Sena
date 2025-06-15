@@ -10,8 +10,6 @@ const Producto_administrado = ({
   categorias,
   calificacion
 }: productoprops) => {
-  // []agregar el boton y modal de borrar producto
-  //  FIXME cuidado al intenter borrar el producto sin modal podria borrar sin verificiar nada
   return (
     <tr>
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>

@@ -13,7 +13,6 @@ type filtros_store = {
   agregar_check: (nombre: string) => void
   check_categoria: (nombre: string) => boolean
 }
-// [] verificar si los filtros funcionan por separados de productos_store
 export const filtros_store = create<filtros_store>()((set, get) => ({
   categorias: [],
   filtros: {

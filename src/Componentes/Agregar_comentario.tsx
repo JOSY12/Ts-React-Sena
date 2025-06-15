@@ -15,9 +15,9 @@ const Agregar_comentario = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
     // watch
-    // reset
+    reset
   } = useForm()
   const [estrellas, setestrellas] = useState<number>(1)
   const submit = handleSubmit(async (data) => {
@@ -30,6 +30,7 @@ const Agregar_comentario = () => {
       }
       await crear_comentario(comentario)
       solicitar_comentarios(id)
+      reset()
     } else {
       toast.error('error al intentar crear comentario')
     }

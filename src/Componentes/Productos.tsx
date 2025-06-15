@@ -64,7 +64,7 @@ const Productos = () => {
           </div>
         )}
       </div>
-      <Paginado />
+      {productos && productos.length > 0 && <Paginado />}
     </div>
   )
 }
