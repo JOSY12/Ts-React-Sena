@@ -67,7 +67,6 @@ const Layout = () => {
         Categorias: parametros.Categorias && parametros.Categorias.split(','),
         Minimo: parametros.Minimo ? parametros.Minimo : '',
         Maximo: parametros.Maximo ? parametros.Maximo : '',
-        // paginas: parametros.paginas ? parseInt(parametros.paginas, 10) : 1,
         Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
       })
     } else {
@@ -76,7 +75,6 @@ const Layout = () => {
         Categorias: parametros.Categoria ? parametros.Categoria.split(',') : '',
         Minimo: parametros.Minimo ? parametros.Minimo : '',
         Maximo: parametros.Maximo ? parametros.Maximo : '',
-        // Paginas: parametros.Paginas ? parseInt(parametros.paginas, 10) : 1,
         Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
       })
     }
