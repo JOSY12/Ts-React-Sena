@@ -1,16 +1,32 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 // import { useLoaderData } from 'react-router-dom'
 import { TbFilterSearch } from 'react-icons/tb'
 import Producto_administrado from './Producto_administrado'
 import Filtros from '../Filtros'
 import { productos_store } from '../../Zustand/Productos_store'
 import Paginado from '../Paginado'
+import { filtros_store } from '../../Zustand/Filtros_store'
+import { useSearchParams } from 'react-router-dom'
 
 const Listar_productos = () => {
   // const data = useLoaderData()
-  const productos = productos_store((state) => state.productos)
   const [filtro, setfiltro] = useState(false)
+  const productos = productos_store((state) => state.productos_admin)
+  const buscar_con_filtros_admin = filtros_store(
+    (state) => state.buscar_con_filtros_admin
+  )
 
+  const [parametrosUrl] = useSearchParams()
+  useEffect(() => {
+    const parametros = Object.fromEntries(parametrosUrl.entries())
+    buscar_con_filtros_admin({
+      Nombre: parametros.Nombre ?? '',
+      Maximo: parametros.Maximo ?? '',
+      Minimo: parametros.Minimo ?? '',
+      Pagina: parametros.Pagina ?? 1,
+      Categorias: parametros.Categorias && parametros.Categorias.split(',')
+    })
+  }, [])
   return (
     <section className='bg-gray-100 w-full  '>
       {/* <button

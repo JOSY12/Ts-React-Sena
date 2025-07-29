@@ -24,6 +24,25 @@ export const todo_productos = async (filtros: any) => {
   }
 }
 
+export const todo_productos_admin = async (filtros: any) => {
+  // const id = toast.loading('cargando productos')
+  try {
+    const res = await axiosbackend.get('/pu/productos_admin', {
+      params: filtros
+    })
+
+    return res.data
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response) {
+      toast.error(`error al cargar Productos ${error.response.data} `)
+      return error.response?.data
+    }
+    toast.error(`error al cargar Productos ${error} `)
+
+    return error
+  }
+}
+
 export const lading_page = async () => {
   // const id = toast.loading('cargando productos')
   try {

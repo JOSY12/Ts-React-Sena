@@ -1,5 +1,5 @@
 // import { basedatos } from '../bd'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useSearchParams } from 'react-router-dom'
@@ -9,8 +9,13 @@ const Filtros = () => {
   const solicitar_categorias = filtros_store(
     (state) => state.solicitar_categorias
   )
-
+  const [admin] = useState({
+    admin: window.location.pathname.includes('admin') ? true : false
+  })
   const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
+  const buscar_con_filtros_admin = filtros_store(
+    (state) => state.buscar_con_filtros_admin
+  )
   const quitar = filtros_store((state) => state.quitar_check)
   const agregar = filtros_store((state) => state.agregar_check)
   const check_categoria = filtros_store((state) => state.check_categoria)
@@ -43,15 +48,23 @@ const Filtros = () => {
     nuevosParametros.set('Pagina', '1')
 
     setSearchParams(nuevosParametros)
-
-    buscar_con_filtros({
-      Categorias: filtros.Categorias ? filtros.Categorias : data.Categorias,
-      Nombre: data.Nombre.trim().toLowerCase(),
-      Minimo: data.Minimo,
-      Maximo: data.Maximo
-    })
-    // Aquí puedes hacer algo con los filtros, como guardarlos en el estado global o enviarlos a un servidor
+    if (admin.admin) {
+      buscar_con_filtros_admin({
+        Categorias: filtros.Categorias ? filtros.Categorias : data.Categorias,
+        Nombre: data.Nombre.trim().toLowerCase(),
+        Minimo: data.Minimo,
+        Maximo: data.Maximo
+      })
+    } else {
+      buscar_con_filtros({
+        Categorias: filtros.Categorias ? filtros.Categorias : data.Categorias,
+        Nombre: data.Nombre.trim().toLowerCase(),
+        Minimo: data.Minimo,
+        Maximo: data.Maximo
+      })
+    }
   })
+
   useEffect(() => {
     solicitar_categorias()
   }, [])
