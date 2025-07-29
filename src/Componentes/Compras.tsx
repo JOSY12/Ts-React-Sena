@@ -17,6 +17,7 @@ const Compras = () => {
             compras.map((compra, k) => (
               <Compra
                 key={k}
+                direccion_compra={compra.direccion_compra}
                 sesion_id_compra={compra.sesion_id_compra}
                 estado={compra.estado}
                 fecha_compra={compra.fecha_compra}

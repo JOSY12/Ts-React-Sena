@@ -6,7 +6,8 @@ export const Compra = ({
   sesion_id_compra,
   estado,
   fecha_compra,
-  momento_compra
+  momento_compra,
+  direccion_compra
 }: compras_hechas) => {
   const solicitar_detalle_compra = carrito_store(
     (state) => state.solicitar_detalle_compra
@@ -34,12 +35,12 @@ export const Compra = ({
             <h1 className='text-lg font-mono text-green-600'>{estado}</h1>
           </div>
         </header>
-        <div className='flex flex-wrap  p-2 w-full gap-4'>
-          <div className='flex flex-col w-full'>
-            <h4 className='text-xs'>Direccion entrega</h4>
-{/*             <h1 className='text-lg'>6-Frais de scolarité 2eme trimestre</h1> */}
-          </div>
 
+        <div className='flex   flex-col p-2 w-full gap-4'>
+          <div className='flex flex-col w-full overflow-x-auto truncate'>
+            <h4 className='text-md'>Direccion entrega</h4>
+            <h1 className='text-xs'>{direccion_compra}</h1>
+          </div>
           <div className='flex flex-col'>
             <h4 className='text-xs'>Fecha de compra</h4>
             <h1 className='text-md'>{fecha_compra}</h1>

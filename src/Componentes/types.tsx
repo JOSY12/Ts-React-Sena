@@ -63,6 +63,7 @@ export type compras_hechas = {
   estado: string
   fecha_compra: string
   momento_compra: string
+  direccion_compra: string
 }
 
 export type Usuario = {
