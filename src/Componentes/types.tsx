@@ -20,7 +20,16 @@ export type productoprops = {
   calificacion: string
   nuevo?: boolean
 }
-
+export type direccion = {
+  id?: string | null
+  nombre_comprador: string
+  ciudad: string
+  direccion: string
+  nota: string
+  codigo_postal: string
+  telefono: string
+  predeterminada: boolean
+}
 export type landing = {
   Recientes: productoprops[]
   Valorados: productoprops[]

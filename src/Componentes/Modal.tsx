@@ -1,9 +1,13 @@
 import { useForm } from 'react-hook-form'
 import { AiFillFolderAdd, AiOutlineClose } from 'react-icons/ai'
+import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
 
 const Modal = () => {
   // Aquí puedes manejar la lógica para abrir y cerrar el modal
-
+  const agregar_direciones = Direcciones_usuario(
+    (state) => state.agregar_direciones
+  )
+  // Lógica para agregar la dirección
   const {
     register,
     handleSubmit,
@@ -18,7 +22,17 @@ const Modal = () => {
     if (modalToggle) modalToggle.checked = false
     // Aquí puedes manejar la lógica para enviar los datos del formulario
     console.log(data)
-    reset()
+    agregar_direciones({
+      id: null,
+      nombre_comprador: data.Nombre,
+      ciudad: data.Ciudad,
+      direccion: data.Direccion,
+      nota: data.Detalles,
+      codigo_postal: data.Postal,
+      telefono: data.Telefono,
+      predeterminada: data.Predeterminado || false
+    })
+    // reset()
   })
   console.log(errors)
 

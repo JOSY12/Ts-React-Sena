@@ -10,6 +10,7 @@ import { carrito_store } from './Zustand/Carrito_store'
 import Footer from './Componentes/Footer'
 import { productos_store } from './Zustand/Productos_store'
 import { filtros_store } from './Zustand/Filtros_store'
+import { Direcciones_usuario } from './Zustand/Direcciones_usuario'
 const Layout = () => {
   const { getToken } = useAuth()
   const { isSignedIn } = useUser()
@@ -23,6 +24,9 @@ const Layout = () => {
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
   const solicitar_compras = carrito_store((state) => state.solicitar_compras)
 
+  const solicitar_direcciones = Direcciones_usuario(
+    (state) => state.solicitar_direcciones
+  )
   const lading_page_solicitar = productos_store(
     (state) => state.lading_page_solicitar
   )
@@ -52,6 +56,7 @@ const Layout = () => {
     solicitar_favoritos()
     solicitar_notificicaciones()
     solicitar_compras()
+    solicitar_direcciones()
   }
   useEffect(() => {
     isSignedIn && peticiones_usuario()

@@ -5,12 +5,28 @@
 .cl-userProfile-root [class*='cl-cardBox'] {
   box-shadow: none !important;
 }
-
+.cl-userProfile-root [class*='cl-internal-t38b9v'] {
+  height: screen !important;
+  width: screen !important;
+}
 .cl-cardBox {
   height: screen !important;
   width: screen !important;
 }
+.cl-footer .cl-internal-1jpib5j {
+  display: none;
+}
+.cl-cardBox .cl-internal-t38b9v {
+  width: screen !important;
 
+  height: screen !important;
+}
+.cl-internal-t38b9v {
+  width: 100% !important;
+
+  height: 100% !important;
+  margin: 20px !important;
+}
 .cl-rootBox {
   width: auto !important;
 }
@@ -26,13 +42,16 @@
   margin: auto;
 }
 
-.cl-internal-1dauvpw {
-  display: none;
+.cl-internal-l2l775 {
+  display: none !important;
 }
-.cl-internal-13u79ez {
-  display: none;
+.cl-internal-1k7jtru {
+  display: none !important;
 }
 
-.cl-internal-to9o31 {
-  display: none;
+.cl-internal-pe6vm4 {
+  display: none !important;
+}
+.cl-internal-1t1d4xj {
+  display: none !important;
 }

@@ -18,6 +18,8 @@ const Carrito = () => {
   useEffect(() => {
     if (url) {
       window.location.href = url
+    } else {
+      return
     }
   }, [url])
 

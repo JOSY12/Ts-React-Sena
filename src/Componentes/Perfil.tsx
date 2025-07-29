@@ -3,9 +3,20 @@
 import { UserProfile } from '@clerk/clerk-react'
 import { useClerk } from '@clerk/clerk-react'
 import Modal from './Modal'
+import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
+import Direccion from './Direccion'
+import { useEffect } from 'react'
 
 const Perfil = () => {
-  const { user } = useClerk()
+  const direciones = Direcciones_usuario((state) => state.misdirecciones)
+  const solicitar_direcciones = Direcciones_usuario(
+    (state) => state.solicitar_direcciones
+  )
+
+  useEffect(() => {
+    solicitar_direcciones()
+  }, [])
+
   return (
     <>
       <UserProfile />
@@ -37,33 +48,11 @@ const Perfil = () => {
 
                   <Modal />
                 </div>
-                <div className='text-gray-700'>
-                  <div className='grid md:grid-cols-2 text-sm'>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>
-                        Nombre completo
-                      </div>
-                      <div className='px-4 py-2'>{user?.fullName}</div>
-                    </div>
-
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>Contacto</div>
-                      <div className='px-4 py-2'>{user?.firstName}</div>
-                    </div>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>
-                        Direcion Actual
-                      </div>
-                      <div className='px-4 py-2'>Montelibao cordoba</div>
-                    </div>
-                    <div className='grid grid-cols-2'>
-                      <div className='px-4 py-2 font-semibold'>
-                        Direccion de entrega
-                      </div>
-                      <div className='px-4 py-2'>cr22</div>
-                    </div>
-                  </div>
-                </div>
+                {/* tarjeta de direcciones */}
+                {direciones.map((direccion) => {
+                  return <Direccion key={direccion.id} {...direccion} />
+                })}
+                {/* tarjeta de direcciones */}
               </div>
 
               <div className='my-4'></div>
