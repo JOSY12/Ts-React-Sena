@@ -37,7 +37,7 @@ export const Compra = ({
         <div className='flex flex-wrap  p-2 w-full gap-4'>
           <div className='flex flex-col w-full'>
             <h4 className='text-xs'>Direccion entrega</h4>
-            <h1 className='text-lg'>6-Frais de scolarité 2eme trimestre</h1>
+{/*             <h1 className='text-lg'>6-Frais de scolarité 2eme trimestre</h1> */}
           </div>
 
           <div className='flex flex-col'>
