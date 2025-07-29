@@ -1,7 +1,6 @@
 // import { obtener_usuario } from '../Services'
 // import { useEffect, useState } from 'react'
 import { UserProfile } from '@clerk/clerk-react'
-import { useClerk } from '@clerk/clerk-react'
 import Modal from './Modal'
 import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
 import Direccion from './Direccion'

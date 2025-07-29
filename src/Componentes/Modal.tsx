@@ -11,8 +11,7 @@ const Modal = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm({})
 
   const enviar = handleSubmit((data) => {
