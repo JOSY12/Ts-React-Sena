@@ -111,7 +111,7 @@ const Filtros = () => {
           : ''}
       </div>
       <div className='flex flex-col space-y-3    justify-center'>
-        <span className=' font-bold      justify-center'>Buscar</span>
+        <span className=' font-bold      justify-center'>Precio</span>
         <div className=' flex-col sm:flex    ml-2   '>
           <input
             {...register('Minimo', {
