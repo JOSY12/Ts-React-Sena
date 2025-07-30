@@ -47,7 +47,7 @@ const Comentarios = ({
         </div>
       </div>
       <div id='menu' className='md:block'>
-        <p className='mt-3 text-base leading-normal text-black  w-full md:w-9/12 xl:w-5/6'>
+        <p className='mt-3 text-base leading-normal text-black  w-full  '>
           {comentario}
         </p>
       </div>

@@ -93,23 +93,41 @@ const Landing_page = () => {
             </div>
             {/* Mejor Valorados */}
             <div className='mt-16'>
-              <h3 className='text-gray-600 text-2xl font-medium'>
-                Mejor Valorados
-              </h3>
-              <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
-                {lading_page_datos.Valorados.map((producto) => (
-                  <Producto_landing key={producto.id} producto={producto} />
-                ))}
-              </div>
+              {lading_page_datos.Valorados &&
+                lading_page_datos.Valorados.length > 0 && (
+                  <div>
+                    <h3 className='text-gray-600 text-2xl font-medium'>
+                      Mejor Valorados
+                    </h3>
+                    <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
+                      {lading_page_datos.Valorados.map((producto) => (
+                        <Producto_landing
+                          key={producto.id}
+                          producto={producto}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
             </div>
             {/* NOVEDADES */}
             <div className='mt-16'>
-              <h3 className='text-gray-600 text-2xl font-medium'>Novedades</h3>
-              <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
-                {lading_page_datos.Recientes.map((producto) => (
-                  <Producto_landing key={producto.id} producto={producto} />
-                ))}
-              </div>
+              {lading_page_datos.Recientes &&
+                lading_page_datos.Recientes.length > 0 && (
+                  <div>
+                    <h3 className='text-gray-600 text-2xl font-medium'>
+                      Novedades
+                    </h3>
+                    <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
+                      {lading_page_datos.Recientes.map((producto) => (
+                        <Producto_landing
+                          key={producto.id}
+                          producto={producto}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
             </div>
           </div>
         </main>
