@@ -4,6 +4,8 @@ import { administracion, datos, Usuario } from '../types'
 import { todos_usuarios } from '../../Services'
 import { AiOutlineReload } from 'react-icons/ai'
 import { useLoaderData } from 'react-router-dom'
+import { AiOutlineDollarCircle } from 'react-icons/ai'
+
 const Admin_usuarios = () => {
   const data = useLoaderData<administracion>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
@@ -50,9 +52,9 @@ const Admin_usuarios = () => {
           </div>
           {/* informacion general */}
           <div className='mt-4'>
-            <div className='flex flex-wrap -mx-6'>
+            <div className='flex flex-wrap mx-6'>
               <div className='w-full px-6 sm:w-1/2 xl:w-1/3'>
-                <div className='flex items-center px-5 py-6 bg-white rounded-md shadow-sm'>
+                <div className='flex  items-center px-5 py-6 bg-white rounded-md shadow-sm'>
                   <div className='p-3 bg-indigo-600 bg-opacity-75 rounded-full'>
                     <svg
                       className='w-8 h-8 text-white'
@@ -122,7 +124,7 @@ const Admin_usuarios = () => {
 
                   <div className='mx-5'>
                     <h4 className='text-2xl font-semibold text-gray-700'>
-                      {datos ? datos.compras : 0}
+                      {datos ? datos.ordenes : 0}
                     </h4>
                     <div className='text-gray-500'>Ordenes</div>
                   </div>
@@ -157,7 +159,21 @@ const Admin_usuarios = () => {
                     <h4 className='text-2xl font-semibold text-gray-700'>
                       {datos ? datos.productos : 0}
                     </h4>
-                    <div className='text-gray-500'>Productos disponibles</div>
+                    <div className='text-gray-500'>Productos Totales</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className='w-full px-6 mt-6 sm:w-1/2 xl:w-1/3 xl:mt-2'>
+                <div className='flex items-center px-5 py-6 bg-white rounded-md shadow-sm'>
+                  <div className=' bg-green-600 bg-opacity-75 rounded-full'>
+                    <AiOutlineDollarCircle color='white' size={55} />
+                  </div>
+                  <div className='mx-5'>
+                    <h4 className='text-2xl font-semibold text-gray-700'>
+                      ${datos ? datos.dinero_ganado.toLocaleString('us') : 0}
+                    </h4>
+                    <div className='text-gray-500'>Ganancias</div>
                   </div>
                 </div>
               </div>

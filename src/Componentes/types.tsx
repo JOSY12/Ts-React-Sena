@@ -77,9 +77,10 @@ export type Usuario = {
 }
 
 export type datos = {
-  compras: number
+  ordenes: number
   productos: number
   usuarios: number
+  dinero_ganado: number
 }
 export type administracion = {
   usuarios: Usuario[]
