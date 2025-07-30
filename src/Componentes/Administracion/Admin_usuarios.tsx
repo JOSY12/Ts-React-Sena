@@ -171,7 +171,7 @@ const Admin_usuarios = () => {
                   </div>
                   <div className='mx-5'>
                     <h4 className='text-2xl font-semibold text-gray-700'>
-                      ${datos ? datos.dinero_ganado.toLocaleString('us') : 0}
+                      ${datos ? datos.dinero_ganado : 0}
                     </h4>
                     <div className='text-gray-500'>Ganancias</div>
                   </div>
