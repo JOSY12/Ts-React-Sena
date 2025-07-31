@@ -24,6 +24,8 @@ interface carrito_store {
   total: () => number
   solicitar_compras: () => void
   setear_detalle_compra: (data: item_carrito[]) => void
+  enviar_compra: () => void
+  enviar_recibido: () => void
 }
 export const carrito_store = create<carrito_store>()(
   persist(
@@ -93,6 +95,18 @@ export const carrito_store = create<carrito_store>()(
         set({
           compras: Array.isArray(res) ? res : []
         })
+      },
+      enviar_compra: async () => {
+        // const res = await enviar_pedido()
+        // set({
+        //   compras: Array.isArray(res) ? res : []
+        // })
+      },
+      enviar_recibido: async () => {
+        // const res = await enviar_pedido()
+        // set({
+        //   compras: Array.isArray(res) ? res : []
+        // })
       },
 
       solicitar_detalle_compra: async (id: string) => {

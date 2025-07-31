@@ -1,14 +1,22 @@
 import { Link } from 'react-router-dom'
 import { compras_hechas } from './types'
 import { carrito_store } from '../Zustand/Carrito_store'
+import { useAuth, useClerk } from '@clerk/clerk-react'
+
+import type { UserResource } from '@clerk/types'
 
 export const Compra = ({
+  email,
+  recibido,
+  enviado,
   sesion_id_compra,
   estado,
   fecha_compra,
   momento_compra,
   direccion_compra
 }: compras_hechas) => {
+  const { user } = useClerk() as { user: UserResource | null }
+  const { isSignedIn } = useAuth()
   const solicitar_detalle_compra = carrito_store(
     (state) => state.solicitar_detalle_compra
   )
@@ -29,10 +37,23 @@ export const Compra = ({
             Ver compra
           </button>
         </Link>
+
         <header className='p-2 border-b flex justify-between'>
           <div className='flex flex-col'>
             <h4 className='text-xs font-semibold'>Estado de compra</h4>
             <h1 className='text-lg font-mono text-green-600'>{estado}</h1>
+            <span
+              className={`text-md ${
+                enviado ? 'text-green-600' : 'text-yellow-600'
+              }`}
+            >
+              {enviado ? 'Enviado' : 'En proceso de envio'}
+              {enviado && recibido ? (
+                <span className='text-green-600'> - Recibido y completado</span>
+              ) : (
+                <span className='text-red-600'> - No recibido</span>
+              )}
+            </span>
           </div>
         </header>
 
@@ -40,11 +61,32 @@ export const Compra = ({
           <div className='flex flex-col w-full overflow-x-auto truncate'>
             <h4 className='text-md'>Direccion entrega</h4>
             <h1 className='text-xs'>{direccion_compra}</h1>
+            {user &&
+              isSignedIn &&
+              typeof user.publicMetadata === 'object' &&
+              (user.publicMetadata as any).administrador && (
+                <div>
+                  <h1 className='text-xs'>{email}</h1>
+                  <h1 className='text-xs'>{recibido}</h1>
+                </div>
+              )}
           </div>
+
+          {user &&
+            isSignedIn &&
+            typeof user.publicMetadata === 'object' &&
+            (user.publicMetadata as any).administrador && (
+              <div className='flex flex-col w-full overflow-x-auto truncate'>
+                <h4 className='text-md'>Email de comprador</h4>
+                <div>
+                  <h1 className='text-xs'>{email}</h1>
+                </div>
+              </div>
+            )}
           <div className='flex flex-col'>
             <h4 className='text-xs'>Fecha de compra</h4>
             <h1 className='text-md'>{fecha_compra}</h1>
-            <h1 className='text-md '>{momento_compra}</h1>
+            <h1 className='text-md'>{momento_compra}</h1>
           </div>
 
           <div className='flex flex-col overflow-x-auto truncate '>

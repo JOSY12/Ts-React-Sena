@@ -1,8 +1,14 @@
 import { Link, useLoaderData, useParams } from 'react-router-dom'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { useEffect } from 'react'
+import { useAuth, useClerk } from '@clerk/clerk-react'
+
+import type { UserResource } from '@clerk/types'
 
 const Detalles_compra = () => {
+  const { user } = useClerk() as { user: UserResource | null }
+  const { isSignedIn } = useAuth()
+
   const data = useLoaderData()
   const { id } = useParams()
   const detalle_compra = carrito_store((state) => state.detalle_compra)
@@ -16,7 +22,7 @@ const Detalles_compra = () => {
     (acc, item) => acc + (item.precio ?? 0) * item.cantidad,
     0
   )
-
+  console.log('Detalles de compra:', detalle_compra)
   useEffect(() => {
     if (data) {
       setear_detalle_compra(data)
@@ -32,6 +38,43 @@ const Detalles_compra = () => {
             Informacion general de la compra
           </h3>
           <p className='text-slate-500'>Productos relacionados a la compra </p>
+        </div>
+        <div className='flex gap-2'>
+          {/* mandos administrador */}
+          {user &&
+            isSignedIn &&
+            typeof user.publicMetadata === 'object' &&
+            (user.publicMetadata as any).administrador && (
+              <button
+                // onClick={() => marcar_enviado([])}
+                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+              >
+                Marcar como enviado
+              </button>
+            )}
+          {user &&
+            isSignedIn &&
+            typeof user.publicMetadata === 'object' &&
+            (user.publicMetadata as any).administrador && (
+              <button
+                // onClick={() => marcar_recibido([])}
+                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+              >
+                Marcar como recibido
+              </button>
+            )}
+          {/* mandos administrador */}
+
+          {detalle_compra.length > 0 &&
+            detalle_compra[0].recibido === false &&
+            detalle_compra[0].enviado === true && (
+              <button
+                // onClick={() => marcar_recibido([])}
+                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+              >
+                Marcar como recibido
+              </button>
+            )}
         </div>
       </div>
 

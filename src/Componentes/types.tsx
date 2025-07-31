@@ -56,6 +56,8 @@ export type item_carrito = {
   estado?: string | 'Disponible' | 'Agotado' | 'Pendiente'
   stock?: number | 1
   cantidad: number
+  recibido?: boolean
+  enviado?: boolean
 }
 
 export type compras_hechas = {
@@ -64,6 +66,9 @@ export type compras_hechas = {
   fecha_compra: string
   momento_compra: string
   direccion_compra: string
+  enviado: boolean
+  email: string
+  recibido: boolean
 }
 
 export type Usuario = {
@@ -103,7 +108,7 @@ export type compras = {
 export type administracion = {
   usuarios: Usuario[]
   datos: datos
-  compras: compras[]
+  compras: compras_hechas[]
 }
 
 export type Foto = {
