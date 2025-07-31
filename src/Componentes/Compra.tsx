@@ -21,18 +21,18 @@ export const Compra = ({
     (state) => state.solicitar_detalle_compra
   )
   return (
-    <div className='flex relative group cursor-pointer hover:scale-101 hover:border-green-600 hover:border-1 transition-all  '>
+    <div className='flex relative group  hover:scale-101 hover:border-green-600 hover:border-1 transition-all  '>
       <div
         className={`   w-full  bg-white shadow p-2 border-t-4 border-green-600 ${
           estado === 'Compra exitosa' ? 'border-green-600' : 'border-red-600'
         } rounded`}
       >
-        <Link to={`/u/compras/${sesion_id_compra}`} className='w-full'>
+        <Link to={`/u/compras/${sesion_id_compra}`} className='w-full '>
           <button
             onClick={() => {
               solicitar_detalle_compra(sesion_id_compra)
             }}
-            className='absolute left-40 m-2 hover:bg-green-100 sm:text-md text-sm bg-white border border-gray-300 px-4 py-2    '
+            className='absolute  cursor-pointer left-40 m-2 hover:bg-green-100 sm:text-md text-sm bg-white border border-gray-300 px-4 py-2    '
           >
             Ver compra
           </button>
@@ -49,7 +49,7 @@ export const Compra = ({
             >
               {enviado ? 'Enviado' : 'En proceso de envio'}
               {enviado && recibido ? (
-                <span className='text-green-600'> - Recibido y Completado</span>
+                <span className='text-green-600'> - Recibido y completado</span>
               ) : (
                 <span className='text-red-600'> - No recibido</span>
               )}
@@ -66,7 +66,6 @@ export const Compra = ({
               typeof user.publicMetadata === 'object' &&
               (user.publicMetadata as any).administrador && (
                 <div>
-                  <h1 className='text-xs'>{email}</h1>
                   <h1 className='text-xs'>{recibido}</h1>
                 </div>
               )}
@@ -79,7 +78,14 @@ export const Compra = ({
               <div className='flex flex-col w-full overflow-x-auto truncate'>
                 <h4 className='text-md'>Email de comprador</h4>
                 <div>
-                  <h1 className='text-xs'>{email}</h1>
+                  <a
+                    className='text-xs text-blue-500'
+                    href={`mailto:${email} ?subject=Consulta sobre compra ${sesion_id_compra}`}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    {email}
+                  </a>
                 </div>
               </div>
             )}

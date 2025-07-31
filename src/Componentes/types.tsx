@@ -79,6 +79,7 @@ export type Usuario = {
   rol: string
   administrador: boolean
   baneado: boolean
+  email: string
 }
 
 export type datos = {

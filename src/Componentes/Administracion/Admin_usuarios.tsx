@@ -30,6 +30,7 @@ const Admin_usuarios = () => {
         return
       }
     }
+
     if (data && Array.isArray(data.datos)) {
       setusuarios(data.usuarios)
       setdatos(data.datos[0])
@@ -219,6 +220,7 @@ const Admin_usuarios = () => {
                           key={k}
                           id={e.id}
                           nombre={e.nombre}
+                          email={e.email}
                           apellido={e.apellido}
                           foto_perfil={e.foto_perfil}
                           rol={e.rol}
@@ -230,6 +232,7 @@ const Admin_usuarios = () => {
                       <Usuarios_card_administracion
                         id={''}
                         nombre={''}
+                        email={''}
                         apellido={''}
                         foto_perfil={
                           'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'

@@ -231,8 +231,7 @@ export const obtener_direcciones = async () => {
       toast.info('No tienes direcciones registradas')
       return []
     }
-
-    toast.success('Direcciones cargadas con éxito')
+    toast.dismiss(id)
     return res.data
   } catch (error: any) {
     toast.dismiss(id)

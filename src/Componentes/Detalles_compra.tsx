@@ -2,6 +2,7 @@ import { Link, useLoaderData, useParams } from 'react-router-dom'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { useEffect } from 'react'
 import { useAuth, useClerk } from '@clerk/clerk-react'
+import { AiFillMessage } from 'react-icons/ai'
 
 import type { UserResource } from '@clerk/types'
 
@@ -34,7 +35,7 @@ const Detalles_compra = () => {
     }
   }, [data, id, detalle_compra])
   return (
-    <div className=' container mx-auto'>
+    <div className=' container mx-auto '>
       <div className='w-full flex justify-between items-center mb-3 mt-12 pl-3'>
         <div>
           <h3 className='text-lg font-semibold text-slate-800'>
@@ -170,6 +171,22 @@ const Detalles_compra = () => {
         </table>
         <div className='p-4 border-t self-center border-slate-200'>
           Total pagado: ${total.toLocaleString()}
+        </div>
+      </div>
+      <div className='flex items-end justify-end fixed bottom-0   rounded-2xl right-0 mb-4 mr-4 z-10'>
+        <div className='flex items-end justify-end  fixed bottom-0 right-5 sm:bottom-5   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
+          <div className='w-10 group relative'>
+            <span className='absolute bottom-15  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
+              Consulta sobre compra
+            </span>
+            <a
+              href={`mailto:josmer1997@hotmail.es ?subject=Consulta sobre compra ${id}`}
+              target='_blank'
+              rel='noreferrer'
+            >
+              <AiFillMessage className='size-10 text-black' />
+            </a>
+          </div>
         </div>
       </div>
     </div>

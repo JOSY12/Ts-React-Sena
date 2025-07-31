@@ -3,6 +3,7 @@ import { carrito_store } from '../Zustand/Carrito_store'
 import Producto_carrito from './Producto_carrito'
 import { Stripe_store } from '../Zustand/Stripe_store'
 import { AiOutlineClose } from 'react-icons/ai'
+import { GrHelpBook } from 'react-icons/gr'
 
 // import { basedatos } from '../bd'
 const Carrito = () => {
@@ -39,8 +40,14 @@ const Carrito = () => {
               htmlFor='modal-toggle'
               className='cursor-pointer   w-30 p-2 m-2 text-green-500 rounded '
             >
-              <div className='flex items-end justify-end  fixed bottom-0 right-5 sm:bottom-5   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
-                <div className='w-10'> ?</div>
+              <div className='flex  items-end justify-end  fixed bottom-0 right-5 sm:bottom-15   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
+                <div className='relative group'>
+                  <GrHelpBook size={30} color='black' />
+
+                  <span className='absolute bottom-15 text-md  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
+                    Ayuda
+                  </span>
+                </div>
               </div>
             </label>
 
@@ -67,11 +74,11 @@ const Carrito = () => {
                           src='https://i.imgur.com/kGkSg1v.png'
                         ></img>
 
-                        <div className='w-full px-8 absolute top-8'>
+                        <div className='w-full text-left px-8 absolute top-8'>
                           <div className='flex justify-between'>
                             <div className=''>
-                              <p className='font-light'>Nombre</p>
-                              <p className='font-medium tracking-widest'>
+                              <p className='font-medium'>Nombre</p>
+                              <p className='font-light text-2xl tracking-widest'>
                                 Persona de prueba
                               </p>
                             </div>
@@ -81,8 +88,8 @@ const Carrito = () => {
                             />
                           </div>
                           <div className='pt-1'>
-                            <p className='font-light'>Numero de tarjeta</p>
-                            <p className='font-medium tracking-more-wider'>
+                            <p className='font-medium'>Numero de tarjeta</p>
+                            <p className='font-light tracking-more-wider'>
                               4242 4242 4242 4242
                             </p>
                           </div>

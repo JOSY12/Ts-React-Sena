@@ -10,7 +10,8 @@ const Usuarios_card_administracion = ({
   foto_perfil,
   rol,
   administrador,
-  baneado
+  baneado,
+  email
 }: Usuario) => {
   const [editando, seteditando] = useState<boolean>(false)
   const [modal, setmodal] = useState<boolean>(false)
@@ -37,7 +38,20 @@ const Usuarios_card_administracion = ({
             <div className='text-sm font-medium leading-5 text-gray-900'>
               {nombre}
             </div>
-            <div className='text-sm leading-5 text-gray-500'>{apellido}</div>
+            <div className='text-sm leading-5 text-gray-500'>
+              {apellido}
+              <div className='text-md text-black'>
+                Email:
+                <a
+                  className='text-sm text-gray-600 cursor-pointer hover:text-blue-500'
+                  href={`mailto:${email}  `}
+                  target='_blank'
+                  rel='noreferrer'
+                >
+                  {email}
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </td>
