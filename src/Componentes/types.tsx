@@ -82,9 +82,28 @@ export type datos = {
   usuarios: number
   dinero_ganado: number
 }
+
+export type compras = {
+  cantidad: number
+
+  estado: string
+
+  fecha_compra: string
+
+  id_compra: string
+
+  imagen: string
+
+  nombre: string
+
+  precio: number
+
+  usuario: string
+}
 export type administracion = {
   usuarios: Usuario[]
   datos: datos
+  compras: compras[]
 }
 
 export type Foto = {

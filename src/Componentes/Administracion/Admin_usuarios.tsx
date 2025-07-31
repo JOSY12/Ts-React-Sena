@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import Usuarios_card_administracion from './Usuarios_card_administracion'
-import { administracion, datos, Usuario } from '../types'
+import { administracion, compras, datos, Usuario } from '../types'
 import { todos_usuarios } from '../../Services'
 import { AiOutlineReload } from 'react-icons/ai'
 import { useLoaderData } from 'react-router-dom'
 import { AiOutlineDollarCircle } from 'react-icons/ai'
+import Productos_comprados from './Productos_comprados'
 
 const Admin_usuarios = () => {
   const data = useLoaderData<administracion>()
   const [usuarios, setusuarios] = useState<Usuario[]>([])
   const [datos, setdatos] = useState<datos>()
+  const [compras, setcompras] = useState<compras[]>([])
+
   const Recargar = async () => {
     const res: any = await todos_usuarios()
     if (res && res.usuarios.length) {
@@ -17,6 +20,7 @@ const Admin_usuarios = () => {
       setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
     }
   }
+
   useEffect(() => {
     const datos = async () => {
       const res: administracion = await todos_usuarios()
@@ -30,6 +34,7 @@ const Admin_usuarios = () => {
     if (data && Array.isArray(data.datos)) {
       setusuarios(data.usuarios)
       setdatos(data.datos[0])
+      setcompras(data.compras)
     } else {
       datos()
     }
@@ -181,8 +186,10 @@ const Admin_usuarios = () => {
           </div>
           {/* fin de informacion general */}
           <div className='mt-8'></div>
+          <div className='mt-'>Usuarios Registrados</div>
+
           {/* listado de usuarios */}
-          <div className='flex flex-col mt-8'>
+          <div className='flex flex-col mt-5'>
             <div className='py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8'>
               <div className='inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg'>
                 <table className='min-w-full'>
@@ -235,6 +242,78 @@ const Admin_usuarios = () => {
                     )}
 
                     {/* fin de informacion de usuarios */}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          {/* fin lista usuarios */}
+
+          <div className='mt-8'></div>
+          <div className='mt-'>Productos vendidos</div>
+
+          {/* listado de compras */}
+          <div className='flex flex-col mt-5  '>
+            <div className='py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8'>
+              <div className='inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg'>
+                <table className='min-w-full'>
+                  <thead>
+                    <tr>
+                      <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        Producto
+                      </th>
+                      <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        fecha compra
+                      </th>
+                      <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        Precio
+                      </th>
+                      <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        Estado
+                      </th>
+                      <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        cantidad
+                      </th>
+                      <th className='px-6 py-3 pr-30 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        Usuario
+                      </th>
+                      {/* <th className='px-6 py-3 text-xs font-medium leading-4 tracking-wider text-right text-gray-500 uppercase border-b border-gray-200 bg-gray-50'>
+                        opciones
+                      </th> */}
+                    </tr>
+                  </thead>
+                  <tbody className='bg-white'>
+                    {/* informacion de compras */}
+                    {compras.length > 0 ? (
+                      compras.map((e, k) => (
+                        <Productos_comprados
+                          key={k}
+                          cantidad={e.cantidad}
+                          estado={e.estado}
+                          fecha_compra={e.fecha_compra}
+                          id_compra={e.id_compra}
+                          imagen={e.imagen}
+                          nombre={e.nombre}
+                          precio={e.precio}
+                          usuario={e.usuario}
+                        />
+                      ))
+                    ) : (
+                      <Productos_comprados
+                        cantidad={0}
+                        estado={'sin compras'}
+                        fecha_compra={'sin compras'}
+                        id_compra={'sin compras'}
+                        imagen={
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'
+                        }
+                        nombre={'sin compras'}
+                        precio={0}
+                        usuario={''}
+                      />
+                    )}
+
+                    {/* fin de informacion de compras */}
                   </tbody>
                 </table>
               </div>

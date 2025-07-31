@@ -225,7 +225,6 @@ export const obtener_direcciones = async () => {
 
   try {
     const res = await axiosbackend.get(`/u/direcciones`)
-    console.log(res.data)
 
     return res.data
   } catch (error: unknown) {
@@ -269,7 +268,6 @@ export const eliminar_direccion = async (id_direccion: string) => {
       `/u/eliminar_direccion/${id_direccion}`
     )
     toast.success('Peticion exitosa', { id })
-    console.log(res.data)
     return res.data
   } catch (error) {
     toast.error(`Error al hacer la solititud ${error}`, { id })
@@ -281,7 +279,6 @@ export const actualizar_direccion_predeterminada = async (
   id_direccion: string
 ) => {
   const id = toast.loading('actualizando direccion')
-  console.log(id_direccion)
 
   try {
     await axiosbackend.put(`/u/predeterminar_direccion`, { id_direccion })

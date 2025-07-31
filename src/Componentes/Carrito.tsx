@@ -39,7 +39,7 @@ const Carrito = () => {
               htmlFor='modal-toggle'
               className='cursor-pointer   w-30 p-2 m-2 text-green-500 rounded '
             >
-              <div className='flex items-end justify-end fixed bottom-0 right-10 sm:bottom-20   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
+              <div className='flex items-end justify-end  fixed bottom-0 right-5 sm:bottom-5   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
                 <div className='w-10'> ?</div>
               </div>
             </label>
