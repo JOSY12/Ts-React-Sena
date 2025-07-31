@@ -33,7 +33,7 @@ const Detalles_compra = () => {
     } else {
       solicitar_detalle_compra(id ? id : '')
     }
-  }, [data, id, detalle_compra])
+  }, [])
   return (
     <div className=' container mx-auto '>
       <div className='w-full flex justify-between items-center mb-3 mt-12 pl-3'>
