@@ -7,6 +7,10 @@ const Modal = () => {
   const agregar_direciones = Direcciones_usuario(
     (state) => state.agregar_direciones
   )
+  // const solicitar_direcciones = Direcciones_usuario(
+  //   (state) => state.solicitar_direcciones
+  // )
+
   // Lógica para agregar la dirección
   const {
     register,
@@ -20,7 +24,6 @@ const Modal = () => {
     ) as HTMLInputElement
     if (modalToggle) modalToggle.checked = false
     // Aquí puedes manejar la lógica para enviar los datos del formulario
-    console.log(data)
     agregar_direciones({
       id: null,
       nombre_comprador: data.Nombre,
@@ -31,9 +34,8 @@ const Modal = () => {
       telefono: data.Telefono,
       predeterminada: data.Predeterminado || false
     })
-    // reset()
+    // solicitar_direcciones()
   })
-  console.log(errors)
 
   return (
     <>

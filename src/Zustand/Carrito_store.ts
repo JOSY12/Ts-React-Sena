@@ -97,13 +97,13 @@ export const carrito_store = create<carrito_store>()(
         })
       },
       enviar_compra: async () => {
-        // const res = await enviar_pedido()
+        // const res = await marcar_enviado()
         // set({
         //   compras: Array.isArray(res) ? res : []
         // })
       },
       enviar_recibido: async () => {
-        // const res = await enviar_pedido()
+        // const res = await marcar_recibido()
         // set({
         //   compras: Array.isArray(res) ? res : []
         // })

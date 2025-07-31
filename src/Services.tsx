@@ -221,21 +221,23 @@ export const obtener_usuario = async () => {
 //   }
 // }
 export const obtener_direcciones = async () => {
-  // const idcarga = toast.loading('cargando usuario')
+  const id = toast.loading('Cargando direcciones...')
 
   try {
     const res = await axiosbackend.get(`/u/direcciones`)
+    toast.dismiss(id)
 
-    return res.data
-  } catch (error: unknown) {
-    if (axios.isAxiosError(error) && error.response) {
-      // toast.error('error al cargar datos del usuario', { id: idcarga })
-
-      return error.response?.data
+    if (!res.data.length) {
+      toast.info('No tienes direcciones registradas')
+      return []
     }
-    toast.error(`error al cargar datos del usuario ${error}`)
 
-    return { message: 'Ocurrió un error inesperado', error }
+    toast.success('Direcciones cargadas con éxito')
+    return res.data
+  } catch (error: any) {
+    toast.dismiss(id)
+
+    return []
   }
 }
 
@@ -251,9 +253,10 @@ export const agregar_direccion = async (datos: any) => {
       telefono: datos.telefono,
       predeterminada: datos.predeterminada || false
     })
+    toast.success('Peticion exitosa', { id })
+
     if (res.data === 'ya existe') {
       toast.error('Ya existe una direccion con ese Telefono', { id })
-      return res.data
     }
   } catch (error) {
     toast.error(`Error al hacer la solititud ${error}`, { id })
@@ -501,6 +504,17 @@ export const agregar_carrito = async (idproducto: string, cantidad: number) => {
   const id = toast.loading('agreando a carrito')
   try {
     await axiosbackend.post('/u/agregar_carrito', { idproducto, cantidad })
+    toast.dismiss(id)
+  } catch (error) {
+    toast.error('error al agregar a carrito', { id })
+    return error
+  }
+}
+
+export const marcar_enviado = async (idcompra: string) => {
+  const id = toast.loading('agreando a carrito')
+  try {
+    await axiosbackend.put('/u/marcar_enviado', { idcompra })
     toast.dismiss(id)
   } catch (error) {
     toast.error('error al agregar a carrito', { id })

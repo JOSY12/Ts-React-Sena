@@ -16,40 +16,36 @@ type Direcciones_usuario = {
   agregar_direciones: (datos: direccion) => void
 }
 
-export const Direcciones_usuario = create<Direcciones_usuario>()((set) => ({
-  misdirecciones: [],
+export const Direcciones_usuario = create<Direcciones_usuario>()(
+  (set, get) => ({
+    misdirecciones: [],
 
-  solicitar_direcciones: async () => {
-    const res = await obtener_direcciones()
+    solicitar_direcciones: async () => {
+      const res = await obtener_direcciones()
 
-    set({ misdirecciones: Array.isArray(res) ? res : [] })
-  },
-  agregar_direciones: async (datos: direccion) => {
-    const dato = await agregar_direccion(datos)
-    console.log(dato)
-    if (dato !== 'ya existe') {
+      set({ misdirecciones: Array.isArray(res) ? res : [] })
+    },
+    agregar_direciones: async (datos: direccion) => {
       set(({ misdirecciones }) => ({
         misdirecciones: misdirecciones.find((e) => e.id === datos.id)
           ? misdirecciones
           : [...misdirecciones, datos]
       }))
-    }
-  },
-  quitar: async (id: string) => {
-    const res = await eliminar_direccion(id)
-    if (res === 'borrado') {
+      await agregar_direccion(datos)
+      get().solicitar_direcciones()
+    },
+    quitar: async (id: string) => {
       set(({ misdirecciones }) => ({
         misdirecciones: misdirecciones.filter((e) => e.id !== id)
       }))
+      await eliminar_direccion(id)
+    },
+    cambiar_predeterminado: async (id: string) => {
+      await actualizar_direccion_predeterminada(id)
+
+      const res = await obtener_direcciones()
+
+      set({ misdirecciones: Array.isArray(res) ? res : [] })
     }
-  },
-  cambiar_predeterminado: async (id: string) => {
-    await actualizar_direccion_predeterminada(id)
-
-    const res = await obtener_direcciones()
-
-    set({ misdirecciones: Array.isArray(res) ? res : [] })
-
-    // set({ misdirecciones: Array.isArray(res) ? res : [] })
-  }
-}))
+  })
+)
