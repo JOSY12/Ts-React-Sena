@@ -26,6 +26,7 @@ const Admin_usuarios = () => {
       if (res && Array.isArray(res.usuarios)) {
         setusuarios(res.usuarios)
         setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
+        setcompras(Array.isArray(res.compras) ? res.compras : [])
       } else {
         return
       }

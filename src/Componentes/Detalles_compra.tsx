@@ -1,14 +1,13 @@
 import { Link, useLoaderData, useParams } from 'react-router-dom'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { useEffect } from 'react'
-import { useAuth, useClerk } from '@clerk/clerk-react'
+import { useClerk } from '@clerk/clerk-react'
 import { AiFillMessage } from 'react-icons/ai'
 
 import type { UserResource } from '@clerk/types'
 
 const Detalles_compra = () => {
   const { user } = useClerk() as { user: UserResource | null }
-  const { isSignedIn } = useAuth()
 
   const data = useLoaderData()
   const { id } = useParams()
@@ -46,7 +45,6 @@ const Detalles_compra = () => {
         <div className='flex gap-2'>
           {/* Botones para el administrador */}
           {user &&
-            isSignedIn &&
             typeof user.publicMetadata === 'object' &&
             (user.publicMetadata as any).administrador && (
               <>
@@ -84,7 +82,6 @@ const Detalles_compra = () => {
             )}
           {/* Botones para el usuario normal */}
           {user &&
-            isSignedIn &&
             (!user.publicMetadata ||
               !(user.publicMetadata as any).administrador) && (
               <>
