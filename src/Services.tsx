@@ -512,9 +512,21 @@ export const agregar_carrito = async (idproducto: string, cantidad: number) => {
 }
 
 export const marcar_enviado = async (idcompra: string) => {
-  const id = toast.loading('agreando a carrito')
+  const id = toast.loading('procesando enviado')
   try {
     await axiosbackend.put('/u/marcar_enviado', { idcompra })
+    console.log('Compra marcada como enviada:', idcompra)
+    toast.success('Compra marcada como enviada', { id })
+  } catch (error) {
+    toast.error('error al marcar enviado', { id })
+    return error
+  }
+}
+
+export const marcar_recibido = async (idcompra: string) => {
+  const id = toast.loading('agreando a carrito')
+  try {
+    await axiosbackend.put('/u/marcar_recibido', { idcompra })
     toast.dismiss(id)
   } catch (error) {
     toast.error('error al agregar a carrito', { id })

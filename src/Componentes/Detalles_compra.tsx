@@ -15,6 +15,9 @@ const Detalles_compra = () => {
   const solicitar_detalle_compra = carrito_store(
     (state) => state.solicitar_detalle_compra
   )
+  const enviar_compra = carrito_store((state) => state.enviar_compra)
+  const enviar_recibido = carrito_store((state) => state.enviar_recibido)
+
   const setear_detalle_compra = carrito_store(
     (state) => state.setear_detalle_compra
   )
@@ -40,40 +43,71 @@ const Detalles_compra = () => {
           <p className='text-slate-500'>Productos relacionados a la compra </p>
         </div>
         <div className='flex gap-2'>
-          {/* mandos administrador */}
+          {/* Botones para el administrador */}
           {user &&
             isSignedIn &&
             typeof user.publicMetadata === 'object' &&
             (user.publicMetadata as any).administrador && (
-              <button
-                // onClick={() => marcar_enviado([])}
-                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-              >
-                Marcar como enviado
-              </button>
+              <>
+                {!detalle_compra[0]?.enviado && (
+                  <button
+                    onClick={() => enviar_compra(id ? id : '')}
+                    className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+                  >
+                    Marcar como enviado
+                  </button>
+                )}
+                {!detalle_compra[0]?.recibido && detalle_compra[0]?.enviado && (
+                  <button
+                    onClick={() => enviar_recibido(id ? id : '')}
+                    className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+                  >
+                    Marcar como recibido
+                  </button>
+                )}
+                {detalle_compra.length > 0 && (
+                  <>
+                    {detalle_compra[0].enviado && (
+                      <span className='text-green-500 px-4 py-2'>
+                        Producto enviado
+                      </span>
+                    )}
+                    {detalle_compra[0].recibido && (
+                      <span className='text-green-500 px-4 py-2'>
+                        Producto Recibido
+                      </span>
+                    )}
+                  </>
+                )}
+              </>
             )}
+          {/* Botones para el usuario normal */}
           {user &&
             isSignedIn &&
-            typeof user.publicMetadata === 'object' &&
-            (user.publicMetadata as any).administrador && (
-              <button
-                // onClick={() => marcar_recibido([])}
-                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-              >
-                Marcar como recibido
-              </button>
-            )}
-          {/* mandos administrador */}
-
-          {detalle_compra.length > 0 &&
-            detalle_compra[0].recibido === false &&
-            detalle_compra[0].enviado === true && (
-              <button
-                // onClick={() => marcar_recibido([])}
-                className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-              >
-                Marcar como recibido
-              </button>
+            (!user.publicMetadata ||
+              !(user.publicMetadata as any).administrador) && (
+              <>
+                {detalle_compra.length > 0 && detalle_compra[0].enviado && (
+                  <span className='text-green-500 px-4 py-2'>
+                    Producto Enviado
+                  </span>
+                )}
+                {detalle_compra.length > 0 &&
+                  detalle_compra[0].enviado &&
+                  !detalle_compra[0].recibido && (
+                    <button
+                      onClick={() => enviar_recibido(id ? id : '')}
+                      className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+                    >
+                      Marcar como recibido
+                    </button>
+                  )}
+                {detalle_compra.length > 0 && detalle_compra[0].recibido && (
+                  <span className='text-green-500 px-4 py-2'>
+                    Producto Recibido
+                  </span>
+                )}
+              </>
             )}
         </div>
       </div>

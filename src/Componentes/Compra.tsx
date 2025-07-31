@@ -49,7 +49,7 @@ export const Compra = ({
             >
               {enviado ? 'Enviado' : 'En proceso de envio'}
               {enviado && recibido ? (
-                <span className='text-green-600'> - Recibido y completado</span>
+                <span className='text-green-600'> - Recibido y Completado</span>
               ) : (
                 <span className='text-red-600'> - No recibido</span>
               )}

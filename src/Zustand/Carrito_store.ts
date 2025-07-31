@@ -7,6 +7,8 @@ import {
   carrito,
   detalle_compra,
   historial_compras,
+  marcar_enviado,
+  marcar_recibido,
   quitar_carrito
 } from '../Services'
 
@@ -20,12 +22,13 @@ interface carrito_store {
   solicitar_detalle_compra: (id: string) => void
   quitar: (id: string) => void
   encarrito: (id: string) => boolean
+
   solicitar_carrito: () => void
   total: () => number
   solicitar_compras: () => void
   setear_detalle_compra: (data: item_carrito[]) => void
-  enviar_compra: () => void
-  enviar_recibido: () => void
+  enviar_compra: (id: string) => void
+  enviar_recibido: (id: string) => void
 }
 export const carrito_store = create<carrito_store>()(
   persist(
@@ -96,19 +99,27 @@ export const carrito_store = create<carrito_store>()(
           compras: Array.isArray(res) ? res : []
         })
       },
-      enviar_compra: async () => {
-        // const res = await marcar_enviado()
-        // set({
-        //   compras: Array.isArray(res) ? res : []
-        // })
-      },
-      enviar_recibido: async () => {
-        // const res = await marcar_recibido()
-        // set({
-        //   compras: Array.isArray(res) ? res : []
-        // })
+      enviar_compra: async (id: string) => {
+        await marcar_enviado(id) // backend cambia el estado
+        set((state) => ({
+          detalle_compra: state.detalle_compra.map((item) => ({
+            ...item,
+            enviado: true
+          }))
+        }))
+        window.location.reload()
       },
 
+      enviar_recibido: async (id: string) => {
+        await marcar_recibido(id)
+        set((state) => ({
+          detalle_compra: state.detalle_compra.map((item) => ({
+            ...item,
+            recibido: true
+          }))
+        }))
+        window.location.reload()
+      },
       solicitar_detalle_compra: async (id: string) => {
         const res = await detalle_compra(id)
         set({
