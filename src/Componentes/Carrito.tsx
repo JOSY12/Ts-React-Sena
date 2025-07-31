@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { carrito_store } from '../Zustand/Carrito_store'
 import Producto_carrito from './Producto_carrito'
 import { Stripe_store } from '../Zustand/Stripe_store'
+import { AiOutlineClose } from 'react-icons/ai'
 
 // import { basedatos } from '../bd'
 const Carrito = () => {
@@ -26,9 +27,105 @@ const Carrito = () => {
   return (
     <>
       <div className='  bg-gray-100 pt-10'>
-        <h1 className='mb-10 text-center text-2xl font-bold'>
-          Carrito de compras
-        </h1>
+        <div className='mb-10   flex justify-center  text-center text-2xl font-bold'>
+          <h1> Carrito de compras</h1>
+          <div className='ml-2'>
+            <input
+              type='checkbox'
+              id='modal-toggle'
+              className='hidden peer w-20'
+            />
+            <label
+              htmlFor='modal-toggle'
+              className='cursor-pointer   w-30 p-2 m-2 text-green-500 rounded '
+            >
+              <div className='flex items-end justify-end fixed bottom-0 right-10 sm:bottom-20   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
+                <div className='w-10'> ?</div>
+              </div>
+            </label>
+
+            <form
+              // onSubmit={enviar}
+              className='fixed  inset-0    bg-gray-100 hidden peer-checked:flex items-center justify-center z-50'
+            >
+              <div className='bg-white   p-3 rounded-xl shadow-lg max-w-2xl w-full  relative'>
+                <label
+                  htmlFor='modal-toggle'
+                  className='cursor-pointer m-3 flex  justify-end  '
+                >
+                  <AiOutlineClose className='size-10  text-black ' />
+                </label>
+                <div className='    '>
+                  <div className='  '>
+                    <div className='text-center'>
+                      Informacion de tarjeta de prueba
+                    </div>
+                    <div className='flex justify-center items-center m-4'>
+                      <div className=' h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110'>
+                        <img
+                          className='relative object-cover w-full h-full rounded-xl'
+                          src='https://i.imgur.com/kGkSg1v.png'
+                        ></img>
+
+                        <div className='w-full px-8 absolute top-8'>
+                          <div className='flex justify-between'>
+                            <div className=''>
+                              <p className='font-light'>Nombre</p>
+                              <p className='font-medium tracking-widest'>
+                                Persona de prueba
+                              </p>
+                            </div>
+                            <img
+                              className='w-14 h-14'
+                              src='https://i.imgur.com/bbPHJVe.png'
+                            />
+                          </div>
+                          <div className='pt-1'>
+                            <p className='font-light'>Numero de tarjeta</p>
+                            <p className='font-medium tracking-more-wider'>
+                              4242 4242 4242 4242
+                            </p>
+                          </div>
+                          <div className='pt-6 pr-6'>
+                            <div className='flex justify-between'>
+                              <div className=''>
+                                <p className='font-light text-xs'>Valid</p>
+                                {/* <p className='font-medium tracking-wider text-sm'>
+                              11/15
+                            </p> */}
+                              </div>
+                              <div className=''>
+                                <p className='font-light  text-xs'>
+                                  Fecha Expiracion
+                                </p>
+                                <p className='font-medium tracking-wider text-sm'>
+                                  04 / 44
+                                </p>
+                              </div>
+
+                              <div className=''>
+                                <p className='font-light text-xs'>CVV</p>
+                                <p className='font-bold tracking-more-wider text-sm'>
+                                  4444
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <span className='text-center text-black mt-4'>
+                      para poder pagar en la pagina usa estos datos de tarjeta
+                      de prueba para poder realizar la compras sin limite
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
         <div className='mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0'>
           <div className='rounded-lg md:w-2/3'>
             {carrito && carrito.length ? (
@@ -70,6 +167,7 @@ const Carrito = () => {
               </div>
             )}
           </div>
+
           {carrito && carrito.length > 0 && (
             <div className='mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3'>
               <div className='mb-2 flex justify-between'>
