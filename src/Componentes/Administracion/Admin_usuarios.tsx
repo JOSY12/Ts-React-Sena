@@ -20,7 +20,6 @@ const Admin_usuarios = () => {
       setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
     }
   }
-  console.log('datos', data)
   useEffect(() => {
     const datos = async () => {
       const res: administracion = await todos_usuarios()
@@ -34,7 +33,7 @@ const Admin_usuarios = () => {
     if (data && Array.isArray(data.datos)) {
       setusuarios(data.usuarios)
       setdatos(data.datos[0])
-      setcompras(data.compras || [])
+      setcompras(data.compras)
     } else {
       datos()
     }
