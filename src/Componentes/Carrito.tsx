@@ -113,7 +113,7 @@ const Carrito = () => {
                               <div className=''>
                                 <p className='font-light text-xs'>CVV</p>
                                 <p className='font-bold tracking-more-wider text-sm'>
-                                  4444
+                                  444
                                 </p>
                               </div>
                             </div>
