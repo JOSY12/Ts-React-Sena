@@ -96,12 +96,6 @@ const Carrito = () => {
                           <div className='pt-6 pr-6'>
                             <div className='flex justify-between'>
                               <div className=''>
-                                <p className='font-light text-xs'>Valid</p>
-                                {/* <p className='font-medium tracking-wider text-sm'>
-                              11/15
-                            </p> */}
-                              </div>
-                              <div className=''>
                                 <p className='font-light  text-xs'>
                                   Fecha Expiracion
                                 </p>
