@@ -18,7 +18,9 @@ const Perfil = () => {
 
   return (
     <>
-      <UserProfile />
+      <div className='flex justify-center items-center   bg-gray-100'>
+        <UserProfile />
+      </div>
 
       <div className=' border-t-1 m-3 border-black '>
         <div className='     '>
