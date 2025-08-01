@@ -7,7 +7,7 @@ const Landing_page = () => {
   const telefonos =
     'https://media.es.wired.com/photos/646402de88218b01bf4a1a59/master/pass/Best-Android-Phones-2023-Featured-2023.jpg'
   const consolas =
-    'https://hardzone.es/app/uploads-hardzone.es/2023/05/consolas.jpeg'
+    'https://tecstore.pe/media/catalog/category/TEC_Banner-Web_Categoria_ACCESORIOS.jpg'
   const lading_page_datos = productos_store((state) => state.lading_page_datos)
   return (
     <>
@@ -69,9 +69,9 @@ const Landing_page = () => {
                 <div className='   bg-opacity-50 flex items-center     border border-b-4 h-full'>
                   <div className='px-10 max-w-xl h-full py-5  flex flex-col justify-between '>
                     <h2 className='text-2xl text-white  font-semibold'>
-                      Consolas y juegos
+                      Accesorios Digitales
                     </h2>
-                    <Link to={`/productos?Categorias=Consolas`}>
+                    <Link to={`/productos?Categorias=Accesorios`}>
                       <button className='flex items-center mt-4 text-white  text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
                         <span>Ir a comprar</span>
                         <svg
