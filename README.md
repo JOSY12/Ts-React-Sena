@@ -1,4 +1,4 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite e
 
 pryecto sena para analisis y desarrollo de software
 pasos
