@@ -1,19 +1,35 @@
 import { create } from 'zustand'
-import { comprar_stripe } from '../Services'
+import { comprar_stripe } from '../features/compras/api'
+import { userTask } from '../shared/api/user-task'
 
-type Stripe_store = {
+type State = {
   url: string
-  pagar: (id: string) => void
+  busy: boolean
+  error: string | null
+  pagar: (id: string) => Promise<boolean>
+  reset: () => void
 }
-
-export const Stripe_store = create<Stripe_store>((set) => ({
-  url: '',
+const initial = { url: '', busy: false, error: null }
+let request = 0
+export const Stripe_store = create<State>((set, get) => ({
+  ...initial,
+  reset: () => {
+    request++
+    set(initial)
+  },
   pagar: async (id) => {
-    // [] agregar el condicional de direcciones de envio, si no hay ninguna predetermianda no se puede comprar
-
-    const link = await comprar_stripe(id)
-    set(() => ({
-      url: typeof link === 'string' ? link : ''
-    }))
+    if (get().busy) return false
+    const current = ++request
+    set({ url: '', busy: true, error: null })
+    const completed = await userTask(
+      () => comprar_stripe(id),
+      (url) => {
+        if (current === request) set({ url, busy: false })
+      },
+      (error) => {
+        if (current === request) set({ error, busy: false })
+      }
+    )
+    return completed && current === request
   }
 }))

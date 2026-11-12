@@ -7,12 +7,8 @@ const Contacto = () => {
           src='https://picsum.photos/200'
           alt='Profile picture'
         ></img>
-        <h2 className='text-center text-2xl font-semibold mt-3'>
-          Josmer bertel calle
-        </h2>
-        <p className='text-center text-gray-600 mt-1'>
-          Programador web fullstack
-        </p>
+        <h2 className='text-center text-2xl font-semibold mt-3'>Josmer bertel calle</h2>
+        <p className='text-center text-gray-600 mt-1'>Programador web fullstack</p>
         <div className='flex justify-center mt-5'>
           <a
             target='_blank'
@@ -40,11 +36,10 @@ const Contacto = () => {
         <div className='mt-5'>
           <h3 className='text-xl font-semibold'>Bio</h3>
           <p className='text-gray-600 mt-2'>
-            Programador web fullstack con experiencia en el desarrollo de
-            aplicaciones web utilizando tecnologías como React, Node.js y
-            MongoDB. Apasionado por aprender nuevas tecnologías y mejorar mis
-            habilidades de programación. Me gusta trabajar en equipo y colaborar
-            en proyectos desafiantes.
+            Programador web fullstack con experiencia en el desarrollo de aplicaciones
+            web utilizando tecnologías como React, Node.js y MongoDB. Apasionado por
+            aprender nuevas tecnologías y mejorar mis habilidades de programación. Me
+            gusta trabajar en equipo y colaborar en proyectos desafiantes.
           </p>
         </div>
       </div>

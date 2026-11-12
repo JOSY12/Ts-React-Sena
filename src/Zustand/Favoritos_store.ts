@@ -1,51 +1,73 @@
-import { agregar_favorito, favoritos, quitar_favorito } from './../Services'
-import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
-import { favorito } from '../Componentes/types'
-interface favoritos_store {
+import type { favorito, LoadStatus } from '../Componentes/types'
+import * as api from '../features/usuario/api'
+import { userTask, deduplicateUserLoad } from '../shared/api/user-task'
+
+type State = {
   favoritos: favorito[]
-
-  agregar: (id: string) => void
-  quitar: (id: string) => void
+  status: LoadStatus
+  error: string | null
+  busy: boolean
+  agregar: (id: string) => Promise<boolean>
+  quitar: (id: string) => Promise<boolean>
   favorito: (id: string) => boolean
-  solicitar_favoritos: () => void
+  solicitar_favoritos: () => Promise<boolean>
+  reset: () => void
 }
-export const favoritos_store = create<favoritos_store>()(
-  persist(
-    // inicio del persist
-    (set, get) => ({
-      // inicio de store
-      favoritos: [],
-
-      agregar: async (id: string) => {
-        set(({ favoritos }) => ({
-          favoritos: favoritos.find((e) => e.id === id)
-            ? favoritos
-            : [...favoritos, { id }]
-        }))
-        await agregar_favorito(id)
+const initial = {
+  favoritos: [],
+  status: 'idle' as LoadStatus,
+  error: null,
+  busy: false
+}
+let request = 0
+export const favoritos_store = create<State>((set, get) => ({
+  ...initial,
+  reset: () => {
+    request++
+    set(initial)
+  },
+  favorito: (id) => get().favoritos.some((item) => item.id === id),
+  solicitar_favoritos: deduplicateUserLoad(async () => {
+    if (get().busy) return false
+    const current = ++request
+    set({ status: 'loading', error: null })
+    return userTask(
+      api.favoritos,
+      (favoritos) => {
+        if (current === request) set({ favoritos, status: 'success' })
       },
-
-      quitar: async (id: string) => {
-        set(({ favoritos }) => ({
-          favoritos: favoritos.filter((e) => e.id !== id)
-        }))
-
-        await quitar_favorito(id)
-      },
-
-      favorito: (id: string) => !!get().favoritos.find((e) => e.id === id),
-
-      solicitar_favoritos: async () => {
-        const res = await favoritos()
-        set({
-          favoritos: Array.isArray(res) ? res : []
-        })
+      (error) => {
+        if (current === request) set({ status: 'error', error })
       }
-
-      // fin del store
-    }),
-    { name: 'misfavoritos' }
-  )
-  // fin del persist
-)
+    )
+  }),
+  agregar: async (id) => {
+    if (get().busy || get().favorito(id)) return false
+    request++
+    set({ busy: true, error: null })
+    return userTask(
+      async () => {
+        await api.agregar_favorito(id)
+        return api.favoritos()
+      },
+      (favoritos) => set({ favoritos, busy: false, status: 'success' }),
+      (error) => set({ error, busy: false, status: 'error' })
+    )
+  },
+  quitar: async (id) => {
+    if (get().busy) return false
+    request++
+    set({ busy: true, error: null })
+    return userTask(
+      () => api.quitar_favorito(id),
+      () =>
+        set((state) => ({
+          favoritos: state.favoritos.filter((item) => item.id !== id),
+          busy: false,
+          status: 'success'
+        })),
+      (error) => set({ error, busy: false, status: 'error' })
+    )
+  }
+}))

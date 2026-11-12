@@ -1,95 +1,26 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai'
-import { IoStatsChart } from 'react-icons/io5'
-import { FaEdit } from 'react-icons/fa'
-import { FaListUl } from 'react-icons/fa6'
-const DashboardGeneral_movil = ({ ventanas, setventana }: any) => {
-  const [activar, setactivar] = useState<boolean>()
+import AdminNavigation from './AdminNavigation'
 
+const DashboardGeneral_movil = () => {
+  const [hidden, setHidden] = useState(false)
   return (
-    <>
+    <div className='lg:hidden'>
       <button
-        onClick={() => {
-          setactivar(!activar)
-        }}
-        className={`    justify-center w-full cursor-pointer  ${
-          activar ? 'bottom-0 ' : 'bottom-10'
-        }  flex fixed lg:hidden z-2  `}
+        type='button'
+        aria-label='Mostrar u ocultar menú administrativo'
+        aria-expanded={!hidden}
+        onClick={() => setHidden((value) => !value)}
+        className={`justify-center w-full cursor-pointer ${hidden ? 'bottom-0' : 'bottom-10'} flex fixed z-20`}
       >
-        {activar ? (
-          <span className='text-3xl         '>
-            <AiOutlineCaretUp />
-          </span>
-        ) : (
-          <span className='text-3xl         '>
-            <AiOutlineCaretDown />
-          </span>
-        )}
+        {hidden ? <AiOutlineCaretUp size={30} /> : <AiOutlineCaretDown size={30} />}
       </button>
-      <div className={`   ${activar ? 'hidden' : ''} z-2 lg:hidden`}>
-        <nav className=' flex    w-full justify-evenly bottom-0    fixed   '>
-          <Link className='w-1/2     ' to={'/u/v/admin/usuarios'}>
-            <button
-              onClick={() =>
-                setventana({
-                  ...ventanas,
-                  usuarios: true,
-                  productos: false,
-                  misproductos: false
-                })
-              }
-              className={`w-full flex items-center    justify-center px-6 py-2   ${
-                ventanas?.usuarios
-                  ? 'text-gray-200  bg-gray-700 bg-opacity-25'
-                  : 'text-gray-600  bg-gray-900 bg-opacity-25'
-              }  `}
-            >
-              <IoStatsChart size={30} />
-            </button>
-          </Link>
-          <Link className='w-1/2   ' to={'/u/v/admin/productos'}>
-            <button
-              onClick={() =>
-                setventana({
-                  ...ventanas,
-                  usuarios: false,
-                  productos: true,
-                  misproductos: false
-                })
-              }
-              className={`w-full flex items-center  justify-center px-6 py-2   ${
-                ventanas?.productos
-                  ? 'bg-gray-700 text-gray-100 bg-opacity-25'
-                  : 'text-gray-600  bg-gray-900 bg-opacity-25'
-              }  `}
-            >
-              <FaEdit size={30} />
-            </button>
-          </Link>
-          <Link className='w-1/2   ' to={'/u/v/admin/listado_p'}>
-            <button
-              onClick={() =>
-                setventana({
-                  ...ventanas,
-                  misproductos: true,
-                  usuarios: false,
-                  productos: false
-                })
-              }
-              className={`w-full flex items-center  justify-center px-6 py-2   ${
-                ventanas?.misproductos
-                  ? 'bg-gray-700 text-gray-100 bg-opacity-25'
-                  : 'text-gray-600  bg-gray-900 bg-opacity-25'
-              }  `}
-            >
-              <FaListUl size={30} />
-            </button>
-          </Link>
-        </nav>
-      </div>
-    </>
+      {!hidden && (
+        <div className='relative z-20'>
+          <AdminNavigation mobile />
+        </div>
+      )}
+    </div>
   )
 }
-
 export default DashboardGeneral_movil

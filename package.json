@@ -6,35 +6,57 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint . --max-warnings 0",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "npm run format:check && npm run lint && npm run typecheck:tests && npm run test && npm run build",
+    "typecheck:tests": "tsc -p tsconfig.test.json",
+    "test:browser": "node scripts/smoke-browser.mjs",
+    "format": "prettier --write src tests scripts *.config.* tsconfig*.json package.json index.html .github/workflows .prettierrc.json",
+    "format:check": "prettier --check src tests scripts *.config.* tsconfig*.json package.json index.html .github/workflows .prettierrc.json"
   },
   "dependencies": {
-    "@clerk/clerk-react": "^5.30.4",
-    "@clerk/localizations": "^3.14.4",
-    "@tailwindcss/vite": "^4.1.5",
-    "axios": "^1.9.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.0.0",
+    "@clerk/clerk-react": "^5.61.12",
+    "@clerk/localizations": "^3.37.11",
+    "@tailwindcss/vite": "^4.3.5",
+    "axios": "^1.21.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "react-hook-form": "^7.56.2",
     "react-icons": "^5.5.0",
-    "react-router-dom": "^7.5.3",
+    "react-router-dom": "^7.18.5",
     "sonner": "^2.0.3",
-    "tailwindcss": "^4.1.5",
-    "zustand": "^5.0.4"
+    "tailwindcss": "^4.3.5",
+    "zustand": "^5.1.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.39.5",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.9",
     "@types/estree": "^1.0.7",
+    "@types/node": "^24.19.2",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
-    "eslint": "^9.21.0",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "eslint": "^9.39.5",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
+    "jsdom": "^31.0.0",
+    "prettier": "3.10.0",
     "typescript": "~5.7.2",
-    "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0"
+    "typescript-eslint": "^8.72.2",
+    "vite": "^6.4.6",
+    "vitest": "^4.1.12"
+  },
+  "engines": {
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0 <27",
+    "npm": ">=10 <12"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.1"
+    }
   }
 }

@@ -1,25 +1,22 @@
 @import 'tailwindcss';
-.pixel {
-  font-family: 'Press Start 2P';
-}
 .cl-userProfile-root [class*='cl-cardBox'] {
   box-shadow: none !important;
 }
 .cl-userProfile-root [class*='cl-internal-t38b9v'] {
-  height: screen !important;
-  width: screen !important;
+  height: 100% !important;
+  width: 100% !important;
 }
 .cl-cardBox {
-  height: screen !important;
-  width: screen !important;
+  height: 100% !important;
+  width: 100% !important;
 }
 .cl-footer .cl-internal-1jpib5j {
   display: none;
 }
 .cl-cardBox .cl-internal-t38b9v {
-  width: screen !important;
+  width: 100% !important;
 
-  height: screen !important;
+  height: 100% !important;
 }
 .cl-internal-t38b9v {
   width: 100% !important;
@@ -54,4 +51,13 @@
 }
 .cl-internal-1t1d4xj {
   display: none !important;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 3px;
 }

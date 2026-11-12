@@ -50,14 +50,16 @@ export type favorito = {
 
 export type item_carrito = {
   id: string
-  nombre?: String | null
+  nombre?: string | null
   precio?: number | null
   imagen?: string | null
-  estado?: string | 'Disponible' | 'Agotado' | 'Pendiente'
-  stock?: number | 1
+  estado?: string
+  stock?: number
   cantidad: number
   recibido?: boolean
   enviado?: boolean
+  puede_marcar_enviado?: boolean
+  puede_marcar_recibido?: boolean
 }
 
 export type compras_hechas = {
@@ -67,19 +69,19 @@ export type compras_hechas = {
   momento_compra: string
   direccion_compra: string
   enviado: boolean
-  email: string
+  email: string | null
   recibido: boolean
 }
 
 export type Usuario = {
   id: string
   nombre: string
-  apellido: string
-  foto_perfil: string
+  apellido: string | null
+  foto_perfil: string | null
   rol: string
   administrador: boolean
   baneado: boolean
-  email: string
+  email: string | null
 }
 
 export type datos = {
@@ -108,7 +110,7 @@ export type compras = {
 }
 export type administracion = {
   usuarios: Usuario[]
-  datos: datos
+  datos: datos | datos[]
   compras: compras_hechas[]
 }
 
@@ -160,4 +162,26 @@ export type misfiltros = {
   Maximo: string
   Paginas: number
   Pagina: number
+}
+
+export type DetalleProducto = Omit<producto, 'fotos' | 'categorias'> & {
+  fotos: string[]
+  categorias: string[]
+}
+export type ProductResponse = { producto: DetalleProducto[] }
+export type EditableProductResponse = { producto: producto[] }
+export type ProductListResponse = {
+  Productos: productoprops[]
+  totalPaginas: number
+  Pagina: number
+}
+export type LoadStatus = 'idle' | 'loading' | 'success' | 'error'
+export type ProductFormValues = {
+  nombre: string
+  precio: number
+  stock: number
+  estado: string
+  descripcion: string
+  nuevacategoria: string
+  fotos: string
 }

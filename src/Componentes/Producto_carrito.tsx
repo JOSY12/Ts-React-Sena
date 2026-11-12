@@ -1,3 +1,4 @@
+import ProductImage from '../shared/ui/ProductImage'
 import { item_carrito } from './types'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { Link } from 'react-router-dom'
@@ -17,10 +18,14 @@ const Producto_carrito = ({
   const aumentar = carrito_store((state) => state.aumentar)
   const restar = carrito_store((state) => state.restar)
   const pagar = Stripe_store((state) => state.pagar)
+  const busy = carrito_store((state) => state.busy)
+  const checkoutBusy = Stripe_store((state) => state.busy)
   return (
     <div className='justify-between mb-4 relative rounded-lg overflow-x-auto bg-white p-6 shadow-md sm:flex sm:justify-start'>
       <div className='absolute right-0   top-0  '>
         <button
+          disabled={busy}
+          aria-label='Quitar producto del carrito'
           onClick={() => {
             quitar_carrito(id)
           }}
@@ -32,11 +37,12 @@ const Producto_carrito = ({
       <Link to={`/productos/${id}`} className='justify-center flex   '>
         <div className=' justify-center h-30 w-30'>
           <div className='flex justify-center bg-white   w-full  '>
-            <img
+            <ProductImage
+              alt={String(nombre ?? 'Producto')}
               loading='lazy'
               src={imagen ? imagen : ''}
               className=' h-30    '
-            ></img>
+            ></ProductImage>
           </div>
         </div>
       </Link>
@@ -44,17 +50,17 @@ const Producto_carrito = ({
       <div className='truncate sm:ml-4 sm:flex  sm:w-full sm:justify-between'>
         <div className=' truncate mt-5 sm:mt-0'>
           <Link to={`/productos/${id}`}>
-            <h2 className='  truncate text-lg font-bold text-gray-900'>
-              {nombre}
-            </h2>
+            <h2 className='  truncate text-lg font-bold text-gray-900'>{nombre}</h2>
           </Link>
         </div>
         <div className='mt-4 s,:flex justify-center items-center align-middle text-center  sm:mt-0 sm:block sm:space-x-6'>
           <div className=' flex    gap-2   mr-4 text-center items-center sm:flex-col align-middle justify-center  '>
             <div className='flex    items-center border-gray-100'>
               <button
+                disabled={busy || cantidad <= 1}
+                aria-label='Reducir cantidad'
                 onClick={() => {
-                  cantidad > 1 && restar(id)
+                  if (cantidad > 1) void restar(id)
                 }}
                 className='cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50'
               >
@@ -65,8 +71,10 @@ const Producto_carrito = ({
               </span>
 
               <button
+                disabled={busy || !stock || cantidad >= stock}
+                aria-label='Aumentar cantidad'
                 onClick={() => {
-                  stock && cantidad < stock && aumentar(id)
+                  if (stock && cantidad < stock) void aumentar(id)
                 }}
                 className='cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50'
               >
@@ -76,11 +84,10 @@ const Producto_carrito = ({
             <div className='flex items-center justify-center  '>
               <p className='text-sm font-extralight'>{stock} disponibles </p>
             </div>
-            <p className='text-sm'>
-              {precio && (precio * cantidad).toLocaleString()}$
-            </p>
+            <p className='text-sm'>{precio && (precio * cantidad).toLocaleString()}$</p>
             <div className='flex gap-1 items-center'>
               <button
+                disabled={checkoutBusy || busy}
                 onClick={() => {
                   pagar(id)
                 }}

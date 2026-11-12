@@ -20,11 +20,12 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
 
-      'react-refresh/only-export-components': [
-        'warn',
-        'react-hooks/exhaustive-deps',
-        { allowConstantExport: true }
-      ]
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
     }
+  },
+  {
+    files: ['scripts/**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: { ...globals.node, WebSocket: 'readonly' } }
   }
 )

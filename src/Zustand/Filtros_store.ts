@@ -1,84 +1,34 @@
-import { set_productos, set_productos_admin } from './Productos_store'
-import { categorias, todo_productos, todo_productos_admin } from './../Services'
 import { create } from 'zustand'
-import { misfiltros, tcategorias } from '../Componentes/types'
+import { categorias } from '../features/catalogo/api'
+import type { LoadStatus, tcategorias } from '../Componentes/types'
+import { errorMessage } from '../shared/api/errors'
 
-//
-type filtros_store = {
-  filtros: misfiltros
+type State = {
   categorias: tcategorias[]
-  solicitar_categorias: () => void
-  buscar_con_filtros: (datos: any) => void
-  buscar_con_filtros_admin: (datos: any) => void
-  quitar_check: (nombre: string) => void
-  agregar_check: (nombre: string) => void
-  check_categoria: (nombre: string) => boolean
+  status: LoadStatus
+  error: string | null
+  solicitar_categorias: () => Promise<boolean>
 }
-export const filtros_store = create<filtros_store>()((set, get) => ({
+let pending: Promise<boolean> | null = null
+export const filtros_store = create<State>((set, get) => ({
   categorias: [],
-  filtros: {
-    Nombre: '',
-    Maximo: '',
-    Minimo: '',
-    Categorias: [],
-    Paginas: 1,
-    Pagina: 1
-  },
-
+  status: 'idle',
+  error: null,
   solicitar_categorias: async () => {
-    const res = await categorias()
-
-    set({ categorias: Array.isArray(res) ? res : [] })
-  },
-
-  buscar_con_filtros: async (datos) => {
-    const res = await todo_productos(datos)
-
-    set({
-      filtros: {
-        Nombre: datos.Nombre ?? '',
-        Maximo: datos.Maximo ?? '',
-        Minimo: datos.Minimo ?? '',
-        Categorias: datos.Categorias ?? [],
-        Paginas: res.totalPaginas ?? 1,
-        Pagina: res.Pagina ?? 1
+    if (pending) return pending
+    if (get().status === 'success') return true
+    set({ status: 'loading', error: null })
+    pending = (async () => {
+      try {
+        set({ categorias: await categorias(), status: 'success' })
+        return true
+      } catch (error) {
+        set({ error: errorMessage(error), status: 'error' })
+        return false
+      } finally {
+        pending = null
       }
-    })
-    set_productos(res.Productos)
-  },
-  buscar_con_filtros_admin: async (datos) => {
-    const res = await todo_productos_admin(datos)
-    set({
-      filtros: {
-        Nombre: datos.Nombre ?? '',
-        Maximo: datos.Maximo ?? '',
-        Minimo: datos.Minimo ?? '',
-        Categorias: datos.Categorias ?? [],
-        Paginas: res.totalPaginas ?? 1,
-        Pagina: res.Pagina ?? 1
-      }
-    })
-    set_productos_admin(res.Productos)
-  },
-  quitar_check: (nombre) => {
-    set(({ filtros }) => ({
-      filtros: {
-        ...filtros,
-        Categorias: filtros.Categorias.filter((e) => e !== nombre)
-      }
-    }))
-  },
-  agregar_check: (nombre) => {
-    set(({ filtros }) => ({
-      filtros: {
-        ...filtros,
-        Categorias: filtros.Categorias.includes(nombre)
-          ? filtros.Categorias
-          : [...filtros.Categorias, nombre]
-      }
-    }))
-  },
-  check_categoria: (nombre) => {
-    return get().filtros.Categorias.includes(nombre)
+    })()
+    return pending
   }
 }))

@@ -1,3 +1,4 @@
+import ProductImage from '../shared/ui/ProductImage'
 import { Link } from 'react-router-dom'
 import { productoprops } from './types'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
@@ -16,7 +17,6 @@ const Producto = ({ producto }: { producto: productoprops }) => {
   const quitar_carrito = carrito_store((state) => state.quitar)
   return (
     <div className='w-full hover:scale-102 transition max-w-sm mx-auto rounded-md shadow-md overflow-hidden relative'>
-      {/* calficacion de producto */}
       <div className='flex   absolute align-middle justify-center items-center mt-2.5 mb-5'>
         <svg
           className='w-5 h-5 text-yellow-300'
@@ -36,16 +36,16 @@ const Producto = ({ producto }: { producto: productoprops }) => {
           )}
         </span>
       </div>
-      {/* fin calificacion */}
 
       <Link to={`/productos/${producto.id}`}>
         <div className=' justify-center h-50 '>
           <div className='flex justify-center bg-white   w-full  '>
-            <img
+            <ProductImage
+              alt={producto.nombre}
               loading='lazy'
               src={producto.imagen}
               className=' h-50    '
-            ></img>
+            ></ProductImage>
           </div>
         </div>
       </Link>
@@ -54,8 +54,10 @@ const Producto = ({ producto }: { producto: productoprops }) => {
         <SignedIn>
           <div className='flex flex-col'>
             <button
+              aria-label='Cambiar favorito'
               onClick={() => {
-                favorito ? quitar(producto.id) : agregar(producto.id)
+                if (favorito) void quitar(producto.id)
+                else void agregar(producto.id)
               }}
               className={`p-2    mb-2   rounded-tl-2xl rounded-bl-2xl justify-end ${
                 favorito ? 'bg-red-300' : 'bg-gray-100'
@@ -68,10 +70,10 @@ const Producto = ({ producto }: { producto: productoprops }) => {
               )}
             </button>
             <button
+              aria-label='Cambiar carrito'
               onClick={() => {
-                encarrito
-                  ? quitar_carrito(producto.id)
-                  : agregar_carrito(producto.id)
+                if (encarrito) void quitar_carrito(producto.id)
+                else void agregar_carrito(producto.id)
               }}
               className={`p-2   rounded-tl-2xl rounded-bl-2xl justify-end ${
                 encarrito ? 'bg-green-100' : 'bg-gray-100'
@@ -89,9 +91,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
 
       <div className='px-5 py-3'>
         <Link to={`/productos/${producto.id}`}>
-          <h3 className='text-blue-700 uppercase truncate'>
-            {producto.nombre}
-          </h3>
+          <h3 className='text-blue-700 uppercase truncate'>{producto.nombre}</h3>
         </Link>
 
         <div className='flex text-sm gap-1'>
@@ -102,9 +102,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
           ))}
         </div>
 
-        <span className='text-black mt-2'>
-          ${producto.precio.toLocaleString()}
-        </span>
+        <span className='text-black mt-2'>${producto.precio.toLocaleString()}</span>
       </div>
     </div>
   )

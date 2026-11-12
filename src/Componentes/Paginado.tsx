@@ -1,61 +1,51 @@
 import { useSearchParams } from 'react-router-dom'
-import { filtros_store } from '../Zustand/Filtros_store'
-import { useState } from 'react'
+import { productos_store } from '../Zustand/Productos_store'
+import { parseFilters, serializeFilters } from '../shared/utils/filters'
 
-const Paginado = () => {
-  const paginas = filtros_store((state) => state.filtros.Paginas)
-  const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
-  const buscar_con_filtros_admin = filtros_store(
-    (state) => state.buscar_con_filtros_admin
+const Paginado = ({ admin = false }: { admin?: boolean }) => {
+  const paginas = productos_store((state) =>
+    admin ? state.paginas_admin : state.paginas
   )
-  const [admin] = useState({
-    admin: window.location.pathname.includes('admin') ? true : false
-  })
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const submit = async (nuevaPagina: number) => {
-    const nuevosParametros = new URLSearchParams(searchParams)
-    nuevosParametros.set('Pagina', nuevaPagina.toString())
-    setSearchParams(nuevosParametros)
-
-    if (admin.admin) {
-      buscar_con_filtros_admin({
-        Nombre: searchParams.get('Nombre') ?? '',
-        Maximo: searchParams.get('Maximo') ?? '',
-        Minimo: searchParams.get('Minimo') ?? '',
-        Categorias: searchParams.get('Categorias')?.split(',') ?? [],
-        Pagina: nuevaPagina
-      })
-    } else {
-      buscar_con_filtros({
-        Nombre: searchParams.get('Nombre') ?? '',
-        Maximo: searchParams.get('Maximo') ?? '',
-        Minimo: searchParams.get('Minimo') ?? '',
-        Categorias: searchParams.get('Categorias')?.split(',') ?? [],
-        Pagina: nuevaPagina
-      })
-    }
-  }
-
-  // Obtener la página actual de los parámetros de la URL
-  const paginaActual = parseInt(searchParams.get('Pagina') || '1', 10)
-
+  const [params, setParams] = useSearchParams()
+  const filters = parseFilters(params)
+  const current = filters.Pagina
+  const start = Math.max(1, Math.min(current - 2, paginas - 4))
+  const pages = Array.from({ length: Math.min(5, paginas) }, (_, i) => start + i)
+  const go = (page: number) => setParams(serializeFilters({ ...filters, Pagina: page }))
   return (
-    <div className='flex flex-col items-center'>
-      <div className='flex items-center gap-1'>
-        {Array.from({ length: paginas }, (_, i) => i + 1).map((pagina) => (
-          <button
-            key={pagina}
-            disabled={pagina === paginaActual}
-            className=' m-2 inline-grid place-items-center border align-middle select-none disabled:border-blue-500 disabled:text-blue-600 enabled:border-green-600   selec font-sans font-medium text-center transition-all duration-300 ease-in disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none text-sm min-w-[38px] min-h-[38px] rounded-md bg-transparent   text-black hover:bg-stone-800/5  hover:border-stone-800/5 shadow-none hover:shadow-none'
-            onClick={() => submit(pagina)}
-          >
-            {pagina}
-          </button>
-        ))}
-      </div>
-    </div>
+    <nav
+      aria-label='Paginación de productos'
+      className='flex flex-wrap justify-center items-center gap-1 my-4'
+    >
+      <button
+        type='button'
+        disabled={current <= 1}
+        onClick={() => go(current - 1)}
+        className='p-2 disabled:opacity-50'
+      >
+        Anterior
+      </button>
+      {pages.map((page) => (
+        <button
+          type='button'
+          key={page}
+          aria-current={page === current ? 'page' : undefined}
+          disabled={page === current}
+          onClick={() => go(page)}
+          className='m-2 border rounded-md p-2 disabled:text-blue-600 disabled:border-blue-500'
+        >
+          {page}
+        </button>
+      ))}
+      <button
+        type='button'
+        disabled={current >= paginas}
+        onClick={() => go(current + 1)}
+        className='p-2 disabled:opacity-50'
+      >
+        Siguiente
+      </button>
+    </nav>
   )
 }
-
 export default Paginado

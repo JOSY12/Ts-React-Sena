@@ -1,58 +1,78 @@
 import { create } from 'zustand'
-import {
-  borrar_notificaciones,
-  borrar_todas_notificaciones,
-  marcar_visto,
-  usuario_notificaciones
-} from '../Services'
+import type { notificacionesprops, LoadStatus } from '../Componentes/types'
+import * as api from '../features/usuario/api'
+import { userTask, deduplicateUserLoad } from '../shared/api/user-task'
 
-type notificaciones = {
-  id: string
-  icono: string
-  titulo: string
-  descripcion: string
-  fecha_creacion: string
-  visto: boolean
-  fecha_relativa: string
+type State = {
+  misnotificaciones: notificacionesprops[]
+  status: LoadStatus
+  error: string | null
+  busy: boolean
+  solicitar_notificicaciones: () => Promise<boolean>
+  quitar: (id: string) => Promise<boolean>
+  borrar_todo: () => Promise<boolean>
+  marcar_vistos: () => Promise<boolean>
+  reset: () => void
 }
-
-type notificaciones_store = {
-  misnotificaciones: notificaciones[]
-  solicitar_notificicaciones: () => void
-  quitar: (id: string) => void
-  borrar_todo: () => void
-  marcar_vistos: () => void
-}
-
-export const Notificaciones_store = create<notificaciones_store>()((set) => ({
+const initial = {
   misnotificaciones: [],
-
-  solicitar_notificicaciones: async () => {
-    const res = await usuario_notificaciones()
-
-    set({ misnotificaciones: Array.isArray(res) ? res : [] })
-  },
-
-  marcar_vistos: async () => {
-    await marcar_visto()
-  },
-
-  quitar: async (id: string) => {
-    await borrar_notificaciones(id)
-    set(({ misnotificaciones }) => ({
-      misnotificaciones: misnotificaciones.filter((e) => e.id !== id)
-    }))
-  },
-
-  borrar_todo: async () => {
-    await borrar_todas_notificaciones()
-    set({ misnotificaciones: [] })
+  status: 'idle' as LoadStatus,
+  error: null,
+  busy: false
+}
+let request = 0
+export const Notificaciones_store = create<State>((set, get) => {
+  const mutate = async (task: () => Promise<void>, apply: () => void) => {
+    if (get().busy) return false
+    request++
+    set({ busy: true, error: null })
+    return userTask(
+      task,
+      () => {
+        apply()
+        set({ busy: false, status: 'success' })
+      },
+      (error) => set({ error, busy: false, status: 'error' })
+    )
   }
-  // contar: () => {
-  //   if (Array.isArray(get().misnotificaciones)) {
-  //     const e = get().misnotificaciones.filter((e) => e.visto === false)
-  //     return e.length
-  //   }
-  //   return 0
-  // }
-}))
+  return {
+    ...initial,
+    reset: () => {
+      request++
+      set(initial)
+    },
+    solicitar_notificicaciones: deduplicateUserLoad(async () => {
+      if (get().busy) return false
+      const current = ++request
+      set({ status: 'loading', error: null })
+      return userTask(
+        api.usuario_notificaciones,
+        (misnotificaciones) => {
+          if (current === request) set({ misnotificaciones, status: 'success' })
+        },
+        (error) => {
+          if (current === request) set({ error, status: 'error' })
+        }
+      )
+    }),
+    quitar: (id) =>
+      mutate(
+        () => api.borrar_notificaciones(id),
+        () =>
+          set((state) => ({
+            misnotificaciones: state.misnotificaciones.filter((item) => item.id !== id)
+          }))
+      ),
+    borrar_todo: () =>
+      mutate(api.borrar_todas_notificaciones, () => set({ misnotificaciones: [] })),
+    marcar_vistos: () =>
+      mutate(api.marcar_visto, () =>
+        set((state) => ({
+          misnotificaciones: state.misnotificaciones.map((item) => ({
+            ...item,
+            visto: true
+          }))
+        }))
+      )
+  }
+})

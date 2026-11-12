@@ -2,7 +2,6 @@ import { TbFilterSearch } from 'react-icons/tb'
 import { useState } from 'react'
 import Filtros from './Filtros'
 import Productos from './Productos'
-// import { productos_store } from '../Zustand/Productos_store'
 
 const Inicio = () => {
   const [filtro, setfiltro] = useState(false)
@@ -10,14 +9,6 @@ const Inicio = () => {
 
   return (
     <section className='bg-gray-100 w-full overflow-x-hidden'>
-      {/* <button
-        onClick={() => {
-          test()
-        }}
-        className=' hidden   bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition-colors'
-      >
-        agregar muchos productos
-      </button> */}
       <div className='pt-8 mx-auto  '>
         <div className='lg:flex  '>
           <div
@@ -28,9 +19,7 @@ const Inicio = () => {
             <Filtros />
           </div>
 
-          <div
-            className={`w-full ${filtro ? ' hidden lg:block' : 'lg:block '} `}
-          >
+          <div className={`w-full ${filtro ? ' hidden lg:block' : 'lg:block '} `}>
             <Productos />
           </div>
 

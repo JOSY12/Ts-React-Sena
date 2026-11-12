@@ -1,3 +1,4 @@
+import ProductImage from '../shared/ui/ProductImage'
 import { Link } from 'react-router-dom'
 import { productoprops } from './types'
 
@@ -33,16 +34,14 @@ const Producto_landing = ({ producto }: { producto: productoprops }) => {
           </div>
         )}
         <div className='flex items-center justify-center   h-56   '>
-          <img
+          <ProductImage
             src={producto.imagen}
             className='     h-56 m-auto  bg-cover'
             alt='foto'
           />
         </div>
         <div className='px-5 py-3'>
-          <h3 className='text-gray-700 uppercase truncate'>
-            {producto.nombre}
-          </h3>
+          <h3 className='text-gray-700 uppercase truncate'>{producto.nombre}</h3>
           <span className='text-gray-500 mt-2'>${producto.precio}</span>
         </div>
       </div>

@@ -23,9 +23,7 @@ const Comentarios = ({
               />
             </div>
             <div className='flex flex-col justify-start items-start  '>
-              <p className='text-base font-medium   text-gray-800  '>
-                {nombre}
-              </p>
+              <p className='text-base font-medium   text-gray-800  '>{nombre}</p>
               <p className='text-sm  text-gray-600  '>{fecha_comentario}</p>
             </div>
           </div>
@@ -37,9 +35,7 @@ const Comentarios = ({
           {[...Array(5)].map((_, i) => (
             <label
               key={i}
-              className={`  text-gray-400 ${
-                i < calificacion ? 'text-yellow-400' : ''
-              }`}
+              className={`  text-gray-400 ${i < calificacion ? 'text-yellow-400' : ''}`}
             >
               ★
             </label>

@@ -29,27 +29,29 @@ const Usuarios_card_administracion = ({
             {id}
             <img
               className='w-10 h-10 rounded-full'
-              src={foto_perfil}
+              src={foto_perfil || undefined}
               alt=''
             ></img>
           </div>
 
           <div className='ml-4'>
-            <div className='text-sm font-medium leading-5 text-gray-900'>
-              {nombre}
-            </div>
+            <div className='text-sm font-medium leading-5 text-gray-900'>{nombre}</div>
             <div className='text-sm leading-5 text-gray-500'>
               {apellido}
               <div className='text-md text-black'>
                 Email:
-                <a
-                  className='text-sm text-gray-600 cursor-pointer hover:text-blue-500'
-                  href={`mailto:${email}  `}
-                  target='_blank'
-                  rel='noreferrer'
-                >
-                  {email}
-                </a>
+                {email ? (
+                  <a
+                    className='text-sm text-gray-600 cursor-pointer hover:text-blue-500'
+                    href={`mailto:${email}`}
+                    target='_blank'
+                    rel='noreferrer'
+                  >
+                    {email}
+                  </a>
+                ) : (
+                  <span>Sin correo registrado</span>
+                )}
               </div>
             </div>
           </div>
@@ -120,13 +122,15 @@ const Usuarios_card_administracion = ({
           {editando && (
             <>
               <button
-                // onClick={() => seteditando(!editando)}
+                disabled
+                title='Esta acción aún no está disponible.'
                 className='text-green-600 hover:text-green-700'
               >
                 Guardar cambios
               </button>
               <button
-                onClick={() => setmodal(true)}
+                disabled
+                title='Esta acción aún no está disponible.'
                 className='text-red-600 hover:text-red-700  '
               >
                 Eliminar usuario

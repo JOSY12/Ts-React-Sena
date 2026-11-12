@@ -29,10 +29,7 @@ const Notificacion = ({
             <span className='text-indigo-700 truncate font-bold'>{titulo}</span>
             :
             <br />
-            <span className='text-blue-600 break-all font-medium'>
-              {' '}
-              {descripcion}
-            </span>
+            <span className='text-blue-600 break-all font-medium'> {descripcion}</span>
           </p>
           <button
             onClick={() => {

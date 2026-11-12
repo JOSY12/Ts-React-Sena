@@ -1,21 +1,24 @@
+import RequestState from '../shared/ui/RequestState'
 import { useEffect } from 'react'
 import { carrito_store } from '../Zustand/Carrito_store'
 import Producto_carrito from './Producto_carrito'
 import { Stripe_store } from '../Zustand/Stripe_store'
 import { AiOutlineClose } from 'react-icons/ai'
 import { GrHelpBook } from 'react-icons/gr'
-
-// import { basedatos } from '../bd'
 const Carrito = () => {
   const carrito = carrito_store((state) => state.carrito)
   const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
   const total = carrito_store((state) => state.total)
   const pagartodo = Stripe_store((state) => state.pagar)
+  const checkoutBusy = Stripe_store((state) => state.busy)
+  const checkoutError = Stripe_store((state) => state.error)
+  const resetCheckout = Stripe_store((state) => state.reset)
+  useEffect(() => () => resetCheckout(), [resetCheckout])
   const url = Stripe_store((state) => state.url)
 
   useEffect(() => {
     solicitar_carrito()
-  }, [])
+  }, [solicitar_carrito])
 
   useEffect(() => {
     if (url) {
@@ -25,17 +28,17 @@ const Carrito = () => {
     }
   }, [url])
 
+  const status = carrito_store((state) => state.status)
+  const error = carrito_store((state) => state.error)
   return (
     <>
+      <RequestState status='success' error={checkoutError} />
+      <RequestState status={status} error={error} retry={solicitar_carrito} />
       <div className='  bg-gray-100 pt-10'>
         <div className='mb-10   flex justify-center  text-center text-2xl font-bold'>
           <h1> Carrito de compras</h1>
           <div className='ml-2'>
-            <input
-              type='checkbox'
-              id='modal-toggle'
-              className='hidden peer w-20'
-            />
+            <input type='checkbox' id='modal-toggle' className='hidden peer w-20' />
             <label
               htmlFor='modal-toggle'
               className='cursor-pointer   w-30 p-2 m-2 text-green-500 rounded '
@@ -64,9 +67,7 @@ const Carrito = () => {
                 </label>
                 <div className='    '>
                   <div className='  '>
-                    <div className='text-center'>
-                      Informacion de tarjeta de prueba
-                    </div>
+                    <div className='text-center'>Informacion de tarjeta de prueba</div>
                     <div className='flex justify-center items-center m-4'>
                       <div className=' h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110'>
                         <img
@@ -96,9 +97,7 @@ const Carrito = () => {
                           <div className='pt-6 pr-6'>
                             <div className='flex justify-between'>
                               <div className=''>
-                                <p className='font-light  text-xs'>
-                                  Fecha Expiracion
-                                </p>
+                                <p className='font-light  text-xs'>Fecha Expiracion</p>
                                 <p className='font-medium tracking-wider text-sm'>
                                   04 / 44
                                 </p>
@@ -117,8 +116,8 @@ const Carrito = () => {
                     </div>
 
                     <span className='text-center text-black mt-4'>
-                      para poder pagar en la pagina usa estos datos de tarjeta
-                      de prueba para poder realizar la compras sin limite
+                      para poder pagar en la pagina usa estos datos de tarjeta de prueba
+                      para poder realizar la compras sin limite
                     </span>
                   </div>
                 </div>
@@ -162,8 +161,8 @@ const Carrito = () => {
                   Tu carrito está vacío
                 </h2>
                 <p className='text-gray-500 text-center'>
-                  No tienes items en el carrito. Agrega productos para continuar
-                  con tu compra.
+                  No tienes items en el carrito. Agrega productos para continuar con tu
+                  compra.
                 </p>
               </div>
             )}
@@ -175,10 +174,7 @@ const Carrito = () => {
                 <p className='text-gray-700'>Subtotal</p>
                 <p className='text-gray-700'>${total().toLocaleString()}</p>
               </div>
-              {/* <div className='flex justify-between'>
-                <p className='text-gray-700'>envio</p>
-                <p className='text-gray-700'>$4.99</p>
-              </div> */}
+
               <hr className='my-4' />
               <div className='flex justify-between'>
                 <p className='text-lg font-bold'>Total</p>
@@ -186,10 +182,10 @@ const Carrito = () => {
                   <p className='mb-1 text-lg font-bold'>
                     ${total().toLocaleString()} USD
                   </p>
-                  {/* <p className='text-sm text-gray-700'>inscluding VAT</p> */}
                 </div>
               </div>
               <button
+                disabled={checkoutBusy || status !== 'success'}
                 onClick={() => pagartodo('')}
                 className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'
               >

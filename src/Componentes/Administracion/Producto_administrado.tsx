@@ -1,4 +1,9 @@
+import ProductImage from '../../shared/ui/ProductImage'
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { eliminar_producto } from '../../features/catalogo/api'
+import Dialog from '../../shared/ui/Dialog'
+import { errorMessage } from '../../shared/api/errors'
 import { productoprops } from '../types'
 
 const Producto_administrado = ({
@@ -8,15 +13,32 @@ const Producto_administrado = ({
   imagen,
   estado,
   categorias,
-  calificacion
-}: productoprops) => {
+  calificacion,
+  onDeleted
+}: productoprops & { onDeleted?: () => unknown }) => {
+  const [confirm, setConfirm] = useState(false)
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const remove = async () => {
+    if (busy) return
+    setBusy(true)
+    setError(null)
+    try {
+      await eliminar_producto(id)
+      setConfirm(false)
+      onDeleted?.()
+    } catch (error) {
+      setError(errorMessage(error))
+    } finally {
+      setBusy(false)
+    }
+  }
   return (
     <tr>
       <td className='px-6 py-4 whitespace-no-wrap border-b border-gray-200'>
         <div className='flex items-center'>
           <div className='flex-shrink-0 w-10 h-10'>
-            {/* {id} */}
-            <img className='w-10 h-10  ' src={imagen} alt=''></img>
+            <ProductImage className='w-10 h-10  ' src={imagen} alt=''></ProductImage>
           </div>
           <div className='ml-4'>
             <div className='text-sm flex font-medium leading-5 text-gray-900'>
@@ -58,20 +80,57 @@ const Producto_administrado = ({
       </td>
       <td className='px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200'>
         {categorias.map((e) => (
-          <span className=' flex'>{e}</span>
+          <span key={e} className='flex'>
+            {e}
+          </span>
         ))}
       </td>
 
       <td className='px-6 py-4 text-sm font-medium leading-5 text-right whitespace-no-wrap border-b border-gray-200'>
         <div className='flex   items-end flex-col'>
           <Link to={`/u/v/admin/editor/${id}`}>
-            <button className='text-indigo-600 hover:text-indigo-900'>
-              Editar
-            </button>
+            <button className='text-indigo-600 hover:text-indigo-900'>Editar</button>
           </Link>
-          <button className='text-indigo-600 hover:text-indigo-900'>
+          <button
+            type='button'
+            onClick={() => {
+              setError(null)
+              setConfirm(true)
+            }}
+            className='text-red-600 hover:text-red-800'
+          >
             Eliminar
           </button>
+          <Dialog
+            open={confirm}
+            onClose={() => setConfirm(false)}
+            title='Eliminar producto'
+          >
+            <div className='p-6 text-left whitespace-normal'>
+              <h2 className='text-lg font-semibold'>Eliminar producto</h2>
+              <p className='my-4'>
+                ¿Quieres eliminar «{nombre}»? Esta acción no se puede deshacer.
+              </p>
+              {error && (
+                <p role='alert' className='text-red-700'>
+                  {error}
+                </p>
+              )}
+              <div className='flex gap-4 mt-4'>
+                <button type='button' disabled={busy} onClick={() => setConfirm(false)}>
+                  Cancelar
+                </button>
+                <button
+                  type='button'
+                  disabled={busy}
+                  onClick={remove}
+                  className='rounded bg-red-600 p-2 text-white'
+                >
+                  Confirmar eliminación
+                </button>
+              </div>
+            </div>
+          </Dialog>
         </div>
       </td>
     </tr>

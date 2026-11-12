@@ -1,3 +1,4 @@
+import RequestState from '../shared/ui/RequestState'
 import Notificacion from './Notificacion'
 
 import { AiOutlineReload, AiFillDelete } from 'react-icons/ai'
@@ -6,25 +7,24 @@ import { useEffect } from 'react'
 
 const Notificaciones = () => {
   // const data = useLoaderData<notificacionesprops[]>()
-  const misnotificaciones = Notificaciones_store(
-    (state) => state.misnotificaciones
-  )
+  const misnotificaciones = Notificaciones_store((state) => state.misnotificaciones)
   const borrar_todo = Notificaciones_store((state) => state.borrar_todo)
-  const actualizar = Notificaciones_store(
-    (state) => state.solicitar_notificicaciones
-  )
+  const actualizar = Notificaciones_store((state) => state.solicitar_notificicaciones)
   const marcar_vistos = Notificaciones_store((state) => state.marcar_vistos)
 
-  const recargar = () => {
-    marcar_vistos()
-    actualizar()
+  const status = Notificaciones_store((state) => state.status)
+  const error = Notificaciones_store((state) => state.error)
+  const recargar = async () => {
+    if (await actualizar()) await marcar_vistos()
   }
   useEffect(() => {
-    marcar_vistos()
-  }, [])
-
+    void (async () => {
+      if (await actualizar()) await marcar_vistos()
+    })()
+  }, [actualizar, marcar_vistos])
   return (
     <div className='     bg-opacity-90'>
+      <RequestState status={status} error={error} retry={recargar} />
       <div className='w-full     duration-700'>
         <div className=' w-full bg-gray-100  p-8    '>
           <div className='flex items-center justify-between'>
@@ -58,7 +58,7 @@ const Notificaciones = () => {
               </div>
             </div>
           </div>
-          {/* ejemplo para multiplicar */}
+
           {misnotificaciones && misnotificaciones?.length > 0 ? (
             misnotificaciones.map((n) => (
               <Notificacion
@@ -81,8 +81,6 @@ const Notificaciones = () => {
               <hr className='w-full'></hr>
             </div>
           )}
-
-          {/* fin del card */}
         </div>
       </div>
     </div>

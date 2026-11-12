@@ -1,42 +1,29 @@
-import { useEffect, useState } from 'react'
-// import { useLoaderData } from 'react-router-dom'
+import { useState } from 'react'
 import { TbFilterSearch } from 'react-icons/tb'
 import Producto_administrado from './Producto_administrado'
 import Filtros from '../Filtros'
 import { productos_store } from '../../Zustand/Productos_store'
 import Paginado from '../Paginado'
-import { filtros_store } from '../../Zustand/Filtros_store'
-import { useSearchParams } from 'react-router-dom'
+import { useCatalog } from '../../features/catalogo/useCatalog'
+import RequestState from '../../shared/ui/RequestState'
 
 const Listar_productos = () => {
   // const data = useLoaderData()
   const [filtro, setfiltro] = useState(false)
   const productos = productos_store((state) => state.productos_admin)
-  const buscar_con_filtros_admin = filtros_store(
-    (state) => state.buscar_con_filtros_admin
-  )
-
-  const [parametrosUrl] = useSearchParams()
-  useEffect(() => {
-    const parametros = Object.fromEntries(parametrosUrl.entries())
-    buscar_con_filtros_admin({
-      Nombre: parametros.Nombre ?? '',
-      Maximo: parametros.Maximo ?? '',
-      Minimo: parametros.Minimo ?? '',
-      Pagina: parametros.Pagina ?? 1,
-      Categorias: parametros.Categorias && parametros.Categorias.split(',')
-    })
-  }, [])
+  const retry = useCatalog(true)
+  const status = productos_store((state) => state.adminStatus)
+  const error = productos_store((state) => state.adminError)
   return (
     <section className='bg-gray-100 w-full  '>
-      {/* <button
-      onClick={() => {
-        test()
-      }}
-      className=' hidden   bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition-colors'
-    >
-      agregar muchos productos
-    </button> */}
+      <RequestState
+        status={status}
+        error={error}
+        empty={!productos.length}
+        emptyText='No hay productos para estos filtros.'
+        retry={retry}
+      />
+
       <div className='  mx-auto  '>
         <div className='lg:flex  '>
           <div
@@ -47,14 +34,10 @@ const Listar_productos = () => {
             <Filtros />
           </div>
 
-          <div
-            className={`w-full ${filtro ? ' hidden lg:block' : 'lg:block '} `}
-          >
+          <div className={`w-full ${filtro ? ' hidden lg:block' : 'lg:block '} `}>
             <div className='     px-6 py-8 mx-auto  flex flex-col flex-1  '>
               <div className='flex items-center justify-between text-sm tracking-widest uppercase '>
-                <p className='ml-6 '>
-                  Productos encontrados:{productos.length}
-                </p>
+                <p className='ml-6 '>Productos encontrados:{productos.length}</p>
                 <div className='flex items-center'></div>
               </div>
               <div className='flex  flex-col  '>
@@ -84,11 +67,11 @@ const Listar_productos = () => {
                         </tr>
                       </thead>
                       <tbody className='bg-white'>
-                        {/* informacion de usuarios */}
                         {productos.length > 0 ? (
-                          productos.map((e, k) => (
+                          productos.map((e) => (
                             <Producto_administrado
-                              key={k}
+                              key={e.id}
+                              onDeleted={retry}
                               id={e.id}
                               nombre={e.nombre}
                               precio={e.precio}
@@ -99,28 +82,19 @@ const Listar_productos = () => {
                             />
                           ))
                         ) : (
-                          <Producto_administrado
-                            key={'test'}
-                            id={''}
-                            nombre={''}
-                            precio={1}
-                            imagen={
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStCJpmc7wNF8Ti2Tuh_hcIRZUGOc23KBTx2A&s'
-                            }
-                            estado={''}
-                            categorias={[]}
-                            calificacion={'1'}
-                          />
+                          <tr>
+                            <td colSpan={6} className='p-4'>
+                              No hay productos que mostrar.
+                            </td>
+                          </tr>
                         )}
-
-                        {/* fin de informacion de usuarios */}
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
             </div>
-            <Paginado />
+            <Paginado admin />
           </div>
 
           <div className='  lg:hidden  fixed bottom-0 right-0 mb-20 mr-4 z-10'>

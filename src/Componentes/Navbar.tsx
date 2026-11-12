@@ -1,3 +1,4 @@
+import logo from '../img/tech-sells-high-resolution-logo-white-transparent.png'
 import { useState } from 'react'
 import Sidebar from './Sidebar'
 import { Link } from 'react-router-dom'
@@ -11,9 +12,7 @@ const Navbar = () => {
   const { user } = useClerk()
   const [sidebar, Setsidbar] = useState<boolean>(false)
 
-  const actualizar = Notificaciones_store(
-    (state) => state.solicitar_notificicaciones
-  )
+  const actualizar = Notificaciones_store((state) => state.solicitar_notificicaciones)
   const carrito = carrito_store((state) => state.carrito)
   const favoritos = favoritos_store((state) => state.favoritos)
 
@@ -28,17 +27,10 @@ const Navbar = () => {
         <section className='relative m-auto'>
           <nav className='flex    bg-[#000000] text-white w-screen '>
             <div className='px-5  xl:px-10 py-6 flex w-full items-center'>
-              <a
-                className='text-3xl font-bold  flex font-heading'
-                href='/productos'
-              >
-                <img
-                  className='h-10'
-                  src='https://josmerweb.netlify.app/techsells-high-resolution-logo-white.png'
-                  alt='logo'
-                />
+              <Link className='text-3xl font-bold  flex font-heading' to='/productos'>
+                <img className='h-10' src={logo} alt='logo' />
                 Techsells
-              </a>
+              </Link>
               <ul className=' hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
                 <Link to={'/'}>
                   <li>
@@ -50,11 +42,7 @@ const Navbar = () => {
                     <span className='hover:text-gray-200'>Productos</span>
                   </li>
                 </Link>
-                {/* <Link to={'/categorias'}>
-                  <li>
-                    <span className='hover:text-gray-200'>Categorias</span>
-                  </li>
-                </Link> */}
+
                 <Link to={'/contacto'}>
                   <li>
                     <span className='hover:text-gray-200'>Contacto</span>
@@ -62,13 +50,13 @@ const Navbar = () => {
                 </Link>
               </ul>
               <div className='hidden xl:flex   space-x-5 items-center'>
-                {/* // aqui comienzan mis favoritos de usuarios */}
                 {isSignedIn && (
                   <>
                     <Link to={'/u/favoritos'}>
                       <button
+                        aria-label='Abrir sección de usuario'
                         onClick={() => {
-                          sidebar && Setsidbar(false)
+                          if (sidebar) Setsidbar(false)
                         }}
                         className='hover:text-gray-200  cursor-pointer  '
                       >
@@ -94,12 +82,11 @@ const Navbar = () => {
                       </button>
                     </Link>
 
-                    {/* aqui comienza mis carrito de compras de usuarios */}
-
                     <Link to={'/u/carrito'}>
                       <button
+                        aria-label='Abrir sección de usuario'
                         onClick={() => {
-                          sidebar && Setsidbar(false)
+                          if (sidebar) Setsidbar(false)
                         }}
                         className='flex cursor-pointer  items-center hover:text-gray-200'
                       >
@@ -117,7 +104,7 @@ const Navbar = () => {
                             d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                           />
                         </svg>
-                        {/* animacion de carrito cando tiene items buena idea */}
+
                         {carrito.length > 0 && (
                           <span className='flex absolute -mt-5 ml-4'>
                             <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
@@ -128,15 +115,13 @@ const Navbar = () => {
                     </Link>
                   </>
                 )}
-                {/* boton de lineas para barra lateral en xl */}
+
                 <button
                   className='flex cursor-pointer  items-center hover:text-gray-200'
                   onClick={() => {
                     n_vistas(!sidebar)
                   }}
                 >
-                  {/* foto de perfil condicional */}
-
                   {isSignedIn ? (
                     <img
                       className='h-10 w-10  rounded-4xl justify-center bg-center'
@@ -164,7 +149,6 @@ const Navbar = () => {
             </div>
             {isSignedIn && (
               <>
-                {/* aqui comienza carrito en resolucion mobil*/}
                 <Link
                   className='xl:hidden cursor-pointer flex mr-6 items-center'
                   to={'/u/carrito'}
@@ -184,7 +168,7 @@ const Navbar = () => {
                         d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                       />
                     </svg>
-                    {/* notificacion del carrito */}
+
                     <span className='flex absolute -mt-5 ml-4'>
                       <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
                       <span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
@@ -193,7 +177,6 @@ const Navbar = () => {
                 </Link>
               </>
             )}
-            {/* barra burger de navbar para resolucion mobil */}
 
             <button
               onClick={() => {

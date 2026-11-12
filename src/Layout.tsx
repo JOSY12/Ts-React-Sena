@@ -1,101 +1,29 @@
-import { Outlet, useSearchParams } from 'react-router-dom'
-import Navbar from './Componentes/Navbar'
-import { useEffect, useRef } from 'react'
+import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useAuth } from '@clerk/clerk-react'
-import { axiosbackend } from './Services'
+import Navbar from './Componentes/Navbar'
+import Footer from './Componentes/Footer'
 import { favoritos_store } from './Zustand/Favoritos_store'
-import { useUser } from '@clerk/clerk-react'
 import { Notificaciones_store } from './Zustand/Notificaciones_store'
 import { carrito_store } from './Zustand/Carrito_store'
-import Footer from './Componentes/Footer'
-import { productos_store } from './Zustand/Productos_store'
-import { filtros_store } from './Zustand/Filtros_store'
-import { Direcciones_usuario } from './Zustand/Direcciones_usuario'
+
 const Layout = () => {
-  const { getToken } = useAuth()
-  const { isSignedIn } = useUser()
-
-  const solicitar_favoritos = favoritos_store(
-    (state) => state.solicitar_favoritos
-  )
-  const solicitar_notificicaciones = Notificaciones_store(
-    (state) => state.solicitar_notificicaciones
-  )
-  const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
-  const solicitar_compras = carrito_store((state) => state.solicitar_compras)
-
-  const solicitar_direcciones = Direcciones_usuario(
-    (state) => state.solicitar_direcciones
-  )
-  const lading_page_solicitar = productos_store(
-    (state) => state.lading_page_solicitar
-  )
-  const [parametrosUrl] = useSearchParams()
-
-  const solicitar_productos = productos_store(
-    (state) => state.solicitar_productos
-  )
-  const buscar_con_filtros = filtros_store((state) => state.buscar_con_filtros)
-
-  const interceptorAgregado = useRef(false) // 🧠 bandera para evitar repetir
+  const { userId } = useAuth()
   useEffect(() => {
-    if (interceptorAgregado.current) return // ya se agregó
-    interceptorAgregado.current = true
-
-    axiosbackend.interceptors.request.use(async (config) => {
-      const token = await getToken()
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`
-      }
-      return config
-    })
-  }, [getToken])
-
-  const peticiones_usuario = async () => {
-    solicitar_carrito()
-    solicitar_favoritos()
-    solicitar_notificicaciones()
-    solicitar_compras()
-    solicitar_direcciones()
-  }
-  useEffect(() => {
-    isSignedIn && peticiones_usuario()
-  }, [isSignedIn])
-
-  useEffect(() => {
-    lading_page_solicitar()
-    const parametros = Object.fromEntries(parametrosUrl.entries())
-
-    if (Object.keys(parametros).length !== 0) {
-      buscar_con_filtros({
-        Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
-        Categorias: parametros.Categorias && parametros.Categorias.split(','),
-        Minimo: parametros.Minimo ? parametros.Minimo : '',
-        Maximo: parametros.Maximo ? parametros.Maximo : '',
-        Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
-      })
-    } else {
-      solicitar_productos({
-        Nombre: parametros.Nombre ? parametros.Nombre.trim() : '',
-        Categorias: parametros.Categoria ? parametros.Categoria.split(',') : '',
-        Minimo: parametros.Minimo ? parametros.Minimo : '',
-        Maximo: parametros.Maximo ? parametros.Maximo : '',
-        Pagina: parametros.Pagina ? parseInt(parametros.Pagina, 10) : 1
-      })
-    }
-  }, [])
-
+    if (!userId) return
+    // Only globally visible counters are loaded here. Pages own their data.
+    void carrito_store.getState().solicitar_carrito()
+    void favoritos_store.getState().solicitar_favoritos()
+    void Notificaciones_store.getState().solicitar_notificicaciones()
+  }, [userId])
   return (
     <div className='min-h-screen flex flex-col overflow-x-hidden'>
       <Navbar />
-
       <main className='flex-grow'>
         <Outlet />
       </main>
-
       <Footer />
     </div>
   )
 }
-
 export default Layout

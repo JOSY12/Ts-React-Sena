@@ -1,60 +1,108 @@
-import { landing, productoprops } from './../Componentes/types'
+import { create } from 'zustand'
+import axios from 'axios'
+import type { landing, LoadStatus, productoprops } from '../Componentes/types'
 import {
   lading_page,
   todo_productos,
   todo_productos_admin
-} from './../Services'
-import { create } from 'zustand'
-type productos_store = {
+} from '../features/catalogo/api'
+import type { ProductFilters } from '../shared/utils/filters'
+import { errorMessage } from '../shared/api/errors'
+
+type State = {
   productos: productoprops[]
   productos_admin: productoprops[]
-
-  solicitar_productos_admin: (filtro: any) => void
-  solicitar_productos: (filtro: any) => void
-
+  status: LoadStatus
+  adminStatus: LoadStatus
+  error: string | null
+  adminError: string | null
+  paginas: number
+  paginas_admin: number
+  resetAdmin: () => void
+  solicitar_productos: (
+    filtro: ProductFilters,
+    signal?: AbortSignal
+  ) => Promise<boolean>
+  solicitar_productos_admin: (
+    filtro: ProductFilters,
+    signal?: AbortSignal
+  ) => Promise<boolean>
   lading_page_datos: landing
-  set_productos: (productos: productoprops) => void
-  set_productos_admin: (productos: productoprops) => void
-
-  lading_page_solicitar: () => void
+  landingStatus: LoadStatus
+  landingError: string | null
+  lading_page_solicitar: () => Promise<boolean>
 }
-
-export const productos_store = create<productos_store>()((set) => ({
+let publicRequest = 0
+let adminRequest = 0
+let landingRequest: Promise<boolean> | null = null
+export const productos_store = create<State>((set, get) => ({
   productos: [],
   productos_admin: [],
+  status: 'idle',
+  adminStatus: 'idle',
+  error: null,
+  adminError: null,
+  paginas: 1,
+  paginas_admin: 1,
   lading_page_datos: { Recientes: [], Valorados: [] },
-
-  solicitar_productos: async (filtro) => {
-    const res = await todo_productos(filtro)
-
-    set({ productos: Array.isArray(res.Productos) ? res.Productos : [] })
+  landingStatus: 'idle',
+  landingError: null,
+  resetAdmin: () => {
+    adminRequest++
+    set({
+      productos_admin: [],
+      paginas_admin: 1,
+      adminStatus: 'idle',
+      adminError: null
+    })
   },
-  solicitar_productos_admin: async (filtro) => {
-    const res = await todo_productos_admin(filtro)
-
-    set({ productos_admin: Array.isArray(res.Productos) ? res.Productos : [] })
-  },
-  set_productos: async (productos) => {
-    set({ productos: Array.isArray(productos) ? productos : [] })
-  },
-  set_productos_admin: async (productos) => {
-    set({ productos_admin: Array.isArray(productos) ? productos : [] })
-  },
-
-  lading_page_solicitar: async () => {
-    const res = await lading_page()
-    if (
-      res &&
-      typeof res === 'object' &&
-      'Recientes' in res &&
-      'Valorados' in res
-    ) {
-      set({ lading_page_datos: res as landing })
-    } else {
-      set({ lading_page_datos: { Recientes: [], Valorados: [] } })
+  solicitar_productos: async (filtro, signal) => {
+    const request = ++publicRequest
+    set({ status: 'loading', error: null })
+    try {
+      const data = await todo_productos(filtro, signal)
+      if (request !== publicRequest || signal?.aborted) return false
+      set({ productos: data.Productos, paginas: data.totalPaginas, status: 'success' })
+      return true
+    } catch (error) {
+      if (request === publicRequest && !axios.isCancel(error) && !signal?.aborted)
+        set({ status: 'error', error: errorMessage(error) })
+      return false
     }
+  },
+  solicitar_productos_admin: async (filtro, signal) => {
+    const request = ++adminRequest
+    set({ adminStatus: 'loading', adminError: null })
+    try {
+      const data = await todo_productos_admin(filtro, signal)
+      if (request !== adminRequest || signal?.aborted) return false
+      set({
+        productos_admin: data.Productos,
+        paginas_admin: data.totalPaginas,
+        adminStatus: 'success'
+      })
+      return true
+    } catch (error) {
+      if (request === adminRequest && !axios.isCancel(error) && !signal?.aborted)
+        set({ adminStatus: 'error', adminError: errorMessage(error) })
+      return false
+    }
+  },
+  lading_page_solicitar: async () => {
+    if (landingRequest) return landingRequest
+    if (get().landingStatus === 'success') return true
+    set({ landingStatus: 'loading', landingError: null })
+    landingRequest = (async () => {
+      try {
+        set({ lading_page_datos: await lading_page(), landingStatus: 'success' })
+        return true
+      } catch (error) {
+        set({ landingStatus: 'error', landingError: errorMessage(error) })
+        return false
+      } finally {
+        landingRequest = null
+      }
+    })()
+    return landingRequest
   }
 }))
-export const set_productos_admin =
-  productos_store.getState().set_productos_admin
-export const set_productos = productos_store.getState().set_productos

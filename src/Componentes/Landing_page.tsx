@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import RequestState from '../shared/ui/RequestState'
 import { Link } from 'react-router-dom'
 import { productos_store } from '../Zustand/Productos_store'
 import Producto_landing from './Producto_landing'
@@ -9,10 +11,17 @@ const Landing_page = () => {
   const consolas =
     'https://tecstore.pe/media/catalog/category/TEC_Banner-Web_Categoria_ACCESORIOS.jpg'
   const lading_page_datos = productos_store((state) => state.lading_page_datos)
+  const load = productos_store((state) => state.lading_page_solicitar)
+  const status = productos_store((state) => state.landingStatus)
+  const error = productos_store((state) => state.landingError)
+  useEffect(() => {
+    void load()
+  }, [load])
   return (
     <>
       <div className='bg-gray-100        '>
         <main className='py-5 '>
+          <RequestState status={status} error={error} retry={load} />
           <div className='container mx-auto px-6 '>
             <div
               className={`h-64 rounded-2xl bg-cover bg-center `}
@@ -20,9 +29,7 @@ const Landing_page = () => {
             >
               <div className='  bg-opacity-50 flex items-center   h-full  border border-b-4 rounded-2xl '>
                 <div className='px-10 max-w-xl h-full py-5  flex flex-col justify-between '>
-                  <h2 className='text-2xl text-white  font-semibold'>
-                    Computadoras
-                  </h2>
+                  <h2 className='text-2xl text-white  font-semibold'>Computadoras</h2>
                   <Link to={`/productos?Categorias=Computadoras`}>
                     <button className='flex items-center mt-4 px-3 py-2 bg-blue-900 text-white text-sm uppercase font-medium rounded hover:bg-blue-500 focus:outline-none focus:bg-blue-500'>
                       <span>Ir a comprar</span>
@@ -38,9 +45,7 @@ const Landing_page = () => {
               >
                 <div className='  bg-opacity-50 flex items-center  border border-b-4  h-full'>
                   <div className='px-10  max-w-xl h-full py-5  flex flex-col justify-between '>
-                    <h2 className='text-2xl text-white font-semibold'>
-                      Telefonos
-                    </h2>
+                    <h2 className='text-2xl text-white font-semibold'>Telefonos</h2>
                     <Link to={`/productos?Categorias=Telefonos`}>
                       <button className='flex items-center mt-4 text-white text-sm uppercase font-medium rounded hover:underline focus:outline-none'>
                         <span>Ir a comprar</span>
@@ -91,7 +96,7 @@ const Landing_page = () => {
                 </div>
               </div>
             </div>
-            {/* Mejor Valorados */}
+
             <div className='mt-16'>
               {lading_page_datos.Valorados &&
                 lading_page_datos.Valorados.length > 0 && (
@@ -101,29 +106,21 @@ const Landing_page = () => {
                     </h3>
                     <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
                       {lading_page_datos.Valorados.map((producto) => (
-                        <Producto_landing
-                          key={producto.id}
-                          producto={producto}
-                        />
+                        <Producto_landing key={producto.id} producto={producto} />
                       ))}
                     </div>
                   </div>
                 )}
             </div>
-            {/* NOVEDADES */}
+
             <div className='mt-16'>
               {lading_page_datos.Recientes &&
                 lading_page_datos.Recientes.length > 0 && (
                   <div>
-                    <h3 className='text-gray-600 text-2xl font-medium'>
-                      Novedades
-                    </h3>
+                    <h3 className='text-gray-600 text-2xl font-medium'>Novedades</h3>
                     <div className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-6'>
                       {lading_page_datos.Recientes.map((producto) => (
-                        <Producto_landing
-                          key={producto.id}
-                          producto={producto}
-                        />
+                        <Producto_landing key={producto.id} producto={producto} />
                       ))}
                     </div>
                   </div>

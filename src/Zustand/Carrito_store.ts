@@ -1,140 +1,182 @@
-import { persist } from 'zustand/middleware'
 import { create } from 'zustand'
-import { compras_hechas, item_carrito } from '../Componentes/types'
-import {
-  agregar_carrito,
-  cambiar_cantidad,
-  carrito,
-  detalle_compra,
-  historial_compras,
-  marcar_enviado,
-  marcar_recibido,
-  quitar_carrito
-} from '../Services'
+import type { compras_hechas, item_carrito, LoadStatus } from '../Componentes/types'
+import * as api from '../features/compras/api'
+import { userTask, deduplicateUserLoad } from '../shared/api/user-task'
 
-interface carrito_store {
+type State = {
   carrito: item_carrito[]
   compras: compras_hechas[]
   detalle_compra: item_carrito[]
-  agregar: (id: string, cantidad?: number) => void
-  aumentar: (id: string) => void
-  restar: (id: string) => void
-  solicitar_detalle_compra: (id: string) => void
-  quitar: (id: string) => void
+  detalleId: string | null
+  status: LoadStatus
+  error: string | null
+  busy: boolean
+  comprasStatus: LoadStatus
+  comprasError: string | null
+  detalleStatus: LoadStatus
+  detalleError: string | null
+  agregar: (id: string, cantidad?: number) => Promise<boolean>
+  aumentar: (id: string) => Promise<boolean>
+  restar: (id: string) => Promise<boolean>
+  quitar: (id: string) => Promise<boolean>
   encarrito: (id: string) => boolean
-
-  solicitar_carrito: () => void
+  solicitar_carrito: () => Promise<boolean>
+  solicitar_compras: () => Promise<boolean>
+  solicitar_detalle_compra: (id: string) => Promise<boolean>
+  setear_detalle_compra: (data: item_carrito[], id: string) => void
+  enviar_compra: (id: string) => Promise<boolean>
+  enviar_recibido: (id: string) => Promise<boolean>
   total: () => number
-  solicitar_compras: () => void
-  setear_detalle_compra: (data: item_carrito[]) => void
-  enviar_compra: (id: string) => void
-  enviar_recibido: (id: string) => void
+  reset: () => void
 }
-export const carrito_store = create<carrito_store>()(
-  persist(
-    // inicio del persist
-    (set, get) => ({
-      // inicio de store
-      carrito: [],
-      compras: [],
-      detalle_compra: [],
-
-      agregar: async (id: string, cantidad?: number) => {
-        set(({ carrito }) => ({
-          carrito: carrito.find((e) => e.id === id)
-            ? carrito
-            : [...carrito, { id, cantidad: 1 }]
-        }))
-        await agregar_carrito(id, cantidad ?? 1)
+const initial = {
+  carrito: [],
+  compras: [],
+  detalle_compra: [],
+  detalleId: null,
+  status: 'idle' as LoadStatus,
+  error: null,
+  busy: false,
+  comprasStatus: 'idle' as LoadStatus,
+  comprasError: null,
+  detalleStatus: 'idle' as LoadStatus,
+  detalleError: null
+}
+let cartRequest = 0
+let detailRequest = 0
+let purchasesRequest = 0
+export const carrito_store = create<State>((set, get) => {
+  const mutate = async (task: () => Promise<item_carrito[]>) => {
+    if (get().busy) return false
+    set({ busy: true, error: null })
+    const request = ++cartRequest
+    return userTask(
+      task,
+      (carrito) => {
+        if (request === cartRequest) set({ carrito, status: 'success', busy: false })
       },
-
-      aumentar: async (id: string) => {
-        set(({ carrito }) => ({
-          carrito: carrito.map((item) =>
-            item.id === id
-              ? { ...item, cantidad: (item.cantidad ?? 0) + 1 }
-              : item
-          )
-        }))
-        const item = get().carrito.filter((e) => e.id === id)
-        await cambiar_cantidad(id, item[0].cantidad)
-      },
-
-      restar: async (id: string) => {
-        set(({ carrito }) => ({
-          carrito: carrito.map((item) =>
-            item.id === id
-              ? { ...item, cantidad: (item.cantidad ?? 0) - 1 }
-              : item
-          )
-        }))
-        const item = get().carrito.filter((e) => e.id === id)
-        await cambiar_cantidad(id, item[0].cantidad)
-      },
-
-      quitar: async (id: string) => {
-        set(({ carrito }) => ({
-          carrito: carrito.filter((e) => e.id !== id)
-        }))
-        await quitar_carrito(id)
-      },
-      encarrito: (id: string) => !!get().carrito.find((e) => e.id === id),
-
-      total: () => {
-        const res = get().carrito.map(
-          (e) => (e?.precio ?? 0) * (e?.cantidad ?? 0)
-        )
-        return Array.isArray(res) ? res.reduce((v, ac) => v + ac, 0) : 0
-      },
-
-      solicitar_carrito: async () => {
-        const res = await carrito()
-        set({
-          carrito: Array.isArray(res) ? res : []
-        })
-      },
-      solicitar_compras: async () => {
-        const res = await historial_compras()
-        set({
-          compras: Array.isArray(res) ? res : []
-        })
-      },
-      enviar_compra: async (id: string) => {
-        await marcar_enviado(id) // backend cambia el estado
-        set((state) => ({
-          detalle_compra: state.detalle_compra.map((item) => ({
-            ...item,
-            enviado: true
-          }))
-        }))
-        window.location.reload()
-      },
-
-      enviar_recibido: async (id: string) => {
-        await marcar_recibido(id)
-        set((state) => ({
-          detalle_compra: state.detalle_compra.map((item) => ({
-            ...item,
-            recibido: true
-          }))
-        }))
-        window.location.reload()
-      },
-      solicitar_detalle_compra: async (id: string) => {
-        const res = await detalle_compra(id)
-        set({
-          detalle_compra: Array.isArray(res) ? res : []
-        })
-      },
-      setear_detalle_compra: async (data) => {
-        set({
-          detalle_compra: Array.isArray(data) ? data : []
-        })
+      (error) => {
+        if (request === cartRequest) set({ error, busy: false, status: 'error' })
       }
-
-      // fin del store
+    )
+  }
+  const changeQuantity = async (id: string, delta: number) => {
+    const item = get().carrito.find((item) => item.id === id)
+    if (!item) return false
+    const cantidad = item.cantidad + delta
+    if (
+      !Number.isSafeInteger(cantidad) ||
+      cantidad < 1 ||
+      (item.stock != null && cantidad > item.stock)
+    )
+      return false
+    return mutate(async () => {
+      await api.cambiar_cantidad(id, cantidad)
+      return get().carrito.map((item) =>
+        item.id === id ? { ...item, cantidad } : item
+      )
+    })
+  }
+  const updatePurchase = async (id: string, received: boolean) => {
+    if (get().busy) return false
+    set({ busy: true, detalleError: null })
+    return userTask(
+      async () => {
+        await (received ? api.marcar_recibido(id) : api.marcar_enviado(id))
+      },
+      () => {
+        const flags = received ? { recibido: true } : { enviado: true }
+        set((state) => ({
+          busy: false,
+          detalle_compra:
+            state.detalleId === id
+              ? state.detalle_compra.map((item) => ({ ...item, ...flags }))
+              : state.detalle_compra,
+          compras: state.compras.map((item) =>
+            item.sesion_id_compra === id ? { ...item, ...flags } : item
+          )
+        }))
+      },
+      (detalleError) => set({ detalleError, busy: false })
+    )
+  }
+  return {
+    ...initial,
+    reset: () => {
+      cartRequest++
+      detailRequest++
+      purchasesRequest++
+      set(initial)
+    },
+    agregar: async (id, cantidad = 1) => {
+      if (!id || !Number.isSafeInteger(cantidad) || cantidad < 1) return false
+      return mutate(async () => {
+        await api.agregar_carrito(id, cantidad)
+        return api.carrito()
+      })
+    },
+    aumentar: (id) => changeQuantity(id, 1),
+    restar: (id) => changeQuantity(id, -1),
+    quitar: (id) =>
+      mutate(async () => {
+        await api.quitar_carrito(id)
+        return get().carrito.filter((item) => item.id !== id)
+      }),
+    encarrito: (id) => get().carrito.some((item) => item.id === id),
+    total: () =>
+      get().carrito.reduce((sum, item) => sum + (item.precio ?? 0) * item.cantidad, 0),
+    solicitar_carrito: deduplicateUserLoad(async () => {
+      if (get().busy) return false
+      const request = ++cartRequest
+      set({ status: 'loading', error: null })
+      return userTask(
+        api.carrito,
+        (carrito) => {
+          if (request === cartRequest) set({ carrito, status: 'success' })
+        },
+        (error) => {
+          if (request === cartRequest) set({ status: 'error', error })
+        }
+      )
     }),
-    { name: 'micarrito' }
-  )
-  // fin del persist
-)
+    solicitar_compras: deduplicateUserLoad(async () => {
+      const request = ++purchasesRequest
+      set({ comprasStatus: 'loading', comprasError: null })
+      return userTask(
+        api.historial_compras,
+        (compras) => {
+          if (request === purchasesRequest) set({ compras, comprasStatus: 'success' })
+        },
+        (comprasError) => {
+          if (request === purchasesRequest)
+            set({ comprasStatus: 'error', comprasError })
+        }
+      )
+    }),
+    solicitar_detalle_compra: async (id) => {
+      const request = ++detailRequest
+      set({
+        detalle_compra: [],
+        detalleId: id,
+        detalleStatus: 'loading',
+        detalleError: null
+      })
+      return userTask(
+        () => api.detalle_compra(id),
+        (detalle_compra) => {
+          if (request === detailRequest)
+            set({ detalle_compra, detalleStatus: 'success' })
+        },
+        (detalleError) => {
+          if (request === detailRequest) set({ detalleError, detalleStatus: 'error' })
+        }
+      )
+    },
+    setear_detalle_compra: (detalle_compra, detalleId) => {
+      detailRequest++
+      set({ detalle_compra, detalleId, detalleStatus: 'success', detalleError: null })
+    },
+    enviar_compra: (id) => updatePurchase(id, false),
+    enviar_recibido: (id) => updatePurchase(id, true)
+  }
+})

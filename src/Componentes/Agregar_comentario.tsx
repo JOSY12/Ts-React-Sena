@@ -9,13 +9,11 @@ import { producto_store } from '../Zustand/Producto_store'
 
 const Agregar_comentario = () => {
   const { id } = useParams()
-  const solicitar_comentarios = producto_store(
-    (state) => state.solicitar_comentarios
-  )
+  const solicitar_comentarios = producto_store((state) => state.solicitar_comentarios)
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     // watch
     reset
   } = useForm()
@@ -28,9 +26,14 @@ const Agregar_comentario = () => {
         producto_id: id,
         titulo: data.titulo
       }
-      await crear_comentario(comentario)
-      solicitar_comentarios(id)
-      reset()
+      try {
+        await crear_comentario(comentario)
+        await solicitar_comentarios(id)
+        reset()
+        setestrellas(1)
+      } catch {
+        /* Keep the comment draft when saving fails. */
+      }
     } else {
       toast.error('error al intentar crear comentario')
     }
@@ -43,9 +46,7 @@ const Agregar_comentario = () => {
         className='w-full  max-w-6xl   bg-white shadow-md p-10  mx-auto text-gray-800 relative md:text-left   rounded-lg px-4 pt-2'
       >
         <div className='flex flex-wrap -mx-3 mb-6'></div>
-        <h2 className='px-4 pt-3 pb-2 text-gray-800 text-lg'>
-          Agregar comentario
-        </h2>
+        <h2 className='px-4 pt-3 pb-2 text-gray-800 text-lg'>Agregar comentario</h2>
         <div className='w-full md:w-full px-3 mb-2 mt-2'>
           <input
             {...register('titulo', {
@@ -60,15 +61,13 @@ const Agregar_comentario = () => {
               }
             })}
             type='text'
+            aria-label='Título del comentario'
             placeholder='Titulo'
             className='bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full    font-medium placeholder-gray-300 focus:outline-none focus:bg-white'
           />
-          {errors.titulo?.message &&
-            typeof errors.titulo.message === 'string' && (
-              <span className='text-red-600 font-bold ml-2'>
-                {errors.titulo.message}
-              </span>
-            )}
+          {errors.titulo?.message && typeof errors.titulo.message === 'string' && (
+            <span className='text-red-600 font-bold ml-2'>{errors.titulo.message}</span>
+          )}
         </div>
         <div className='w-full md:w-full px-3 mb-2 mt-2'>
           <textarea
@@ -83,6 +82,7 @@ const Agregar_comentario = () => {
               }
             })}
             className='bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-300 focus:outline-none focus:bg-white'
+            aria-label='Comentario'
             placeholder='ejm:El mejor producto del mundo'
           ></textarea>
           {errors.comentario?.message &&
@@ -101,8 +101,9 @@ const Agregar_comentario = () => {
                     type='radio'
                     id={`star${num}`}
                     name='rating'
-                    onClick={() => setestrellas(num)}
-                    className='peer hidden'
+                    checked={estrellas === num}
+                    onChange={() => setestrellas(num)}
+                    className='peer sr-only'
                   />
                   <label
                     htmlFor={`star${num}`}
@@ -117,6 +118,7 @@ const Agregar_comentario = () => {
 
           <div className='-mr-1'>
             <button
+              disabled={isSubmitting}
               type='submit'
               className='bg-white text-gray-700 font-medium py-1 px-4 border
         border-gray-400 rounded-lg tracking-wide mr-1

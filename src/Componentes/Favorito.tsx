@@ -1,3 +1,4 @@
+import ProductImage from '../shared/ui/ProductImage'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import { favorito } from './types'
@@ -11,7 +12,7 @@ const Favorito = ({ producto }: { producto: favorito }) => {
   return (
     <div className='flex flex-col'>
       <div className=' flex relative justify-center items-center align-middle  '>
-        <img
+        <ProductImage
           className='lg:h-100 bg-center   bg-cover'
           src={producto.imagen}
           alt={producto.nombre}

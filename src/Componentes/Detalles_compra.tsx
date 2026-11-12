@@ -1,15 +1,11 @@
 import { Link, useLoaderData, useParams } from 'react-router-dom'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { useEffect } from 'react'
-import { useClerk } from '@clerk/clerk-react'
+import RequestState from '../shared/ui/RequestState'
 import { AiFillMessage } from 'react-icons/ai'
 
-import type { UserResource } from '@clerk/types'
-
 const Detalles_compra = () => {
-  const { user } = useClerk() as { user: UserResource | null }
-
-  const data = useLoaderData()
+  const data = useLoaderData<import('./types').item_carrito[]>()
   const { id } = useParams()
   const detalle_compra = carrito_store((state) => state.detalle_compra)
   const solicitar_detalle_compra = carrito_store(
@@ -18,23 +14,31 @@ const Detalles_compra = () => {
   const enviar_compra = carrito_store((state) => state.enviar_compra)
   const enviar_recibido = carrito_store((state) => state.enviar_recibido)
 
-  const setear_detalle_compra = carrito_store(
-    (state) => state.setear_detalle_compra
-  )
+  const setear_detalle_compra = carrito_store((state) => state.setear_detalle_compra)
+  const status = carrito_store((state) => state.detalleStatus)
+  const error = carrito_store((state) => state.detalleError)
+  const busy = carrito_store((state) => state.busy)
   const total = detalle_compra.reduce(
     (acc, item) => acc + (item.precio ?? 0) * item.cantidad,
     0
   )
-  console.log('Detalles de compra:', detalle_compra)
+  const order = detalle_compra[0]
   useEffect(() => {
     if (data) {
-      setear_detalle_compra(data)
+      setear_detalle_compra(data, id ?? '')
     } else {
       solicitar_detalle_compra(id ? id : '')
     }
-  }, [])
+  }, [data, id, setear_detalle_compra, solicitar_detalle_compra])
   return (
     <div className=' container mx-auto '>
+      <RequestState
+        status={status}
+        error={error}
+        empty={!detalle_compra.length}
+        emptyText='No hay productos en esta compra.'
+        retry={() => id && solicitar_detalle_compra(id)}
+      />
       <div className='w-full flex justify-between items-center mb-3 mt-12 pl-3'>
         <div>
           <h3 className='text-lg font-semibold text-slate-800'>
@@ -43,70 +47,30 @@ const Detalles_compra = () => {
           <p className='text-slate-500'>Productos relacionados a la compra </p>
         </div>
         <div className='flex gap-2'>
-          {/* Botones para el administrador */}
-          {user &&
-            typeof user.publicMetadata === 'object' &&
-            (user.publicMetadata as any).administrador && (
-              <>
-                {!detalle_compra[0]?.enviado && (
-                  <button
-                    onClick={() => enviar_compra(id ? id : '')}
-                    className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-                  >
-                    Marcar como enviado
-                  </button>
-                )}
-                {!detalle_compra[0]?.recibido && detalle_compra[0]?.enviado && (
-                  <button
-                    onClick={() => enviar_recibido(id ? id : '')}
-                    className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-                  >
-                    Marcar como recibido
-                  </button>
-                )}
-                {detalle_compra.length > 0 && (
-                  <>
-                    {detalle_compra[0].enviado && (
-                      <span className='text-green-500 px-4 py-2'>
-                        Producto enviado
-                      </span>
-                    )}
-                    {detalle_compra[0].recibido && (
-                      <span className='text-green-500 px-4 py-2'>
-                        Producto Recibido
-                      </span>
-                    )}
-                  </>
-                )}
-              </>
-            )}
-          {/* Botones para el usuario normal */}
-          {user &&
-            (!user.publicMetadata ||
-              !(user.publicMetadata as any).administrador) && (
-              <>
-                {detalle_compra.length > 0 && detalle_compra[0].enviado && (
-                  <span className='text-green-500 px-4 py-2'>
-                    Producto Enviado
-                  </span>
-                )}
-                {detalle_compra.length > 0 &&
-                  detalle_compra[0].enviado &&
-                  !detalle_compra[0].recibido && (
-                    <button
-                      onClick={() => enviar_recibido(id ? id : '')}
-                      className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
-                    >
-                      Marcar como recibido
-                    </button>
-                  )}
-                {detalle_compra.length > 0 && detalle_compra[0].recibido && (
-                  <span className='text-green-500 px-4 py-2'>
-                    Producto Recibido
-                  </span>
-                )}
-              </>
-            )}
+          {order?.puede_marcar_enviado && !order.enviado && (
+            <button
+              disabled={busy}
+              onClick={() => id && enviar_compra(id)}
+              className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+            >
+              Marcar como enviado
+            </button>
+          )}
+          {order?.puede_marcar_recibido && order.enviado && !order.recibido && (
+            <button
+              disabled={busy}
+              onClick={() => id && enviar_recibido(id)}
+              className='bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 transition-colors'
+            >
+              Marcar como recibido
+            </button>
+          )}
+          {order?.enviado && (
+            <span className='text-green-500 px-4 py-2'>Producto enviado</span>
+          )}
+          {order?.recibido && (
+            <span className='text-green-500 px-4 py-2'>Producto Recibido</span>
+          )}
         </div>
       </div>
 
@@ -146,9 +110,7 @@ const Detalles_compra = () => {
                   </td>
                   <td className='p-4 border-b border-slate-200 py-5'>
                     <Link to={`/productos/${item.id}`}>
-                      <p className='block  text-md text-slate-800'>
-                        {item.nombre}
-                      </p>
+                      <p className='block  text-md text-slate-800'>{item.nombre}</p>
                     </Link>
                   </td>
                   <td className='p-4 border-b border-slate-200 py-5'>

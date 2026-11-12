@@ -1,5 +1,3 @@
-// import { obtener_usuario } from '../Services'
-// import { useEffect, useState } from 'react'
 import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
 import { direccion } from './types'
 
@@ -21,7 +19,6 @@ const Direccion = ({
   return (
     <>
       <div className=' border-t-1 m-3 border-black '>
-        {/* tarjeta de direcciones */}
         <div className='flex flex-col '>
           <button
             onClick={() => quitar(id ? id : '')}
@@ -38,15 +35,11 @@ const Direccion = ({
               </div>
 
               <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>
-                  Telefono conctacto
-                </div>
+                <div className='px-4 py-2 font-semibold'>Telefono conctacto</div>
                 <div className='px-4 py-2'>{telefono}</div>
               </div>
               <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>
-                  Direccion de entrega
-                </div>
+                <div className='px-4 py-2 font-semibold'>Direccion de entrega</div>
                 <div className='px-4 py-2'>{direccion}</div>
               </div>
 
@@ -59,9 +52,7 @@ const Direccion = ({
                 <div className='px-4 py-2'>{ciudad}</div>
               </div>
               <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>
-                  Detalles de la direccion
-                </div>
+                <div className='px-4 py-2 font-semibold'>Detalles de la direccion</div>
                 <div className='px-4 py-2'>{nota}</div>
               </div>
             </div>
@@ -81,8 +72,6 @@ const Direccion = ({
             </div>
           </div>
         </div>
-
-        {/* tarjeta de direcciones */}
       </div>
     </>
   )

@@ -1,3 +1,4 @@
+import ProductImage from '../shared/ui/ProductImage'
 import { useEffect, useState } from 'react'
 import { useParams, useLoaderData, Link } from 'react-router-dom'
 import Comentarios from './Comentarios'
@@ -7,61 +8,39 @@ import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import { carrito_store } from '../Zustand/Carrito_store'
-import Cargando from './Cargando'
+import RequestState from '../shared/ui/RequestState'
 import { producto_store } from '../Zustand/Producto_store'
-// import { Stripe_store } from '../Zustand/Stripe_store'
 
 const DetallesProducto = () => {
-  const data = useLoaderData()
+  const data = useLoaderData<import('./types').ProductResponse>()
   const { id } = useParams()
+  const producto = data.producto[0] ?? null
   const favorito = favoritos_store((state) => state.favorito(id || ''))
   const encarrito = carrito_store((state) => state.encarrito(id || ''))
   const quitar = favoritos_store((state) => state.quitar)
   const agregar = favoritos_store((state) => state.agregar)
-  // const pagar = Stripe_store((state) => state.pagar)
-
   const agregar_carrito = carrito_store((state) => state.agregar)
   const quitar_carrito = carrito_store((state) => state.quitar)
-  const solicitar_comentarios = producto_store(
-    (state) => state.solicitar_comentarios
-  )
-  const producto = producto_store((state) => state.producto)
+  const solicitar_comentarios = producto_store((state) => state.solicitar_comentarios)
   const comentarios = producto_store((state) => state.comentarios)
-  const solicitar_producto = producto_store((state) => state.solicitar_producto)
-  const setear_producto = producto_store((state) => state.setear_producto)
-  const [fotoactual, setfotoactual] = useState<string>(
-    (Array.isArray(producto?.fotos) &&
-      typeof producto?.fotos[0] === 'string' &&
-      producto?.fotos[0]) ||
-      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
-  )
-
-  const [isLoading, setIsLoading] = useState(true)
-  const [cantidad, setcantidad] = useState<number>(1)
-
+  const status = producto_store((state) => state.status)
+  const error = producto_store((state) => state.error)
+  const [fotoactual, setfotoactual] = useState('')
+  const [cantidad, setcantidad] = useState(1)
   useEffect(() => {
-    if (data) {
-      setfotoactual(
-        (Array.isArray(producto?.fotos) &&
-          typeof producto?.fotos[0] === 'string' &&
-          producto?.fotos[0]) ||
-          ' '
-      )
-      setIsLoading(false)
-      solicitar_comentarios(id ? id : '')
-      setear_producto(data.producto[0])
-    } else {
-      setIsLoading(true)
-      solicitar_producto(id ? id : '')
-      solicitar_comentarios(id ? id : '')
-    }
-  }, [data, id, producto])
-
-  if (isLoading) {
-    return <Cargando />
-  }
+    setfotoactual(producto?.fotos[0] ?? '')
+    setcantidad(1)
+  }, [producto])
+  useEffect(() => {
+    if (id) void solicitar_comentarios(id)
+  }, [id, solicitar_comentarios])
   return (
     <>
+      <RequestState
+        status={status}
+        error={error}
+        retry={() => id && solicitar_comentarios(id)}
+      />
       {producto ? (
         <>
           <div className='      bg-gray-100 flex items-center p-5 lg:p-10 overflow-hidden  '>
@@ -70,17 +49,15 @@ const DetallesProducto = () => {
                 <div className='justify-end flex   '>
                   <button
                     onClick={() => {
-                      favorito ? quitar(id || '') : agregar(id || '')
+                      if (favorito) void quitar(id || '')
+                      else void agregar(id || '')
                     }}
                     className='  group relative pr-6 cursor-pointer      font-medium rounded-lg text-sm      text-center  '
                   >
                     {favorito ? (
                       <AiFillHeart size={25} className='text-red-600' />
                     ) : (
-                      <AiOutlineHeart
-                        size={25}
-                        className='hover:text-red-500'
-                      />
+                      <AiOutlineHeart size={25} className='hover:text-red-500' />
                     )}
                     <span className='absolute bottom-10  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
                       guardar/remover en favoritos
@@ -89,19 +66,15 @@ const DetallesProducto = () => {
                   {producto.estado === 'Disponible' && (
                     <button
                       onClick={() => {
-                        encarrito
-                          ? quitar_carrito(id || '')
-                          : agregar_carrito(id || '')
+                        if (encarrito) void quitar_carrito(id || '')
+                        else void agregar_carrito(id || '')
                       }}
                       className='text-black group  cursor-pointer hover:text-green-600    font-medium rounded-lg text-sm     text-center  '
                     >
                       {encarrito ? (
                         <BsCartCheckFill size={25} className='text-green-600' />
                       ) : (
-                        <BsCartPlus
-                          size={25}
-                          className='hover:text-green-500'
-                        />
+                        <BsCartPlus size={25} className='hover:text-green-500' />
                       )}
                       <span className='absolute top-11  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
                         agregar/remover al carrito de compras
@@ -115,37 +88,36 @@ const DetallesProducto = () => {
                 <div className='w-full  md:w-1/2 px-10   '>
                   <div className='   relative  '>
                     <div className='flex justify-center  '>
-                      <img
+                      <ProductImage
                         src={fotoactual}
                         className='     bg-gray-100 -z-0'
-                        alt=''
-                      ></img>
+                        alt={producto.nombre}
+                      ></ProductImage>
                     </div>
                     <div className='  flex justify-evenly   '>
-                      {Array.isArray(producto.fotos) &&
-                      producto.fotos.length > 0 ? (
+                      {Array.isArray(producto.fotos) && producto.fotos.length > 0 ? (
                         producto.fotos.map((e, k) => (
                           <div key={k} className=' justify-center w-30 h-30 '>
                             <div className='flex justify-center bg-white   w-full  '>
                               {typeof e === 'string' && (
-                                <img
+                                <ProductImage
                                   onClick={() => setfotoactual(e)}
                                   loading='lazy'
                                   src={e}
                                   className=' h-30  hover:scale-125  '
-                                ></img>
+                                ></ProductImage>
                               )}
                             </div>
                           </div>
                         ))
                       ) : (
-                        <img
+                        <ProductImage
                           src={
                             'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRuC1CD6ZmBOBzoBpQl5RazYdooleZ2RdTvCEuSYjT3IFxoal60rTsy0-OoqerUBGWXx5p-tHGGw_4ety8vZlTSMfcciaRA3-pX4_QVDpTUCRgt29GfbOnK9w'
                           }
                           className='h-20 w-30'
-                          alt=''
-                        ></img>
+                          alt={producto.nombre}
+                        ></ProductImage>
                       )}
                     </div>
                   </div>
@@ -160,7 +132,10 @@ const DetallesProducto = () => {
                         {Array.isArray(producto.categorias) &&
                           producto.categorias.length > 0 &&
                           producto.categorias.map((e, k) => (
-                            <Link to={`/productos?Categorias=${e}`}>
+                            <Link
+                              key={e}
+                              to={`/productos?Categorias=${encodeURIComponent(e)}`}
+                            >
                               <span
                                 key={k}
                                 className='mr-1 text-blue-500 justify-start italic '
@@ -184,9 +159,7 @@ const DetallesProducto = () => {
                   </div>
                   <div className='justify-between flex  '>
                     <div className='inline-block align-bottom mr-5'>
-                      <span className='text-2xl  leading-none align-baseline'>
-                        $
-                      </span>
+                      <span className='text-2xl  leading-none align-baseline'>$</span>
                       <span className='font-bold  text-3xl sm:text-4xl  leading-none align-baseline'>
                         {(producto?.precio * cantidad).toLocaleString()}
                       </span>
@@ -197,10 +170,10 @@ const DetallesProducto = () => {
                           <div>
                             {producto.estado == 'Disponible' && (
                               <select
+                                value={cantidad}
+                                aria-label='Cantidad del producto'
                                 className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
-                                onChange={(e) =>
-                                  setcantidad(Number(e.target.value))
-                                }
+                                onChange={(e) => setcantidad(Number(e.target.value))}
                               >
                                 {[...Array(producto.stock)].map((_, i) => (
                                   <option value={i + 1} key={i}>
@@ -221,7 +194,6 @@ const DetallesProducto = () => {
                                   : ' bg-gray-600  text-gray-200 '
                               }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
                             >
-                              {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
                               {producto.estado == 'Disponible'
                                 ? 'Comprar ahora'
                                 : 'No Disponible'}
@@ -238,10 +210,10 @@ const DetallesProducto = () => {
                           <div>
                             {producto.estado == 'Disponible' && (
                               <select
+                                value={cantidad}
+                                aria-label='Cantidad del producto'
                                 className='border-1 rounded-bl-2xl   py-1.5 rounded-tl-2xl '
-                                onChange={(e) =>
-                                  setcantidad(Number(e.target.value))
-                                }
+                                onChange={(e) => setcantidad(Number(e.target.value))}
                               >
                                 {[...Array(producto.stock)].map((_, i) => (
                                   <option value={i + 1} key={i}>
@@ -259,7 +231,6 @@ const DetallesProducto = () => {
                                     : ' bg-gray-600  text-gray-200 '
                                 }opacity-75 hover:opacity-100    rounded-tr-2xl rounded-br-2xl   py-2 font-semibold`}
                               >
-                                {/* <span className='mdi mdi-cart -ml-2 mr-2'></span>  */}
                                 {producto.estado == 'Disponible'
                                   ? 'Comprar ahora'
                                   : 'No Disponible'}
@@ -276,11 +247,11 @@ const DetallesProducto = () => {
               </div>
             </div>
           </div>
-          {/* agregar comentario  dividible */}
+
           <SignedIn>
             <Agregar_comentario />
           </SignedIn>
-          {/* fin del agregar comentario */}
+
           <div className='w-full  p-5 lg:p-10  flex mx-auto items-center justify-center   '>
             <div className='w-full  max-w-6xl   bg-white shadow-md p-10 lg:p-20 mx-auto text-gray-800 relative md:text-left   rounded-lg px-4 pt-2'>
               <div className='flex justify-start items-start'>
@@ -288,7 +259,7 @@ const DetallesProducto = () => {
                   Comentarios
                 </p>
               </div>
-              {/* comentario individual para tarjetas separadas */}
+
               {comentarios && comentarios.length > 0 ? (
                 comentarios.map((comentario, k) => (
                   <Comentarios
@@ -322,12 +293,10 @@ const DetallesProducto = () => {
                     No hay comentarios
                   </h2>
                   <p className='text-gray-500 text-center'>
-                    Este producto aún no tiene comentarios. Sé el primero en
-                    dejar uno.
+                    Este producto aún no tiene comentarios. Sé el primero en dejar uno.
                   </p>
                 </div>
               )}
-              {/* fin de comentario unico */}
             </div>
           </div>
         </>
@@ -351,12 +320,8 @@ const DetallesProducto = () => {
               </g>
             </g>
           </svg>
-          <h3 className='text-xl font-medium mt-4 text-black'>
-            Producto no encontado
-          </h3>
-          <p className=' text-black mt-2'>
-            no se pudo localizar el producto requerido
-          </p>
+          <h3 className='text-xl font-medium mt-4 text-black'>Producto no encontado</h3>
+          <p className=' text-black mt-2'>no se pudo localizar el producto requerido</p>
         </div>
       )}
     </>

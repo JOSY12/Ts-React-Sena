@@ -1,26 +1,26 @@
+import RequestState from '../shared/ui/RequestState'
 import { useEffect } from 'react'
 import { favoritos_store } from '../Zustand/Favoritos_store'
 import Favorito from './Favorito'
 
 const Favoritos = () => {
   const favoritos = favoritos_store((state) => state.favoritos)
-  const solicitar_favoritos = favoritos_store(
-    (state) => state.solicitar_favoritos
-  )
+  const solicitar_favoritos = favoritos_store((state) => state.solicitar_favoritos)
   useEffect(() => {
     solicitar_favoritos()
-  }, [])
+  }, [solicitar_favoritos])
 
+  const status = favoritos_store((state) => state.status)
+  const error = favoritos_store((state) => state.error)
   return (
     <>
+      <RequestState status={status} error={error} retry={solicitar_favoritos} />
       <div className='mx-auto   container px-4 md:px-6 2xl:px-0 py-12 flex justify-center items-center text-black'>
         <div className='flex flex-col jusitfy-start items-start'>
-          <div>
-            {/* <p className='text-sm leading-4   text-black'>Home</p> */}
-          </div>
+          <div></div>
           <div className='mt-3'>
             <h1
-              className='text-3xl lg:text-4xl tracking-tight font-semibold 
+              className='text-3xl lg:text-4xl tracking-tight font-semibold
             leading-8 lg:leading-9 text-black'
             >
               Mis favoritos
@@ -32,7 +32,6 @@ const Favoritos = () => {
             </p>
           </div>
           <div className='mt-10 lg:mt-12 grid   grid-cols-1 lg:grid-cols-3 gap-x-8 gap-y-10 lg:gap-y-0'>
-            {/* tarjeta de producto */}
             {favoritos && favoritos.length > 0 ? (
               favoritos.map((producto) => (
                 <Favorito key={producto.id} producto={producto} />
@@ -57,15 +56,14 @@ const Favoritos = () => {
                   No tienes favoritos
                 </h2>
                 <p className='text-gray-500 text-center'>
-                  No tienes items en favoritos. Agrega productos a tu lista de
-                  favoritos para guardarlos.
+                  No tienes items en favoritos. Agrega productos a tu lista de favoritos
+                  para guardarlos.
                 </p>
               </div>
             )}
           </div>
         </div>
       </div>
-      {/* </div> */}
     </>
   )
 }

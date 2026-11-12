@@ -1,51 +1,63 @@
-import { direccion } from '../Componentes/types'
-import {
-  actualizar_direccion_predeterminada,
-  agregar_direccion,
-  eliminar_direccion,
-  obtener_direcciones
-} from './../Services'
 import { create } from 'zustand'
+import type { direccion, LoadStatus } from '../Componentes/types'
+import * as api from '../features/usuario/api'
+import { userTask, deduplicateUserLoad } from '../shared/api/user-task'
 
-type Direcciones_usuario = {
+type State = {
   misdirecciones: direccion[]
-  solicitar_direcciones: () => void
-  quitar: (id: string) => void
-  cambiar_predeterminado: (id: string) => void
-
-  agregar_direciones: (datos: direccion) => void
+  status: LoadStatus
+  error: string | null
+  busy: boolean
+  solicitar_direcciones: () => Promise<boolean>
+  quitar: (id: string) => Promise<boolean>
+  cambiar_predeterminado: (id: string) => Promise<boolean>
+  agregar_direciones: (datos: direccion) => Promise<boolean>
+  reset: () => void
 }
-
-export const Direcciones_usuario = create<Direcciones_usuario>()(
-  (set, get) => ({
-    misdirecciones: [],
-
-    solicitar_direcciones: async () => {
-      const res = await obtener_direcciones()
-
-      set({ misdirecciones: Array.isArray(res) ? res : [] })
+const initial = {
+  misdirecciones: [],
+  status: 'idle' as LoadStatus,
+  error: null,
+  busy: false
+}
+let request = 0
+export const Direcciones_usuario = create<State>((set, get) => {
+  const mutate = async (task: () => Promise<void>) => {
+    if (get().busy) return false
+    request++
+    set({ busy: true, error: null })
+    return userTask(
+      async () => {
+        await task()
+        return api.obtener_direcciones()
+      },
+      (misdirecciones) => set({ misdirecciones, busy: false, status: 'success' }),
+      (error) => set({ error, busy: false, status: 'error' })
+    )
+  }
+  return {
+    ...initial,
+    reset: () => {
+      request++
+      set(initial)
     },
-    agregar_direciones: async (datos: direccion) => {
-      set(({ misdirecciones }) => ({
-        misdirecciones: misdirecciones.find((e) => e.id === datos.id)
-          ? misdirecciones
-          : [...misdirecciones, datos]
-      }))
-      await agregar_direccion(datos)
-      get().solicitar_direcciones()
-    },
-    quitar: async (id: string) => {
-      set(({ misdirecciones }) => ({
-        misdirecciones: misdirecciones.filter((e) => e.id !== id)
-      }))
-      await eliminar_direccion(id)
-    },
-    cambiar_predeterminado: async (id: string) => {
-      await actualizar_direccion_predeterminada(id)
-
-      const res = await obtener_direcciones()
-
-      set({ misdirecciones: Array.isArray(res) ? res : [] })
-    }
-  })
-)
+    solicitar_direcciones: deduplicateUserLoad(async () => {
+      if (get().busy) return false
+      const current = ++request
+      set({ status: 'loading', error: null })
+      return userTask(
+        api.obtener_direcciones,
+        (misdirecciones) => {
+          if (current === request) set({ misdirecciones, status: 'success' })
+        },
+        (error) => {
+          if (current === request) set({ status: 'error', error })
+        }
+      )
+    }),
+    agregar_direciones: (datos) => mutate(() => api.agregar_direccion(datos)),
+    quitar: (id) => mutate(() => api.eliminar_direccion(id)),
+    cambiar_predeterminado: (id) =>
+      mutate(() => api.actualizar_direccion_predeterminada(id))
+  }
+})

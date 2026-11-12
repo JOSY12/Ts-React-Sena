@@ -16,19 +16,8 @@ const Footer = () => {
                 Acerca de
               </a>
             </li>
-            <li>
-              {/* <a
-               
-                className='mr-4 text-sm text-gray-500 hover:underline md:mr-6 :text-gray-400'
-              >
-                Politicas 
-              </a> */}
-            </li>
-            <li>
-              {/* <a className='mr-4 text-sm text-gray-500 hover:underline md:mr-6 :text-gray-400'>
-                Redes
-              </a> */}
-            </li>
+            <li></li>
+            <li></li>
             <li>
               <a className='text-sm text-black  hover:underline  '>Contacto</a>
             </li>

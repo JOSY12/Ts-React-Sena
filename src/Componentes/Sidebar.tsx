@@ -1,37 +1,24 @@
-// import React from 'react'
-
 import { Link } from 'react-router-dom'
-// import Login from './Login'
 import { useAuth } from '@clerk/clerk-react'
 import Logout from './Logout'
-// import Registrarboton from './Registrarboton'
-// import Registrar from './Registrar'
 import { FaSignInAlt } from 'react-icons/fa'
 import { IoPersonAddSharp } from 'react-icons/io5'
 
 import { useClerk } from '@clerk/clerk-react'
 import { activador } from './types'
 import { Notificaciones_store } from '../Zustand/Notificaciones_store'
-import { useEffect, useState } from 'react'
 
 const Sidebar = ({ activar }: activador) => {
   const { isSignedIn } = useAuth()
   const { user } = useClerk()
   const cantidad = Notificaciones_store((state) => state.misnotificaciones)
 
-  const [contador, setcontador] = useState<number>(0)
-
-  useEffect(() => {
-    if (cantidad.length) {
-      const nuevosNoVistos = cantidad.filter((e) => !e.visto).length
-      setcontador(nuevosNoVistos)
-    }
-  }, [cantidad])
+  const contador = cantidad.filter((item) => !item.visto).length
 
   return (
     <>
       <div
-        className={`  
+        className={`
         } max-w-2xl z-1 absolute right-0  mt-20 mx-auto`}
       >
         <aside className=' ' aria-label='Sidebar'>
@@ -39,7 +26,6 @@ const Sidebar = ({ activar }: activador) => {
             <ul className='space-y-2 '>
               {isSignedIn ? (
                 <>
-                  {/* dashboard administrativo para mis productos y usuarios*/}
                   {isSignedIn && user?.publicMetadata?.administrador && (
                     <>
                       <Link to={'/u/v/admin/usuarios'}>
@@ -67,7 +53,6 @@ const Sidebar = ({ activar }: activador) => {
                     </>
                   )}
 
-                  {/* Notificaciones de usuarios */}
                   <Link to={'/u/notificaciones'}>
                     <li className='hover:bg-gray-500 rounded-2xl   '>
                       <button
@@ -96,7 +81,7 @@ const Sidebar = ({ activar }: activador) => {
                       </button>
                     </li>
                   </Link>
-                  {/* administracion de usuarios */}
+
                   <Link to={'/u/perfil'}>
                     <li className=' hover:bg-gray-500 rounded-2xl '>
                       <button
@@ -116,9 +101,7 @@ const Sidebar = ({ activar }: activador) => {
                           ></path>
                         </svg>
 
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
-                          Perfil
-                        </span>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>Perfil</span>
                       </button>
                     </li>
                   </Link>
@@ -140,13 +123,11 @@ const Sidebar = ({ activar }: activador) => {
                             d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
                           />
                         </svg>
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
-                          Favoritos
-                        </span>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>Favoritos</span>
                       </button>
                     </li>
                   </Link>
-                  {/* productos de tienda */}
+
                   <Link to={'/u/compras'}>
                     <li className='hover:bg-gray-500 rounded-2xl'>
                       <button
@@ -166,13 +147,11 @@ const Sidebar = ({ activar }: activador) => {
                           ></path>
                         </svg>
 
-                        <span className='flex-1 ml-3 whitespace-nowrap'>
-                          Compras
-                        </span>
+                        <span className='flex-1 ml-3 whitespace-nowrap'>Compras</span>
                       </button>
                     </li>
                   </Link>
-                  {/* cerrar sesion */}
+
                   <li className='mt-6 cursor-pointer'>
                     <Logout />
                   </li>
@@ -189,8 +168,6 @@ const Sidebar = ({ activar }: activador) => {
                             Iniciar sesion
                           </span>
                         </div>
-
-                        {/* <Login /> */}
                       </button>
                     </li>
                   </Link>
@@ -200,18 +177,13 @@ const Sidebar = ({ activar }: activador) => {
                         <div className='flex  items-center p-2 text-base font-normal text-white    '>
                           <IoPersonAddSharp />
 
-                          <span className='  ml-3 whitespace-nowrap'>
-                            Registrar
-                          </span>
+                          <span className='  ml-3 whitespace-nowrap'>Registrar</span>
                         </div>
                       </button>
-                      {/* <Registrarboton /> */}
                     </li>
                   </Link>
                 </>
               )}
-
-              {/* inciarse sesion  */}
             </ul>
           </div>
         </aside>

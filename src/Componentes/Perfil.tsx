@@ -1,5 +1,4 @@
-// import { obtener_usuario } from '../Services'
-// import { useEffect, useState } from 'react'
+import RequestState from '../shared/ui/RequestState'
 import { UserProfile } from '@clerk/clerk-react'
 import Modal from './Modal'
 import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
@@ -14,10 +13,13 @@ const Perfil = () => {
 
   useEffect(() => {
     solicitar_direcciones()
-  }, [])
+  }, [solicitar_direcciones])
 
+  const status = Direcciones_usuario((state) => state.status)
+  const error = Direcciones_usuario((state) => state.error)
   return (
     <>
+      <RequestState status={status} error={error} retry={solicitar_direcciones} />
       <div className='flex justify-center items-center   bg-gray-100'>
         <UserProfile />
       </div>
@@ -49,11 +51,13 @@ const Perfil = () => {
 
                   <Modal />
                 </div>
-                {/* tarjeta de direcciones */}
+
+                {status === 'success' && !direciones.length && (
+                  <p className='p-4'>No tienes direcciones registradas.</p>
+                )}
                 {direciones.map((direccion) => {
                   return <Direccion key={direccion.id} {...direccion} />
                 })}
-                {/* tarjeta de direcciones */}
               </div>
 
               <div className='my-4'></div>

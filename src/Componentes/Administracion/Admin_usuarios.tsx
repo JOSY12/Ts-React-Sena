@@ -1,62 +1,34 @@
-import { useEffect, useState } from 'react'
 import Usuarios_card_administracion from './Usuarios_card_administracion'
-import { administracion, compras_hechas, datos, Usuario } from '../types'
-import { todos_usuarios } from '../../Services'
+import { administracion } from '../types'
 import { AiOutlineReload } from 'react-icons/ai'
-import { useLoaderData } from 'react-router-dom'
+import { useLoaderData, useRevalidator } from 'react-router-dom'
 import { AiOutlineDollarCircle } from 'react-icons/ai'
 import { Compra } from '../Compra'
 
 const Admin_usuarios = () => {
   const data = useLoaderData<administracion>()
-  const [usuarios, setusuarios] = useState<Usuario[]>([])
-  const [datos, setdatos] = useState<datos>()
-  const [compras, setcompras] = useState<compras_hechas[]>([])
-
-  const Recargar = async () => {
-    const res: any = await todos_usuarios()
-    if (res && res.usuarios.length) {
-      setusuarios(res.usuarios)
-      setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
-    }
-  }
-  useEffect(() => {
-    const datos = async () => {
-      const res: administracion = await todos_usuarios()
-      if (res && Array.isArray(res.usuarios)) {
-        setusuarios(res.usuarios)
-        setdatos(Array.isArray(res.datos) ? res.datos[0] : res.datos)
-        setcompras(Array.isArray(res.compras) ? res.compras : [])
-      } else {
-        return
-      }
-    }
-
-    if (data && Array.isArray(data.datos)) {
-      setusuarios(data.usuarios)
-      setdatos(data.datos[0])
-      setcompras(data.compras)
-    } else {
-      datos()
-    }
-  }, [])
+  const { revalidate, state } = useRevalidator()
+  const usuarios = data.usuarios
+  const datos = Array.isArray(data.datos) ? data.datos[0] : data.datos
+  const compras = data.compras
   return (
     <div className=' mb-10 flex flex-col flex-1 overflow-hidden'>
       <main className='flex-1 overflow-x-hidden overflow-y-auto bg-gray-100'>
         <div className='container px-6 py-8 mx-auto'>
           <div className='flex justify-between'>
-            <h3 className='text-3xl font-medium text-gray-700'>
-              Administracion
-            </h3>
+            <h3 className='text-3xl font-medium text-gray-700'>Administracion</h3>
             <button
-              onClick={Recargar}
+              disabled={state === 'loading'}
+              onClick={() => {
+                void revalidate()
+              }}
               className='tex-md cursor-pointer flex items-center    text-black'
             >
               <AiOutlineReload className='mr-2' />
               Recargar datos
             </button>
           </div>
-          {/* informacion general */}
+
           <div className='mt-4'>
             <div className='flex flex-wrap mx-6'>
               <div className='w-full px-6 sm:w-1/2 xl:w-1/3'>
@@ -185,11 +157,10 @@ const Admin_usuarios = () => {
               </div>
             </div>
           </div>
-          {/* fin de informacion general */}
+
           <div className='mt-8'></div>
           <div className='mt-'>Usuarios Registrados</div>
 
-          {/* listado de usuarios */}
           <div className='flex flex-col mt-5'>
             <div className='py-2 -my-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8'>
               <div className='inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg'>
@@ -214,7 +185,6 @@ const Admin_usuarios = () => {
                     </tr>
                   </thead>
                   <tbody className='bg-white'>
-                    {/* informacion de usuarios */}
                     {usuarios.length > 0 ? (
                       usuarios.map((e, k) => (
                         <Usuarios_card_administracion
@@ -243,23 +213,18 @@ const Admin_usuarios = () => {
                         baneado={false}
                       />
                     )}
-
-                    {/* fin de informacion de usuarios */}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-          {/* fin lista usuarios */}
 
           <div className='mt-8'></div>
           <div className='mb-8'>Productos vendidos</div>
 
-          {/* listado de compras */}
           <div className='overflow-y-auto'>
             <div className='flex items-center justify-between'></div>
             <div className='flex flex-col  gap-3'>
-              {/* compra card */}
               {Array.isArray(compras) &&
                 compras.map((compra, k) => (
                   <Compra
@@ -274,12 +239,8 @@ const Admin_usuarios = () => {
                     momento_compra={compra.momento_compra}
                   />
                 ))}
-
-              {/* fin compra */}
             </div>
           </div>
-
-          {/* fin lista compras */}
         </div>
       </main>
     </div>
