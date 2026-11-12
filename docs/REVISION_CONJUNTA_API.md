@@ -1,10 +1,12 @@
+> Cierre de publicación, 12 de noviembre de 2026: ambos repositorios están publicados en GitHub y desplegados en Vercel. Pasaron la navegación pública y 14 comprobaciones autenticadas de la demo. Los fixtures se limpiaron. Estado vigente y alcance exacto: [ESTADO_PUBLICACION.md](ESTADO_PUBLICACION.md). Las secciones siguientes conservan resultados e hitos anteriores.
+
 # Revisión conjunta de Techsells y APIGeneral
 
 Fecha: 12 de noviembre de 2026. Incluye los cambios locales de la otra sesión en `C:/Users/Josmer/Ts-React-Sena`. No se hizo commit, push, despliegue ni migración remota.
 
 Estado posterior a las pruebas descritas aquí: las cuatro migraciones alojadas ya están aplicadas con autorización expresa, el respaldo privado está guardado y Vercel quedó configurado con Node 24 y la firma del webhook publicado. Pasaron 33 comprobaciones de roles; producto, categoría y cuentas temporales se eliminaron. El pedido manual quedó enviado y recibido, verificado en PostgreSQL. Las pruebas finales mantienen 29/29 en API y 44/44 en frontend. Pendiente publicar los commits y verificar Vercel; véase PREPARACION_DESPLIEGUE.md.
 
-Actualización de alcance: demo de portafolio con la aplicación actual de Clerk y Stripe test. Pasaron posteriormente 27 comprobaciones de roles con sesiones reales. La limpieza de los últimos fixtures quedó pendiente del revisor automático. Los webhooks compartidos copiaron perfiles de prueba también a Supabase. Véase [PREPARACION_DESPLIEGUE.md](PREPARACION_DESPLIEGUE.md), que actualiza los pendientes originales de este informe.
+Actualización de alcance: demo de portafolio con la aplicación actual de Clerk y Stripe test. Pasaron posteriormente 27 comprobaciones de roles con sesiones reales. La limpieza de los últimos fixtures quedó pendiente del revisor automático. Los webhooks compartidos copiaron perfiles de prueba también a Supabase. Véase [ESTADO_PUBLICACION.md](ESTADO_PUBLICACION.md), que actualiza los pendientes originales de este informe.
 
 ## Resultado
 

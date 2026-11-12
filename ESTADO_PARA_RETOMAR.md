@@ -2,7 +2,7 @@
 
 ## Estado final de preparación
 
-La demo conserva todo el recorrido funcional. Pasaron 44 pruebas del frontend, 29 de API y 33 comprobaciones con roles reales; el pedido manual está enviado y recibido. Los fixtures temporales ya se limpiaron. Las cuatro migraciones alojadas están aplicadas con aprobación expresa, se guardó el respaldo privado y Vercel tiene Node 24 y la firma del webhook publicado configurados. Solo falta publicar/verificar los commits. Guía vigente: [ESTADO_PUBLICACION.md](docs/ESTADO_PUBLICACION.md). Las secciones siguientes conservan el historial de la refactorización.
+La demo conserva todo el recorrido funcional. Pasaron 44 pruebas del frontend, 29 de API y 33 comprobaciones con roles reales; el pedido manual está enviado y recibido. Los fixtures temporales ya se limpiaron. Las cuatro migraciones alojadas están aplicadas con aprobación expresa, se guardó el respaldo privado y Vercel tiene Node 24 y la firma del webhook publicado configurados. Ambos commits funcionales están publicados y Vercel los desplegó correctamente. Pasaron 12 comprobaciones HTTP y 14 autenticadas adicionales, además de Chrome sobre el dominio público; las cuentas temporales quedaron eliminadas y sus datos anonimizados. Guía vigente: [ESTADO_PUBLICACION.md](docs/ESTADO_PUBLICACION.md). Las secciones siguientes conservan el historial de la refactorización.
 
 Actualizado el 12 de noviembre de 2026, después de retomar la pausa del día anterior.
 
