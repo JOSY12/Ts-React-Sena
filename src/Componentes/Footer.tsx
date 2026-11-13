@@ -1,31 +1,36 @@
-const Footer = () => {
-  return (
-    <div>
-      <div className='   mx-auto w-full     '>
-        <footer className='p-4 bg-white   shadow md:flex md:items-center md:justify-between md:p-6 :bg-gray-100'>
-          <span className='text-sm text-black sm:text-center '>
-            © 2025{' '}
-            <a className='hover:underline' target='_blank'>
-              Techsells creado por: Josmer bertel
-            </a>{' '}
-            Derechos reservados
-          </span>
-          <ul className='flex flex-wrap items-center mt-3 sm:mt-0 text-black'>
-            <li>
-              <a className='mr-4 text-sm text-black hover:underline md:mr-6   '>
-                Acerca de
-              </a>
-            </li>
-            <li></li>
-            <li></li>
-            <li>
-              <a className='text-sm text-black  hover:underline  '>Contacto</a>
-            </li>
-          </ul>
-        </footer>
+import { Link } from 'react-router-dom'
+import { FiArrowUpRight } from 'react-icons/fi'
+import logo from '../img/tech-sells-high-resolution-logo-white-transparent.png'
+const Footer = () => (
+  <footer className='site-footer'>
+    <div className='footer-main page-width'>
+      <div>
+        <Link to='/' className='brand'>
+          <img className='brand-logo' src={logo} alt='Techsells' />
+        </Link>
+        <p>Tu próximo upgrade empieza aquí.</p>
       </div>
+      <nav aria-label='Navegación del pie de página'>
+        <Link to='/productos'>
+          Explorar productos <FiArrowUpRight aria-hidden='true' />
+        </Link>
+        <Link to='/u/compras'>
+          Mis compras <FiArrowUpRight aria-hidden='true' />
+        </Link>
+        <Link to='/contacto'>
+          Contacto <FiArrowUpRight aria-hidden='true' />
+        </Link>
+      </nav>
+      <span className='footer-stamp' aria-hidden='true'>
+        STAY
+        <br />
+        CONNECTED ↗
+      </span>
     </div>
-  )
-}
-
+    <div className='footer-bottom page-width'>
+      <span>© {new Date().getFullYear()} Techsells · Creado por Josmer Bertel</span>
+      <span>HECHO PARA CONECTAR.</span>
+    </div>
+  </footer>
+)
 export default Footer

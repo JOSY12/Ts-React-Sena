@@ -1,5 +1,11 @@
 # Estado actual de Techsells
 
+## Actualización local posterior: diseño y compatibilidad
+
+El frontend incorpora las tres correcciones de compatibilidad, el rediseño neobrutalista, el logo original restaurado y un selector de modo oscuro persistente. Suite actual: **76 pruebas en 15 archivos**; formato, lint, tipos y build correctos, audit sin vulnerabilidades. El usuario revisó la tienda local, pidió ajustes de contraste/direcciones/logo que se aplicaron y autorizó subir la entrega a `master` de GitHub. El backend no se modificó. La integración de Vercel puede desplegar este commit automáticamente; comprobar su estado para confirmar la versión pública. El navegador automatizado no estuvo disponible. Detalles: [REDISENO_NEOBRUTALISTA.md](docs/REDISENO_NEOBRUTALISTA.md).
+
+Las secciones siguientes describen la publicación anterior y el historial.
+
 ## Estado final de preparación
 
 La demo conserva todo el recorrido funcional. Pasaron 44 pruebas del frontend, 29 de API y 33 comprobaciones con roles reales; el pedido manual está enviado y recibido. Los fixtures temporales ya se limpiaron. Las cuatro migraciones alojadas están aplicadas con aprobación expresa, se guardó el respaldo privado y Vercel tiene Node 24 y la firma del webhook publicado configurados. Ambos commits funcionales están publicados y Vercel los desplegó correctamente. Pasaron 12 comprobaciones HTTP y 14 autenticadas adicionales, además de Chrome sobre el dominio público; las cuentas temporales quedaron eliminadas y sus datos anonimizados. Guía vigente: [ESTADO_PUBLICACION.md](docs/ESTADO_PUBLICACION.md). Las secciones siguientes conservan el historial de la refactorización.

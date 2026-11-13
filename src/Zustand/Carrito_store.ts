@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import type { compras_hechas, item_carrito, LoadStatus } from '../Componentes/types'
 import * as api from '../features/compras/api'
+import { MAX_CART_QUANTITY } from '../features/compras/limits'
 import { userTask, deduplicateUserLoad } from '../shared/api/user-task'
 
 type State = {
@@ -67,6 +68,7 @@ export const carrito_store = create<State>((set, get) => {
     if (
       !Number.isSafeInteger(cantidad) ||
       cantidad < 1 ||
+      cantidad > MAX_CART_QUANTITY ||
       (item.stock != null && cantidad > item.stock)
     )
       return false
@@ -109,7 +111,13 @@ export const carrito_store = create<State>((set, get) => {
       set(initial)
     },
     agregar: async (id, cantidad = 1) => {
-      if (!id || !Number.isSafeInteger(cantidad) || cantidad < 1) return false
+      if (
+        !id ||
+        !Number.isSafeInteger(cantidad) ||
+        cantidad < 1 ||
+        cantidad > MAX_CART_QUANTITY
+      )
+        return false
       return mutate(async () => {
         await api.agregar_carrito(id, cantidad)
         return api.carrito()

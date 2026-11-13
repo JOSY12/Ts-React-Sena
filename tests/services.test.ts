@@ -15,7 +15,12 @@ afterEach(() => {
 })
 const respond = (data: unknown) => {
   axiosbackend.defaults.adapter = async (config) => ({
-    data,
+    data:
+      config.method === 'get'
+        ? config.url === '/u/carrito'
+          ? { rows: [] }
+          : []
+        : data,
     status: 200,
     statusText: 'OK',
     headers: new AxiosHeaders(),

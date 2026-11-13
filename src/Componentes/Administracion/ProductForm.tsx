@@ -12,6 +12,7 @@ import {
   subircloudinary
 } from '../../Services'
 import { MAX_PHOTOS } from '../../features/catalogo/images'
+import { textRules } from '../../shared/utils/validation'
 import type { tcategorias, Foto, producto, ProductFormValues } from '../types'
 
 type Props = {
@@ -29,7 +30,8 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
   const [uploading, setUploading] = useState(false)
   const [categoryBusy, setCategoryBusy] = useState(false)
   const [categoryOpen, setCategoryOpen] = useState(false)
-  const maxStock = mode === 'create' ? 30 : 1000 // Existing business limits; API remains authoritative.
+  const maxStock = mode === 'create' ? 30 : 10000000
+  const minStock = mode === 'create' ? 5 : 0
   const listacategorias = allCategories.filter(
     (category) => !categoriasproducto.some((selected) => selected.id === category.id)
   )
@@ -81,6 +83,10 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
     const nombre = watch('nuevacategoria')?.trim()
     if (!nombre) {
       toast.warning('Escribe el nombre de la categoría.')
+      return
+    }
+    if (nombre.length > 100) {
+      toast.warning('La categoría admite un máximo de 100 caracteres.')
       return
     }
     setCategoryBusy(true)
@@ -155,6 +161,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                   <input
                     id='product-name'
                     {...register('nombre', {
+                      setValueAs: (value: string) => value.trim(),
                       required: {
                         value: true,
                         message: 'el nombre del producto es requerido'
@@ -263,8 +270,8 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                             message: 'stock requerido'
                           },
                           min: {
-                            value: 5,
-                            message: 'minimo 5 unidades'
+                            value: minStock,
+                            message: `mínimo ${minStock} unidades`
                           },
                           max: {
                             value: maxStock,
@@ -409,16 +416,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                 </label>
                 <textarea
                   id='product-description'
-                  {...register('descripcion', {
-                    required: {
-                      value: true,
-                      message: 'la descripcion del producto es requerida'
-                    },
-                    minLength: {
-                      value: 10,
-                      message: 'minimo 10 caracteres por descripcion'
-                    }
-                  })}
+                  {...register('descripcion', textRules('La descripción', 10000, 10))}
                   className='appearance-none block w-full bg-white text-gray-900 font-medium border border-gray-400 rounded-lg py-3 px-3 leading-tight focus:outline-none focus:border-[#98c01d]'
                 ></textarea>
                 {errors.descripcion?.message &&

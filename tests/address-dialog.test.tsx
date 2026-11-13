@@ -1,10 +1,31 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Modal from '../src/Componentes/Modal'
 import { Direcciones_usuario } from '../src/Zustand/Direcciones_usuario'
 
 describe('direcciones', () => {
+  it('rechaza teléfono excesivo y campos de solo espacios antes de llamar a la API', async () => {
+    const save = vi
+      .spyOn(Direcciones_usuario.getState(), 'agregar_direciones')
+      .mockResolvedValue(true)
+    render(<Modal />)
+    const user = userEvent.setup()
+    await user.click(screen.getByRole('button', { name: 'Agregar dirección' }))
+    for (const [label, value] of [
+      ['Nombre de comprador', '   '],
+      ['Direccion', 'Calle de prueba'],
+      ['Telefono de comprador', '1'.repeat(41)],
+      ['Codigo Postal', '12345'],
+      ['Ciudad', 'Ciudad de prueba']
+    ]) {
+      fireEvent.change(screen.getByLabelText(label), { target: { value } })
+    }
+    await user.click(screen.getByRole('button', { name: 'Guardar direccion' }))
+    await screen.findByText('Usa un máximo de 40 caracteres.')
+    expect(screen.getByText('El nombre es obligatorio.')).toBeTruthy()
+    expect(save).not.toHaveBeenCalled()
+  })
   it('un fallo mantiene abierto el diálogo y conserva los datos para reintentar', async () => {
     const save = vi
       .spyOn(Direcciones_usuario.getState(), 'agregar_direciones')

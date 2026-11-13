@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import { FaDeleteLeft } from 'react-icons/fa6'
 import { BsCash } from 'react-icons/bs'
 import { Stripe_store } from '../Zustand/Stripe_store'
+import { MAX_CART_QUANTITY } from '../features/compras/limits'
 
 const Producto_carrito = ({
   id,
@@ -71,7 +72,9 @@ const Producto_carrito = ({
               </span>
 
               <button
-                disabled={busy || !stock || cantidad >= stock}
+                disabled={
+                  busy || !stock || cantidad >= Math.min(stock, MAX_CART_QUANTITY)
+                }
                 aria-label='Aumentar cantidad'
                 onClick={() => {
                   if (stock && cantidad < stock) void aumentar(id)

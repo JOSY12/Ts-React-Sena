@@ -1,211 +1,121 @@
-import logo from '../img/tech-sells-high-resolution-logo-white-transparent.png'
-import { useState } from 'react'
-import Sidebar from './Sidebar'
-import { Link } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '@clerk/clerk-react'
-import { useClerk } from '@clerk/clerk-react'
-import { Notificaciones_store } from '../Zustand/Notificaciones_store'
+import {
+  FiArrowUpRight,
+  FiHeart,
+  FiMenu,
+  FiShoppingBag,
+  FiUser,
+  FiX
+} from 'react-icons/fi'
+import Sidebar from './Sidebar'
 import { carrito_store } from '../Zustand/Carrito_store'
 import { favoritos_store } from '../Zustand/Favoritos_store'
+import { Notificaciones_store } from '../Zustand/Notificaciones_store'
+import ThemeToggle from '../shared/ui/ThemeToggle'
+import logo from '../img/tech-sells-high-resolution-logo-white-transparent.png'
+
 const Navbar = () => {
   const { isSignedIn } = useAuth()
-  const { user } = useClerk()
-  const [sidebar, Setsidbar] = useState<boolean>(false)
-
-  const actualizar = Notificaciones_store((state) => state.solicitar_notificicaciones)
-  const carrito = carrito_store((state) => state.carrito)
-  const favoritos = favoritos_store((state) => state.favoritos)
-
-  const n_vistas = async (sidebar: boolean) => {
-    actualizar()
-    Setsidbar(sidebar)
-  }
-
+  const [open, setOpen] = useState(false)
+  const menu = useRef<HTMLDivElement>(null)
+  const toggle = useRef<HTMLButtonElement>(null)
+  const cartCount = carrito_store((state) => state.carrito.length)
+  const favoriteCount = favoritos_store((state) => state.favoritos.length)
+  useEffect(() => {
+    if (!open) return
+    const close = (event: PointerEvent) => {
+      if (event.target instanceof Node && !menu.current?.contains(event.target))
+        setOpen(false)
+    }
+    const escape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setOpen(false)
+        toggle.current?.focus()
+      }
+    }
+    document.addEventListener('pointerdown', close)
+    document.addEventListener('keydown', escape)
+    return () => {
+      document.removeEventListener('pointerdown', close)
+      document.removeEventListener('keydown', escape)
+    }
+  }, [open])
   return (
-    <>
-      <div className='flex flex-wrap place-items-center  '>
-        <section className='relative m-auto'>
-          <nav className='flex    bg-[#000000] text-white w-screen '>
-            <div className='px-5  xl:px-10 py-6 flex w-full items-center'>
-              <Link className='text-3xl font-bold  flex font-heading' to='/productos'>
-                <img className='h-10' src={logo} alt='logo' />
-                Techsells
-              </Link>
-              <ul className=' hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12'>
-                <Link to={'/'}>
-                  <li>
-                    <span className='hover:text-gray-200'>Inicio</span>
-                  </li>
-                </Link>
-                <Link to={'/productos'}>
-                  <li>
-                    <span className='hover:text-gray-200'>Productos</span>
-                  </li>
-                </Link>
-
-                <Link to={'/contacto'}>
-                  <li>
-                    <span className='hover:text-gray-200'>Contacto</span>
-                  </li>
-                </Link>
-              </ul>
-              <div className='hidden xl:flex   space-x-5 items-center'>
-                {isSignedIn && (
-                  <>
-                    <Link to={'/u/favoritos'}>
-                      <button
-                        aria-label='Abrir sección de usuario'
-                        onClick={() => {
-                          if (sidebar) Setsidbar(false)
-                        }}
-                        className='hover:text-gray-200  cursor-pointer  '
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-6 w-6'
-                          fill={favoritos.length > 0 ? 'red' : 'none'}
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='2'
-                            d='M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z'
-                          />
-                        </svg>
-                        {favoritos.length > 0 && (
-                          <span className='flex absolute -mt-4 ml-1'>
-                            <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-red-400 opacity-75'></span>
-                          </span>
-                        )}
-                      </button>
-                    </Link>
-
-                    <Link to={'/u/carrito'}>
-                      <button
-                        aria-label='Abrir sección de usuario'
-                        onClick={() => {
-                          if (sidebar) Setsidbar(false)
-                        }}
-                        className='flex cursor-pointer  items-center hover:text-gray-200'
-                      >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          className='h-6 w-6'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          stroke='currentColor'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            strokeWidth='2'
-                            d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                          />
-                        </svg>
-
-                        {carrito.length > 0 && (
-                          <span className='flex absolute -mt-5 ml-4'>
-                            <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
-                            <span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
-                          </span>
-                        )}
-                      </button>
-                    </Link>
-                  </>
-                )}
-
-                <button
-                  className='flex cursor-pointer  items-center hover:text-gray-200'
-                  onClick={() => {
-                    n_vistas(!sidebar)
-                  }}
-                >
-                  {isSignedIn ? (
-                    <img
-                      className='h-10 w-10  rounded-4xl justify-center bg-center'
-                      src={user?.imageUrl}
-                      alt=''
-                    />
-                  ) : (
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-6 w-6 hover:text-gray-200'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z'
-                      />
-                    </svg>
-                  )}
-                </button>
-              </div>
-            </div>
-            {isSignedIn && (
-              <>
-                <Link
-                  className='xl:hidden cursor-pointer flex mr-6 items-center'
-                  to={'/u/carrito'}
-                >
-                  <button>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      className='h-6 w-6 hover:text-gray-200'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                      />
-                    </svg>
-
-                    <span className='flex absolute -mt-5 ml-4'>
-                      <span className='animate-ping absolute inline-flex h-3 w-3 rounded-full bg-green-400 opacity-75'></span>
-                      <span className='relative inline-flex rounded-full h-3 w-3 bg-green-500'></span>
-                    </span>
-                  </button>
-                </Link>
-              </>
-            )}
-
-            <button
-              onClick={() => {
-                n_vistas(!sidebar)
-              }}
-              className='navbar-burger cursor-pointer self-center mr-12 xl:hidden'
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                className='h-6 w-6 hover:text-gray-200'
-                fill='none'
-                viewBox='0 0 24 24'
-                stroke='currentColor'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M4 6h16M4 12h16M4 18h16'
-                />
-              </svg>
-            </button>
-
-            {sidebar && <Sidebar activar={() => Setsidbar(!sidebar)} />}
-          </nav>
-        </section>
+    <header className='site-header'>
+      <a className='skip-link' href='#contenido'>
+        Saltar al contenido
+      </a>
+      <div className='announcement'>
+        <span>TECNOLOGÍA A TU RITMO.</span>
+        <span>
+          EXPLORA. ELIGE. CONECTA. <FiArrowUpRight aria-hidden='true' />
+        </span>
       </div>
-    </>
+      <nav className='nav-shell' aria-label='Navegación principal'>
+        <Link to='/' className='brand' aria-label='Techsells · Inicio'>
+          <img className='brand-logo' src={logo} alt='Techsells' />
+        </Link>
+        <div className='nav-links'>
+          <NavLink to='/' end>
+            Inicio
+          </NavLink>
+          <NavLink to='/productos'>Productos</NavLink>
+          <NavLink to='/contacto'>Contacto</NavLink>
+        </div>
+        <div className='nav-actions'>
+          <ThemeToggle />
+          {isSignedIn ? (
+            <>
+              <Link
+                className='icon-button favorites-link'
+                to='/u/favoritos'
+                aria-label={`Favoritos: ${favoriteCount}`}
+              >
+                <FiHeart aria-hidden='true' />
+                {favoriteCount > 0 && <span className='counter'>{favoriteCount}</span>}
+              </Link>
+              <Link
+                className='icon-button cart-link'
+                to='/u/carrito'
+                aria-label={`Carrito: ${cartCount} productos`}
+              >
+                <FiShoppingBag aria-hidden='true' />
+                {cartCount > 0 && <span className='counter'>{cartCount}</span>}
+              </Link>
+            </>
+          ) : (
+            <Link className='button button-dark nav-login' to='/iniciarsesion'>
+              Entrar <FiArrowUpRight aria-hidden='true' />
+            </Link>
+          )}
+          <div className='account-menu' ref={menu}>
+            <button
+              ref={toggle}
+              className='icon-button'
+              aria-label={open ? 'Cerrar menú' : 'Abrir menú de usuario'}
+              aria-expanded={open}
+              aria-controls='account-navigation'
+              onClick={() => {
+                if (!open && isSignedIn)
+                  void Notificaciones_store.getState().solicitar_notificicaciones()
+                setOpen(!open)
+              }}
+            >
+              {open ? (
+                <FiX aria-hidden='true' />
+              ) : isSignedIn ? (
+                <FiUser aria-hidden='true' />
+              ) : (
+                <FiMenu aria-hidden='true' />
+              )}
+            </button>
+            {open && <Sidebar activar={() => setOpen(false)} />}
+          </div>
+        </div>
+      </nav>
+    </header>
   )
 }
-
 export default Navbar

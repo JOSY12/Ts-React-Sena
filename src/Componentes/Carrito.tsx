@@ -1,201 +1,100 @@
-import RequestState from '../shared/ui/RequestState'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { FiArrowUpRight, FiShoppingBag } from 'react-icons/fi'
+import RequestState from '../shared/ui/RequestState'
 import { carrito_store } from '../Zustand/Carrito_store'
-import Producto_carrito from './Producto_carrito'
 import { Stripe_store } from '../Zustand/Stripe_store'
-import { AiOutlineClose } from 'react-icons/ai'
-import { GrHelpBook } from 'react-icons/gr'
+import Producto_carrito from './Producto_carrito'
 const Carrito = () => {
   const carrito = carrito_store((state) => state.carrito)
-  const solicitar_carrito = carrito_store((state) => state.solicitar_carrito)
-  const total = carrito_store((state) => state.total)
-  const pagartodo = Stripe_store((state) => state.pagar)
-  const checkoutBusy = Stripe_store((state) => state.busy)
-  const checkoutError = Stripe_store((state) => state.error)
-  const resetCheckout = Stripe_store((state) => state.reset)
-  useEffect(() => () => resetCheckout(), [resetCheckout])
-  const url = Stripe_store((state) => state.url)
-
-  useEffect(() => {
-    solicitar_carrito()
-  }, [solicitar_carrito])
-
-  useEffect(() => {
-    if (url) {
-      window.location.href = url
-    } else {
-      return
-    }
-  }, [url])
-
+  const solicitar = carrito_store((state) => state.solicitar_carrito)
   const status = carrito_store((state) => state.status)
   const error = carrito_store((state) => state.error)
+  const cartBusy = carrito_store((state) => state.busy)
+  const total = carrito_store((state) => state.total())
+  const pagar = Stripe_store((state) => state.pagar)
+  const checkoutBusy = Stripe_store((state) => state.busy)
+  const checkoutError = Stripe_store((state) => state.error)
+  const reset = Stripe_store((state) => state.reset)
+  const url = Stripe_store((state) => state.url)
+  useEffect(() => () => reset(), [reset])
+  useEffect(() => {
+    void solicitar()
+  }, [solicitar])
+  useEffect(() => {
+    if (url) window.location.href = url
+  }, [url])
   return (
-    <>
-      <RequestState status='success' error={checkoutError} />
-      <RequestState status={status} error={error} retry={solicitar_carrito} />
-      <div className='  bg-gray-100 pt-10'>
-        <div className='mb-10   flex justify-center  text-center text-2xl font-bold'>
-          <h1> Carrito de compras</h1>
-          <div className='ml-2'>
-            <input type='checkbox' id='modal-toggle' className='hidden peer w-20' />
-            <label
-              htmlFor='modal-toggle'
-              className='cursor-pointer   w-30 p-2 m-2 text-green-500 rounded '
-            >
-              <div className='flex  items-end justify-end  fixed bottom-0 right-5 sm:bottom-15   bg-yellow-400 p-4 m-4  rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 z-10'>
-                <div className='relative group'>
-                  <GrHelpBook size={30} color='black' />
-
-                  <span className='absolute bottom-15 text-md  whitespace-nowrap pointer-events-none  -right-6 group-hover:opacity-100 opacity-0 font-bold   text-black rounded-md'>
-                    Ayuda
-                  </span>
-                </div>
-              </div>
-            </label>
-
-            <form
-              // onSubmit={enviar}
-              className='fixed  inset-0    bg-gray-100 hidden peer-checked:flex items-center justify-center z-50'
-            >
-              <div className='bg-white   p-3 rounded-xl shadow-lg max-w-2xl w-full  relative'>
-                <label
-                  htmlFor='modal-toggle'
-                  className='cursor-pointer m-3 flex  justify-end  '
-                >
-                  <AiOutlineClose className='size-10  text-black ' />
-                </label>
-                <div className='    '>
-                  <div className='  '>
-                    <div className='text-center'>Informacion de tarjeta de prueba</div>
-                    <div className='flex justify-center items-center m-4'>
-                      <div className=' h-56 m-auto bg-red-100 rounded-xl relative text-white shadow-2xl transition-transform transform hover:scale-110'>
-                        <img
-                          className='relative object-cover w-full h-full rounded-xl'
-                          src='https://i.imgur.com/kGkSg1v.png'
-                        ></img>
-
-                        <div className='w-full text-left px-8 absolute top-8'>
-                          <div className='flex justify-between'>
-                            <div className=''>
-                              <p className='font-medium'>Nombre</p>
-                              <p className='font-light text-2xl tracking-widest'>
-                                Persona de prueba
-                              </p>
-                            </div>
-                            <img
-                              className='w-14 h-14'
-                              src='https://i.imgur.com/bbPHJVe.png'
-                            />
-                          </div>
-                          <div className='pt-1'>
-                            <p className='font-medium'>Numero de tarjeta</p>
-                            <p className='font-light tracking-more-wider'>
-                              4242 4242 4242 4242
-                            </p>
-                          </div>
-                          <div className='pt-6 pr-6'>
-                            <div className='flex justify-between'>
-                              <div className=''>
-                                <p className='font-light  text-xs'>Fecha Expiracion</p>
-                                <p className='font-medium tracking-wider text-sm'>
-                                  04 / 44
-                                </p>
-                              </div>
-
-                              <div className=''>
-                                <p className='font-light text-xs'>CVV</p>
-                                <p className='font-bold tracking-more-wider text-sm'>
-                                  444
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <span className='text-center text-black mt-4'>
-                      para poder pagar en la pagina usa estos datos de tarjeta de prueba
-                      para poder realizar la compras sin limite
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
+    <section className='cart-page page-width'>
+      <div className='section-heading'>
+        <div>
+          <p className='eyebrow'>YA CASI ES TUYO</p>
+          <h1>Tu próximo upgrade.</h1>
         </div>
-
-        <div className='mx-auto max-w-5xl justify-center px-6 md:flex md:space-x-6 xl:px-0'>
-          <div className='rounded-lg md:w-2/3'>
-            {carrito && carrito.length ? (
-              carrito.map((e, k) => (
-                <Producto_carrito
-                  key={k}
-                  id={e.id}
-                  nombre={e.nombre}
-                  precio={e.precio}
-                  stock={e.stock}
-                  imagen={e.imagen}
-                  cantidad={e.cantidad}
-                  // estado={e.estado}
-                />
-              ))
-            ) : (
-              <div className='flex flex-col items-center justify-center p-8 bg-gray-100 rounded-lg shadow-md'>
-                <svg
-                  className='w-16 h-16 mb-4 text-gray-400'
-                  fill='none'
-                  stroke='currentColor'
-                  viewBox='0 0 24 24'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                  />
-                </svg>
-                <h2 className='text-xl font-semibold text-gray-700 mb-2'>
-                  Tu carrito está vacío
-                </h2>
-                <p className='text-gray-500 text-center'>
-                  No tienes items en el carrito. Agrega productos para continuar con tu
-                  compra.
-                </p>
-              </div>
-            )}
-          </div>
-
-          {carrito && carrito.length > 0 && (
-            <div className='mt-6 h-full rounded-lg border bg-white p-6 shadow-md md:mt-0 md:w-1/3'>
-              <div className='mb-2 flex justify-between'>
-                <p className='text-gray-700'>Subtotal</p>
-                <p className='text-gray-700'>${total().toLocaleString()}</p>
-              </div>
-
-              <hr className='my-4' />
-              <div className='flex justify-between'>
-                <p className='text-lg font-bold'>Total</p>
-                <div className=''>
-                  <p className='mb-1 text-lg font-bold'>
-                    ${total().toLocaleString()} USD
-                  </p>
-                </div>
-              </div>
-              <button
-                disabled={checkoutBusy || status !== 'success'}
-                onClick={() => pagartodo('')}
-                className='mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600'
-              >
-                Pagar ahora
-              </button>
+        <Link className='text-link' to='/productos'>
+          Seguir explorando <FiArrowUpRight aria-hidden='true' />
+        </Link>
+      </div>
+      <RequestState status='success' error={checkoutError} />
+      <RequestState status={status} error={error} retry={solicitar} />
+      <div className='cart-layout'>
+        <div>
+          {carrito.map((item) => (
+            <Producto_carrito key={item.id} {...item} />
+          ))}
+          {status === 'success' && carrito.length === 0 && (
+            <div className='cart-empty'>
+              <FiShoppingBag aria-hidden='true' />
+              <h2>Tu carrito está vacío</h2>
+              <p>Encuentra algo que conecte contigo.</p>
+              <Link className='button button-lime' to='/productos'>
+                Explorar productos <FiArrowUpRight aria-hidden='true' />
+              </Link>
             </div>
           )}
         </div>
+        {carrito.length > 0 && (
+          <aside className='cart-summary' aria-label='Resumen de compra'>
+            <p className='eyebrow'>BUENA ELECCIÓN.</p>
+            <h2>Tu resumen</h2>
+            <div className='summary-row'>
+              <span>Productos</span>
+              <span>{carrito.reduce((sum, item) => sum + item.cantidad, 0)}</span>
+            </div>
+            <div className='summary-row'>
+              <span>Subtotal</span>
+              <span>${total.toLocaleString()} USD</span>
+            </div>
+            <div className='summary-total'>
+              <span>Total</span>
+              <strong>
+                ${total.toLocaleString()} <small>USD</small>
+              </strong>
+            </div>
+            <button
+              className='button button-lime'
+              disabled={checkoutBusy || cartBusy || status !== 'success'}
+              onClick={() => void pagar('')}
+            >
+              {checkoutBusy ? 'Preparando pago…' : 'Pagar ahora'}
+              <FiArrowUpRight aria-hidden='true' />
+            </button>
+            <p className='summary-note'>
+              Antes de pagar, comprueba tu{' '}
+              <Link to='/u/perfil'>dirección de entrega predeterminada</Link>.
+            </p>
+            <details className='payment-help'>
+              <summary>Cómo probar una compra</summary>
+              <p>
+                Esta demo usa Stripe en modo prueba. Usa la tarjeta{' '}
+                <code>4242 4242 4242 4242</code>, una fecha futura y cualquier CVC de
+                tres dígitos.
+              </p>
+            </details>
+          </aside>
+        )}
       </div>
-    </>
+    </section>
   )
 }
 export default Carrito

@@ -11,9 +11,10 @@ const Productos = () => {
   const error = productos_store((state) => state.error)
   return (
     <div>
-      <div className='mt-6 lg:mt-0 lg:px-2'>
-        <div className='flex items-center justify-between text-sm tracking-widest uppercase'>
-          <p className='ml-6'>Productos encontrados: {productos.length}</p>
+      <div>
+        <div className='catalog-count'>
+          <p>Productos encontrados: {productos.length}</p>
+          <span>TECH / SELECT</span>
         </div>
         <RequestState
           status={status}
@@ -23,7 +24,7 @@ const Productos = () => {
           retry={retry}
         />
         {status === 'success' && (
-          <div className='grid sm:grid-cols-2 gap-2 m-5 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+          <div className='product-grid catalog-products'>
             {productos.map((producto) => (
               <Producto key={producto.id} producto={producto} />
             ))}

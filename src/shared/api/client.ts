@@ -21,6 +21,7 @@ export function configureSession(
 }
 
 export const currentSessionVersion = () => sessionVersion
+export const currentSessionId = () => sessionId
 export const isCurrentSession = (version: number) => version === sessionVersion
 
 // Registered once, before any router loader can request private data.

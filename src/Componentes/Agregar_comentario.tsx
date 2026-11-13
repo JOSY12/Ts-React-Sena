@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { comentario } from './types'
 import { useState } from 'react'
 import React from 'react'
+import { textRules } from '../shared/utils/validation'
 import { producto_store } from '../Zustand/Producto_store'
 
 const Agregar_comentario = () => {
@@ -49,17 +50,7 @@ const Agregar_comentario = () => {
         <h2 className='px-4 pt-3 pb-2 text-gray-800 text-lg'>Agregar comentario</h2>
         <div className='w-full md:w-full px-3 mb-2 mt-2'>
           <input
-            {...register('titulo', {
-              required: {
-                value: true,
-
-                message: 'el titulo es necesario'
-              },
-              minLength: {
-                value: 5,
-                message: 'el titulo debe tener minimo 5 caracteres'
-              }
-            })}
+            {...register('titulo', textRules('El título', 150, 5))}
             type='text'
             aria-label='Título del comentario'
             placeholder='Titulo'
@@ -71,16 +62,7 @@ const Agregar_comentario = () => {
         </div>
         <div className='w-full md:w-full px-3 mb-2 mt-2'>
           <textarea
-            {...register('comentario', {
-              required: {
-                value: true,
-                message: 'el comentario es necesario'
-              },
-              minLength: {
-                value: 5,
-                message: 'el comentario debe tener minimo 5 caracteres'
-              }
-            })}
+            {...register('comentario', textRules('El comentario', 5000, 5))}
             className='bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-300 focus:outline-none focus:bg-white'
             aria-label='Comentario'
             placeholder='ejm:El mejor producto del mundo'

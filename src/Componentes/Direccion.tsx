@@ -1,5 +1,6 @@
+import { FiCheck, FiMapPin, FiTrash2 } from 'react-icons/fi'
 import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
-import { direccion } from './types'
+import type { direccion } from './types'
 
 const Direccion = ({
   id,
@@ -12,69 +13,81 @@ const Direccion = ({
   predeterminada
 }: direccion) => {
   const quitar = Direcciones_usuario((state) => state.quitar)
-  const cambiar_predeterminado = Direcciones_usuario(
+  const cambiarPredeterminada = Direcciones_usuario(
     (state) => state.cambiar_predeterminado
   )
-
+  const busy = Direcciones_usuario((state) => state.busy)
   return (
-    <>
-      <div className=' border-t-1 m-3 border-black '>
-        <div className='flex flex-col '>
-          <button
-            onClick={() => quitar(id ? id : '')}
-            className='justify-end flex ml-auto   rounded-tr-2xl  rounded-tl-2xl text-sm font-semibold text-gray-700 px-4 py-2  bg-red-200   focus:outline-none hover:bg-red-400'
-          >
-            <span>Remover direccion</span>
-          </button>
-
-          <div className='text-gray-700  bg-gray-100  hover:bg-gray-300  font-bold   hover:text-black hover:font-bold  rounded-tl-2xl  rounded-b-2xl roun'>
-            <div className='grid md:grid-cols-2 text-sm'>
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Nombre completo</div>
-                <div className='px-4 py-2'>{nombre_comprador}</div>
-              </div>
-
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Telefono conctacto</div>
-                <div className='px-4 py-2'>{telefono}</div>
-              </div>
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Direccion de entrega</div>
-                <div className='px-4 py-2'>{direccion}</div>
-              </div>
-
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Direccion Postal</div>
-                <div className='px-4 py-2'>{codigo_postal}</div>
-              </div>
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Ciudad de entrega</div>
-                <div className='px-4 py-2'>{ciudad}</div>
-              </div>
-              <div className='grid grid-cols-2'>
-                <div className='px-4 py-2 font-semibold'>Detalles de la direccion</div>
-                <div className='px-4 py-2'>{nota}</div>
-              </div>
-            </div>
-            <div className='flex justify-end text-center'>
-              {predeterminada ? (
-                <div className='justify-end w-full  text-sm font-semibold text-gray-700 px-4 py-2 rounded-b-2xl bg-green-200 hover:text-white hover:bg-green-400 focus:outline-none  '>
-                  Direccion predeterminada de envios
-                </div>
-              ) : (
-                <button
-                  onClick={() => cambiar_predeterminado(id ? id : '')}
-                  className='justify-end w-full  text-sm font-semibold text-gray-700 px-4 py-2 rounded-b-2xl bg-blue-200 hover:text-white hover:bg-blue-400 focus:outline-none  '
-                >
-                  <div>Guardar como predeterminado</div>
-                </button>
-              )}
-            </div>
-          </div>
+    <article
+      className='address-card'
+      data-default={predeterminada}
+      aria-label={`Dirección de ${nombre_comprador}`}
+    >
+      <header className='address-card-header'>
+        <span className='address-icon'>
+          <FiMapPin aria-hidden='true' />
+        </span>
+        <div>
+          <p className='eyebrow'>DIRECCIÓN DE ENTREGA</p>
+          <h3>{nombre_comprador}</h3>
         </div>
-      </div>
-    </>
+      </header>
+      <dl className='address-fields'>
+        <div className='address-field-wide'>
+          <dt>Dirección</dt>
+          <dd>{direccion}</dd>
+        </div>
+        <div>
+          <dt>Ciudad</dt>
+          <dd>{ciudad}</dd>
+        </div>
+        <div>
+          <dt>Código postal</dt>
+          <dd>{codigo_postal}</dd>
+        </div>
+        <div>
+          <dt>Teléfono de contacto</dt>
+          <dd>{telefono}</dd>
+        </div>
+        {nota && (
+          <div className='address-field-wide'>
+            <dt>Detalles de entrega</dt>
+            <dd>{nota}</dd>
+          </div>
+        )}
+      </dl>
+      <footer className='address-card-footer'>
+        {predeterminada ? (
+          <p className='address-default'>
+            <FiCheck aria-hidden='true' />
+            <span>Dirección predeterminada de envíos</span>
+          </p>
+        ) : (
+          <button
+            type='button'
+            className='address-set-default'
+            disabled={busy || !id}
+            onClick={() => {
+              if (id) void cambiarPredeterminada(id)
+            }}
+          >
+            <FiCheck aria-hidden='true' />
+            Guardar como predeterminada
+          </button>
+        )}
+        <button
+          type='button'
+          className='address-remove'
+          disabled={busy || !id}
+          onClick={() => {
+            if (id) void quitar(id)
+          }}
+        >
+          <FiTrash2 aria-hidden='true' />
+          Remover dirección
+        </button>
+      </footer>
+    </article>
   )
 }
-
 export default Direccion

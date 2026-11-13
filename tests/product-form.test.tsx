@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import ProductForm from '../src/Componentes/Administracion/ProductForm'
 import * as services from '../src/Services'
@@ -23,6 +23,73 @@ const product: producto = {
 }
 
 describe('editor compartido', () => {
+  it.each([0, 1, 4, 1001])(
+    'permite editar con stock válido de %i sin alterar existencias',
+    async (stock) => {
+      const save = vi.mocked(services.actualizar_producto).mockResolvedValue()
+      render(
+        <ProductForm
+          mode='edit'
+          id='p'
+          initialCategories={product.categorias}
+          initialProduct={{ ...product, stock }}
+        />
+      )
+      await userEvent
+        .setup()
+        .click(screen.getByRole('button', { name: 'Guardar cambios' }))
+      await waitFor(() => expect(save).toHaveBeenCalledWith('p', { ...product, stock }))
+    }
+  )
+  it('rechaza inventarios negativos y conserva el borrador', async () => {
+    render(
+      <ProductForm
+        mode='edit'
+        id='p'
+        initialCategories={product.categorias}
+        initialProduct={{ ...product, stock: -1 }}
+      />
+    )
+    await userEvent
+      .setup()
+      .click(screen.getByRole('button', { name: 'Guardar cambios' }))
+    await screen.findByText('mínimo 0 unidades')
+    expect(services.actualizar_producto).not.toHaveBeenCalled()
+  })
+  it('valida la descripción antes de enviar y recorta espacios del nombre', async () => {
+    const save = vi.mocked(services.actualizar_producto).mockResolvedValue()
+    render(
+      <ProductForm
+        mode='edit'
+        id='p'
+        initialCategories={product.categorias}
+        initialProduct={product}
+      />
+    )
+    fireEvent.change(screen.getByLabelText('nombre'), {
+      target: { value: '  Nombre actualizado  ' }
+    })
+    fireEvent.change(screen.getByLabelText('Descripción'), {
+      target: { value: 'x'.repeat(10001) }
+    })
+    const user = userEvent.setup()
+    await user.click(screen.getByRole('button', { name: 'Guardar cambios' }))
+    await screen.findByText('Usa un máximo de 10000 caracteres.')
+    expect(save).not.toHaveBeenCalled()
+    fireEvent.change(screen.getByLabelText('Descripción'), {
+      target: { value: '  Descripción válida  ' }
+    })
+    await user.click(screen.getByRole('button', { name: 'Guardar cambios' }))
+    await waitFor(() =>
+      expect(save).toHaveBeenCalledWith(
+        'p',
+        expect.objectContaining({
+          nombre: 'Nombre actualizado',
+          descripcion: 'Descripción válida'
+        })
+      )
+    )
+  })
   it('un guardado fallido conserva el borrador, fotos y categorías', async () => {
     const save = vi
       .mocked(services.actualizar_producto)

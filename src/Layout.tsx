@@ -19,7 +19,7 @@ const Layout = () => {
   return (
     <div className='min-h-screen flex flex-col overflow-x-hidden'>
       <Navbar />
-      <main className='flex-grow'>
+      <main id='contenido' className='page-content flex-grow' tabIndex={-1}>
         <Outlet />
       </main>
       <Footer />

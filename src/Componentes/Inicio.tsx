@@ -1,42 +1,43 @@
-import { TbFilterSearch } from 'react-icons/tb'
 import { useState } from 'react'
+import { FiSliders } from 'react-icons/fi'
 import Filtros from './Filtros'
 import Productos from './Productos'
-
 const Inicio = () => {
-  const [filtro, setfiltro] = useState(false)
-  // const test = productos_store((state) => state.test)
-
+  const [filtersOpen, setFiltersOpen] = useState(false)
   return (
-    <section className='bg-gray-100 w-full overflow-x-hidden'>
-      <div className='pt-8 mx-auto  '>
-        <div className='lg:flex  '>
-          <div
-            className={` ${
-              filtro ? '  lg:block ' : 'hidden  lg:border-r-4   lg:block'
-            } `}
-          >
-            <Filtros />
-          </div>
-
-          <div className={`w-full ${filtro ? ' hidden lg:block' : 'lg:block '} `}>
-            <Productos />
-          </div>
-
-          <div className='  lg:hidden  fixed bottom-0 right-0 mb-20 mr-4 z-10'>
-            <button
-              onClick={() => {
-                setfiltro(!filtro)
-              }}
-              className='flex cursor-pointer   w-16 bg-gray-200 justify-center text-center items-center align-middle h-16 rounded-full transition-all shadow hover:shadow-lg transform hover:scale-110 hover:rotate-12'
-            >
-              <TbFilterSearch size={30} />
-            </button>
-          </div>
+    <section className='catalog-page page-width'>
+      <div className='catalog-heading'>
+        <div>
+          <p className='eyebrow'>ELIGE TU SIGUIENTE NIVEL</p>
+          <h1>El upgrade que buscas.</h1>
+          <p>Encuentra lo que conecta contigo.</p>
+        </div>
+        <span className='catalog-symbol' aria-hidden='true'>
+          ↗
+        </span>
+      </div>
+      <button
+        className='button button-lime filter-toggle'
+        aria-expanded={filtersOpen}
+        aria-controls='catalog-filters'
+        onClick={() => setFiltersOpen(!filtersOpen)}
+      >
+        <FiSliders aria-hidden='true' />
+        {filtersOpen ? 'Ocultar filtros' : 'Mostrar filtros'}
+      </button>
+      <div className='catalog-layout'>
+        <aside
+          id='catalog-filters'
+          className={`catalog-sidebar ${filtersOpen ? 'is-open' : ''}`}
+          aria-label='Filtros del catálogo'
+        >
+          <Filtros />
+        </aside>
+        <div className='catalog-results'>
+          <Productos />
         </div>
       </div>
     </section>
   )
 }
-
 export default Inicio

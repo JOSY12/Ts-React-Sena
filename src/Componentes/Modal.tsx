@@ -4,6 +4,7 @@ import { AiFillFolderAdd, AiOutlineClose } from 'react-icons/ai'
 import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
 import Dialog from '../shared/ui/Dialog'
 import RequestState from '../shared/ui/RequestState'
+import { textRules } from '../shared/utils/validation'
 
 type AddressForm = {
   Nombre: string
@@ -46,9 +47,10 @@ const Modal = () => {
         type='button'
         aria-label='Agregar dirección'
         onClick={() => setOpen(true)}
-        className='cursor-pointer text-green-600 rounded'
+        className='button button-lime address-add'
       >
         <AiFillFolderAdd className='size-8' />
+        <span>Agregar dirección</span>
       </button>
       <Dialog open={open} onClose={() => setOpen(false)} title='Nueva dirección'>
         <form onSubmit={enviar}>
@@ -101,9 +103,7 @@ const Modal = () => {
                     <input
                       type='text'
                       id='address-Nombre'
-                      {...register('Nombre', {
-                        required: 'El Nombre es requerido  '
-                      })}
+                      {...register('Nombre', textRules('El nombre', 200))}
                       placeholder='ej: Juan Perez'
                       className=' text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white  focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                     ></input>
@@ -122,9 +122,7 @@ const Modal = () => {
                       <input
                         type='text'
                         id='address-Direccion'
-                        {...register('Direccion', {
-                          required: 'la Direccion es requerido   '
-                        })}
+                        {...register('Direccion', textRules('La dirección', 500))}
                         placeholder='ejm: Calle 22 # 5-45'
                         className=' text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white  focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                       ></input>
@@ -144,9 +142,7 @@ const Modal = () => {
                         type='text'
                         inputMode='tel'
                         id='address-Telefono'
-                        {...register('Telefono', {
-                          required: 'el Telefono es requerido   '
-                        })}
+                        {...register('Telefono', textRules('El teléfono', 40))}
                         placeholder=' ejm: 3001234567'
                         className=' text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white  focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                       ></input>
@@ -167,9 +163,7 @@ const Modal = () => {
                           type='text'
                           inputMode='numeric'
                           id='address-Postal'
-                          {...register('Postal', {
-                            required: 'el Telefono es requerido   '
-                          })}
+                          {...register('Postal', textRules('El código postal', 30))}
                           placeholder='ejm: 123456'
                           className=' text-black   w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white   focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                         ></input>
@@ -188,9 +182,7 @@ const Modal = () => {
                         <input
                           type='text'
                           id='address-Ciudad'
-                          {...register('Ciudad', {
-                            required: 'la Ciudad es requerido   '
-                          })}
+                          {...register('Ciudad', textRules('La ciudad', 200))}
                           placeholder='ejm: medellin/antioquia'
                           className=' text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white  focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                         ></input>{' '}
@@ -208,12 +200,15 @@ const Modal = () => {
                       </label>
                       <textarea
                         id='address-Detalles'
-                        {...register('Detalles', {
-                          required: false
-                        })}
+                        {...register('Detalles', textRules('La nota', 1000, 0, true))}
                         className=' text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base   transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200  focus:border-blueGray-500 focus:bg-white  focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400'
                         placeholder='Detalles de la direccion (opcional) ejm: Entregar en la puerta de la casa azul con manchas blancas, llamar al timbre, etc.'
                       ></textarea>
+                      {errors.Detalles?.message && (
+                        <span className='text-red-600 font-bold ml-2'>
+                          {errors.Detalles.message}
+                        </span>
+                      )}
                     </div>
 
                     <div className='flex items-center pt-3 mt-2'>

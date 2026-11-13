@@ -3,6 +3,7 @@ import { carrito_store } from '../Zustand/Carrito_store'
 import { useEffect } from 'react'
 import RequestState from '../shared/ui/RequestState'
 import { AiFillMessage } from 'react-icons/ai'
+import ProductImage from '../shared/ui/ProductImage'
 
 const Detalles_compra = () => {
   const data = useLoaderData<import('./types').item_carrito[]>()
@@ -101,9 +102,9 @@ const Detalles_compra = () => {
                 <tr className='hover:bg-slate-50' key={k}>
                   <td className=' border-b justify-center flex  border-slate-200 py-5'>
                     <Link to={`/productos/${item.id}`}>
-                      <img
+                      <ProductImage
                         src={item.imagen ?? ''}
-                        alt='Product 1'
+                        alt={item.nombre ?? 'Producto de la compra'}
                         className='w-30 h-30 object-cover rounded'
                       />
                     </Link>

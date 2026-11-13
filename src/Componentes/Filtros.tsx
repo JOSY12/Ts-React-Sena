@@ -42,10 +42,8 @@ const Filtros = () => {
     )
   )
   return (
-    <form
-      onSubmit={submit}
-      className={`space-y-3      justify-end h-screen   p-20 lg:ml-10 lg:py-10   lg:block xl:block text-black lg:px-4 lg:space-y-4`}
-    >
+    <form onSubmit={submit} className='filter-form space-y-3'>
+      <h2 className='filter-title'>A tu medida.</h2>
       <RequestState status={status} error={error} retry={solicitar_categorias} />
       <p className='  font-bold   mb-2    justify-center'>Categorias</p>
       <div className='flex flex-col space-y-3 ml-2   justify-center'>

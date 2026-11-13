@@ -1,8 +1,17 @@
-import { axiosbackend, requiredId } from '../../shared/api/client'
+import axios from 'axios'
+import {
+  axiosbackend,
+  requiredId,
+  currentSessionId,
+  currentSessionVersion,
+  isCurrentSession
+} from '../../shared/api/client'
 import { array, record } from '../../shared/api/contracts'
 import { ApiError } from '../../shared/api/errors'
 import { notify } from '../../shared/api/notifications'
 import type { compras_hechas, item_carrito } from '../../Componentes/types'
+import { obtener_direcciones } from '../usuario/api'
+import { checkoutKey, forgetCheckoutKey } from './checkout-attempt'
 
 export const carrito = async () =>
   array<item_carrito>(record((await axiosbackend.get('/u/carrito')).data).rows)
@@ -42,9 +51,45 @@ export const marcar_recibido = (idcompra: string) =>
   )
 export const comprar_stripe = (idproducto: string): Promise<string> =>
   notify(async () => {
-    const { data } = await axiosbackend.post<unknown>('/stripe_compras/comprar', {
-      idproducto
-    })
+    const version = currentSessionVersion()
+    const session = currentSessionId()
+    const [items, addresses] = await Promise.all([carrito(), obtener_direcciones()])
+    if (!isCurrentSession(version)) throw new axios.CanceledError('La sesión cambió.')
+    const address = addresses.find((item) => item.predeterminada)
+    const key = await checkoutKey(
+      session,
+      {
+        selected: idproducto,
+        items: items
+          .filter((item) => !idproducto || item.id === idproducto)
+          .map(({ id, cantidad, precio }) => ({ id, cantidad, precio }))
+          .sort((a, b) => a.id.localeCompare(b.id)),
+        address: address ?? null
+      },
+      () => isCurrentSession(version)
+    )
+    if (!isCurrentSession(version)) throw new axios.CanceledError('La sesión cambió.')
+    let data: unknown
+    try {
+      const response = await axiosbackend.post<unknown>(
+        '/stripe_compras/comprar',
+        { idproducto },
+        {
+          headers: { 'Idempotency-Key': key }
+        }
+      )
+      data = response.data
+    } catch (error) {
+      // Only a definitive expired/completed attempt invalidates an uncertain retry.
+      if (
+        axios.isAxiosError(error) &&
+        error.response?.status === 409 &&
+        typeof error.response.data?.error === 'string' &&
+        /Intento vencido o completado/i.test(error.response.data.error)
+      )
+        forgetCheckoutKey(key)
+      throw error
+    }
     if (typeof data !== 'string')
       throw new ApiError('El servidor no devolvió un enlace de pago válido.')
     let url: URL

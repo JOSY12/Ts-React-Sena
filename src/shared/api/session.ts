@@ -5,6 +5,7 @@ import { Direcciones_usuario } from '../../Zustand/Direcciones_usuario'
 import { Notificaciones_store } from '../../Zustand/Notificaciones_store'
 import { Stripe_store } from '../../Zustand/Stripe_store'
 import { configureSession } from './client'
+import { reconcileCheckoutSession } from '../../features/compras/checkout-attempt'
 
 let activeSession: string | null | undefined
 let access = { userId: null as string | null, admin: false }
@@ -19,6 +20,7 @@ export function syncSession(
   configureSession(id, token)
   if (id === activeSession) return
   activeSession = id
+  reconcileCheckoutSession(id)
   productos_store.getState().resetAdmin()
   carrito_store.getState().reset()
   favoritos_store.getState().reset()

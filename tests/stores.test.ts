@@ -63,6 +63,15 @@ describe('carrito y consistencia con servidor', () => {
     expect(change).toHaveBeenCalledTimes(1)
     expect(carrito_store.getState().carrito[0].cantidad).toBe(2)
   })
+  it('respeta el límite de la API aunque el inventario permita más unidades', async () => {
+    const change = vi.spyOn(compras, 'cambiar_cantidad')
+    const add = vi.spyOn(compras, 'agregar_carrito')
+    carrito_store.setState({ carrito: [{ id: 'p', cantidad: 10000, stock: 10000000 }] })
+    expect(await carrito_store.getState().aumentar('p')).toBe(false)
+    expect(await carrito_store.getState().agregar('p', 10001)).toBe(false)
+    expect(change).not.toHaveBeenCalled()
+    expect(add).not.toHaveBeenCalled()
+  })
   it('un fallo al marcar enviado no cambia el pedido', async () => {
     carrito_store.setState({
       detalle_compra: [{ id: 'p', cantidad: 1, enviado: false }]

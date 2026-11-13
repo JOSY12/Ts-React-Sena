@@ -1,72 +1,48 @@
-import RequestState from '../shared/ui/RequestState'
-import { UserProfile } from '@clerk/clerk-react'
-import Modal from './Modal'
-import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
-import Direccion from './Direccion'
 import { useEffect } from 'react'
+import { UserProfile } from '@clerk/clerk-react'
+import RequestState from '../shared/ui/RequestState'
+import Modal from './Modal'
+import Direccion from './Direccion'
+import { Direcciones_usuario } from '../Zustand/Direcciones_usuario'
 
 const Perfil = () => {
-  const direciones = Direcciones_usuario((state) => state.misdirecciones)
-  const solicitar_direcciones = Direcciones_usuario(
-    (state) => state.solicitar_direcciones
-  )
-
-  useEffect(() => {
-    solicitar_direcciones()
-  }, [solicitar_direcciones])
-
+  const direcciones = Direcciones_usuario((state) => state.misdirecciones)
+  const solicitar = Direcciones_usuario((state) => state.solicitar_direcciones)
   const status = Direcciones_usuario((state) => state.status)
   const error = Direcciones_usuario((state) => state.error)
+  useEffect(() => {
+    void solicitar()
+  }, [solicitar])
   return (
-    <>
-      <RequestState status={status} error={error} retry={solicitar_direcciones} />
-      <div className='flex justify-center items-center   bg-gray-100'>
+    <div className='profile-page page-width'>
+      <section className='profile-account' aria-label='Configuración de la cuenta'>
         <UserProfile />
-      </div>
-
-      <div className=' border-t-1 m-3 border-black '>
-        <div className='     '>
-          <div className='     '>
-            <div className='    px-2   '>
-              <div className='bg-white  p-3    '>
-                <div className='flex   items-center space-x-2 font-semibold  text-gray-900  '>
-                  <span className='  text-green-500'>
-                    <svg
-                      className='h-5'
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      stroke='currentColor'
-                    >
-                      <path
-                        strokeLinecap='round'
-                        strokeLinejoin='round'
-                        strokeWidth='2'
-                        d='M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z'
-                      />
-                    </svg>
-                  </span>
-
-                  <span className=' tracking-wide'>Informacion de entrega</span>
-
-                  <Modal />
-                </div>
-
-                {status === 'success' && !direciones.length && (
-                  <p className='p-4'>No tienes direcciones registradas.</p>
-                )}
-                {direciones.map((direccion) => {
-                  return <Direccion key={direccion.id} {...direccion} />
-                })}
-              </div>
-
-              <div className='my-4'></div>
-            </div>
+      </section>
+      <section className='address-section' aria-labelledby='delivery-heading'>
+        <div className='section-heading'>
+          <div>
+            <p className='eyebrow'>TU CUENTA / TUS DESTINOS</p>
+            <h2 id='delivery-heading'>Información de entrega.</h2>
           </div>
+          <Modal />
         </div>
-      </div>
-    </>
+        <RequestState status={status} error={error} retry={solicitar} />
+        {status === 'success' && !direcciones.length && (
+          <div className='address-empty'>
+            <p className='eyebrow'>SIGUIENTE PARADA: TU PUERTA.</p>
+            <h3>Aún no tienes direcciones guardadas.</h3>
+            <p>
+              Agrega tu dirección de entrega y elige dónde recibir tu próximo upgrade.
+            </p>
+          </div>
+        )}
+        <div className='address-grid'>
+          {direcciones.map((direccion) => (
+            <Direccion key={direccion.id} {...direccion} />
+          ))}
+        </div>
+      </section>
+    </div>
   )
 }
-
 export default Perfil

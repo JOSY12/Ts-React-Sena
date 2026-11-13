@@ -1,5 +1,9 @@
 # Contrato de integración con APIGeneral
 
+## Ajustes posteriores exclusivos del frontend
+
+Checkout mantiene el cuerpo `{ idproducto }` y añade `Idempotency-Key`, conservada por contexto y sesión para reintentos inciertos. Antes de enviarlo consulta carrito y direcciones actuales; CORS local admite la cabecera. El editor admite stock entero de 0 a 10.000.000; crear conserva 5–30. Los formularios reflejan los máximos de texto del backend y las cantidades de compra se limitan a 10.000. No cambió ninguna ruta, esquema o archivo de APIGeneral. Implementación y límites: [REDISENO_NEOBRUTALISTA.md](REDISENO_NEOBRUTALISTA.md).
+
 ## Revisión conjunta posterior del 12 de noviembre
 
 Se contrastó este inventario con el código actual de ambos repositorios. GET /u/detalle_compra/:id permite lectura del propietario o de un administrador; las filas añaden puede_marcar_enviado y puede_marcar_recibido para mostrar acciones. La recepción sigue siendo exclusiva del propietario. GET /u/usuarios devuelve id, nombre y apellido separados; email y foto_perfil pueden ser nulos. ClerkProvider configura /iniciarsesion y /registrar como rutas locales. Publicar primero la API y después el frontend para disponer de las nuevas banderas. Pruebas, evidencias y recorrido manual: [REVISION_CONJUNTA_API.md](REVISION_CONJUNTA_API.md).

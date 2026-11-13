@@ -24,6 +24,11 @@ export default tseslint.config(
     }
   },
   {
+    files: ['public/**/*.js'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: globals.browser }
+  },
+  {
     files: ['scripts/**/*.mjs'],
     extends: [js.configs.recommended],
     languageOptions: { globals: { ...globals.node, WebSocket: 'readonly' } }

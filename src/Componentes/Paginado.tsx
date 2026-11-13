@@ -15,7 +15,7 @@ const Paginado = ({ admin = false }: { admin?: boolean }) => {
   return (
     <nav
       aria-label='Paginación de productos'
-      className='flex flex-wrap justify-center items-center gap-1 my-4'
+      className='pagination flex flex-wrap justify-center items-center my-4'
     >
       <button
         type='button'
