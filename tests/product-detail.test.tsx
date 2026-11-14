@@ -7,9 +7,9 @@ import DetallesProducto from '../src/Componentes/DetallesProducto'
 import { carrito_store } from '../src/Zustand/Carrito_store'
 import { producto_store } from '../src/Zustand/Producto_store'
 
-vi.mock('@clerk/clerk-react', () => ({
-  SignedIn: ({ children }: { children: ReactNode }) => children,
-  SignedOut: () => null
+vi.mock('@clerk/react', () => ({
+  Show: ({ children, when }: { children: ReactNode; when: string }) =>
+    when === 'signed-in' ? children : null
 }))
 beforeEach(() => {
   carrito_store.getState().reset()

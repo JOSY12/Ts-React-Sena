@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom'
 import { useEffect } from 'react'
-import { useAuth } from '@clerk/clerk-react'
+import { useAuth } from '@clerk/react'
 import Navbar from './Componentes/Navbar'
 import Footer from './Componentes/Footer'
 import { favoritos_store } from './Zustand/Favoritos_store'

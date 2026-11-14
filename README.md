@@ -6,7 +6,7 @@ Tienda del proyecto SENA construida con React, TypeScript y Vite. Incluye catál
 
 ## Preparación
 
-Usa Node 24 LTS como referencia de desarrollo. El rango admitido es `^22.22.2 || ^24.15.0 || >=26.0.0 <27`, con npm 10/11; la validación local se realizó con Node 26 en Windows. El workflow está preparado para comprobar Node 24 y 26 en Linux y Windows.
+Usa Node **26.13.1 LTS** y npm **11.21.2**, fijados en `.nvmrc` y `packageManager`. CI comprueba esa versión en Linux y Windows. Todas las dependencias directas están fijadas y `npm ci` reproduce el lockfile. Consulta [las versiones y excepciones de compatibilidad](docs/DEPENDENCIAS.md).
 
 ```powershell
 npm ci

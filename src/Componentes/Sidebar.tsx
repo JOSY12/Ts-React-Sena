@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useAuth, useUser, SignOutButton } from '@clerk/clerk-react'
+import { useAuth, useUser, SignOutButton } from '@clerk/react'
 import { FiArrowUpRight } from 'react-icons/fi'
 import type { activador } from './types'
 import { Notificaciones_store } from '../Zustand/Notificaciones_store'

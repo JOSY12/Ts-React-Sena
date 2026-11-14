@@ -18,8 +18,9 @@ function apply(theme: Theme) {
   document.documentElement.style.colorScheme = theme
 }
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const preference = useRef(savedTheme())
-  const [theme, setTheme] = useState<Theme>(() => preference.current ?? systemTheme())
+  const [initialPreference] = useState(savedTheme)
+  const preference = useRef(initialPreference)
+  const [theme, setTheme] = useState<Theme>(() => initialPreference ?? systemTheme())
   useEffect(() => {
     apply(theme)
   }, [theme])

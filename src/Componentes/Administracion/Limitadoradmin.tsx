@@ -1,4 +1,4 @@
-import { useClerk, useAuth } from '@clerk/clerk-react'
+import { useClerk, useAuth } from '@clerk/react'
 import { Outlet, Navigate } from 'react-router-dom'
 import Cargando from '../Cargando'
 const Limitadoradmin = () => {

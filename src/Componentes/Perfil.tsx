@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { UserProfile } from '@clerk/clerk-react'
+import { UserProfile } from '@clerk/react'
 import RequestState from '../shared/ui/RequestState'
 import Modal from './Modal'
 import Direccion from './Direccion'

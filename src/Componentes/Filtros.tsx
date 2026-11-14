@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { useSearchParams } from 'react-router-dom'
 import { filtros_store } from '../Zustand/Filtros_store'
@@ -20,11 +20,12 @@ const Filtros = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
+    getValues,
     reset,
     formState: { errors }
   } = useForm<ProductFilters>({ defaultValues: parseFilters(params) })
-  const selected = watch('Categorias') ?? []
+  const selected = useWatch({ control, name: 'Categorias' }) ?? []
   useEffect(() => {
     reset(parseFilters(new URLSearchParams(query)))
   }, [query, reset])
@@ -96,8 +97,8 @@ const Filtros = () => {
                 message: 'El precio maximo es 9999'
               },
               validate: () => {
-                const min = watch('Minimo')
-                const max = watch('Maximo')
+                const min = getValues('Minimo')
+                const max = getValues('Maximo')
                 if (min && max) {
                   return (
                     Number(min) < Number(max) ||

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useLoaderData, Link } from 'react-router-dom'
-import { SignedIn, SignedOut } from '@clerk/clerk-react'
+import { Show } from '@clerk/react'
 import { FiArrowLeft, FiArrowUpRight, FiShoppingBag } from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import ProductImage from '../shared/ui/ProductImage'
@@ -12,6 +12,10 @@ import { carrito_store } from '../Zustand/Carrito_store'
 import { producto_store } from '../Zustand/Producto_store'
 import { MAX_CART_QUANTITY } from '../features/compras/limits'
 const DetallesProducto = () => {
+  const { id = '' } = useParams()
+  return <ProductDetails key={id} />
+}
+const ProductDetails = () => {
   const data = useLoaderData<import('./types').ProductResponse>()
   const { id = '' } = useParams()
   const producto = data.producto[0] ?? null
@@ -24,11 +28,10 @@ const DetallesProducto = () => {
   const status = producto_store((state) => state.status)
   const error = producto_store((state) => state.error)
   const [photo, setPhoto] = useState('')
+  const activePhoto = producto?.fotos.includes(photo)
+    ? photo
+    : (producto?.fotos[0] ?? '')
   const [quantity, setQuantity] = useState(1)
-  useEffect(() => {
-    setPhoto(producto?.fotos[0] ?? '')
-    setQuantity(1)
-  }, [producto])
   useEffect(() => {
     if (id) void load(id)
   }, [id, load])
@@ -54,7 +57,7 @@ const DetallesProducto = () => {
       <section className='detail-layout' aria-label='Detalle del producto'>
         <div className='detail-gallery'>
           <div className='detail-main-photo'>
-            <ProductImage src={photo} alt={producto.nombre} />
+            <ProductImage src={activePhoto} alt={producto.nombre} />
             {producto.nuevo && <span className='tag tag-lime'>Nuevo</span>}
           </div>
           <div className='detail-thumbnails' aria-label='Fotos del producto'>
@@ -62,7 +65,7 @@ const DetallesProducto = () => {
               <button
                 key={src}
                 aria-label={`Ver foto ${index + 1}`}
-                aria-pressed={photo === src}
+                aria-pressed={activePhoto === src}
                 onClick={() => setPhoto(src)}
               >
                 <ProductImage src={src} alt='' loading='lazy' />
@@ -99,7 +102,7 @@ const DetallesProducto = () => {
             <span> USD / unidad</span>
           </p>
           <div className='detail-purchase'>
-            <SignedIn>
+            <Show when='signed-in'>
               {inCart ? (
                 <div>
                   <Link className='button button-lime' to='/u/carrito'>
@@ -153,12 +156,12 @@ const DetallesProducto = () => {
                 )}
                 {favorite ? 'Guardado en favoritos' : 'Guardar en favoritos'}
               </button>
-            </SignedIn>
-            <SignedOut>
+            </Show>
+            <Show when='signed-out'>
               <Link className='button button-lime' to='/iniciarsesion'>
                 Inicia sesión para comprar <FiArrowUpRight aria-hidden='true' />
               </Link>
-            </SignedOut>
+            </Show>
           </div>
         </div>
       </section>
@@ -170,9 +173,9 @@ const DetallesProducto = () => {
           </div>
         </div>
         <RequestState status={status} error={error} retry={() => load(id)} />
-        <SignedIn>
+        <Show when='signed-in'>
           <Agregar_comentario />
-        </SignedIn>
+        </Show>
         {comments.length
           ? comments.map((comment, index) => (
               <Comentarios key={`${comment.producto_id}-${index}`} {...comment} />

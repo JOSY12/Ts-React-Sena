@@ -1,6 +1,6 @@
 import ProductImage from '../shared/ui/ProductImage'
 import { Link } from 'react-router-dom'
-import { SignedIn } from '@clerk/clerk-react'
+import { Show } from '@clerk/react'
 import { FiArrowUpRight, FiStar } from 'react-icons/fi'
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { BsCartPlus, BsCartCheckFill } from 'react-icons/bs'
@@ -27,7 +27,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
         <Link to={`/productos/${producto.id}`}>
           <ProductImage src={producto.imagen} alt={producto.nombre} loading='lazy' />
         </Link>
-        <SignedIn>
+        <Show when='signed-in'>
           <div className='product-actions'>
             <button
               className='icon-button'
@@ -62,7 +62,7 @@ const Producto = ({ producto }: { producto: productoprops }) => {
               )}
             </button>
           </div>
-        </SignedIn>
+        </Show>
       </div>
       <div className='product-info'>
         <p className='product-categories'>{producto.categorias.join(' / ')}</p>

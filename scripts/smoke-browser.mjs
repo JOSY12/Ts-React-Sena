@@ -175,7 +175,7 @@ try {
   if (initial.productos) {
     await evaluate('document.querySelector(\'a[href^="/productos/"]\').click()')
     await waitFor(
-      "document.body.textContent.includes('Unidades diponibles')",
+      "location.pathname.startsWith('/productos/') && [...document.querySelectorAll('section')].some(section => section.getAttribute('aria-label') === 'Detalle del producto')",
       'detalle de producto'
     )
     await screenshot('detalle-escritorio.png')

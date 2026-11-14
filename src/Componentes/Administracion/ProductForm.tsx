@@ -1,7 +1,7 @@
 import ProductImage from '../../shared/ui/ProductImage'
 import Dialog from '../../shared/ui/Dialog'
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { AiFillFileAdd } from 'react-icons/ai'
 import { toast } from 'sonner'
 import {
@@ -38,7 +38,8 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
   const {
     register,
     handleSubmit,
-    watch,
+    getValues,
+    control,
     reset,
     setValue,
     formState: { errors, isSubmitting }
@@ -52,6 +53,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
       nuevacategoria: ''
     }
   })
+  const preview = useWatch({ control })
   const inputfotos = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     event.target.value = ''
@@ -80,7 +82,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
     setfoto((current) => current.filter((photo) => photo.public_id !== id))
   const agregar_categoria = async () => {
     if (categoryBusy) return
-    const nombre = watch('nuevacategoria')?.trim()
+    const nombre = getValues('nuevacategoria')?.trim()
     if (!nombre) {
       toast.warning('Escribe el nombre de la categoría.')
       return
@@ -246,7 +248,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                     <option>Pendiente</option>
                   </select>
                 </div>
-                {watch('estado') === 'Disponible' && (
+                {preview.estado === 'Disponible' && (
                   <div className='rounded-2xl w-full md:w-full px-3 mb-6'>
                     <label
                       htmlFor='product-stock'
@@ -537,7 +539,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                     <div className='mb-10'>
                       <div className='mb-5'>
                         <h1 className='font-semibold uppercase break-all s text-lg mb-1'>
-                          {watch('nombre')}
+                          {preview.nombre}
                         </h1>
                         <p className='text-sm flex  flex-wrap break-all '>
                           {categoriasproducto &&
@@ -549,13 +551,13 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                             ))}
                         </p>
                       </div>
-                      <p className='text-sm  break-all '>{watch('descripcion')}</p>
+                      <p className='text-sm  break-all '>{preview.descripcion}</p>
                     </div>
                     <div className='justify-between flex'>
                       <div className='inline-block align-bottom mr-5'>
                         <span className='text-2xl leading-none align-baseline'>$</span>
                         <span className='font-bold text-5xl leading-none align-baseline'>
-                          {Number(watch('precio')).toLocaleString()}
+                          {Number(preview.precio).toLocaleString()}
                         </span>
                       </div>
                       <select aria-label='Cantidad de vista previa'>
@@ -563,10 +565,7 @@ const ProductForm = ({ mode, initialProduct, initialCategories, id }: Props) => 
                           ...Array(
                             Math.max(
                               0,
-                              Math.min(
-                                maxStock,
-                                Math.trunc(Number(watch('stock')) || 0)
-                              )
+                              Math.min(maxStock, Math.trunc(Number(preview.stock) || 0))
                             )
                           )
                         ].map((_, i) => (

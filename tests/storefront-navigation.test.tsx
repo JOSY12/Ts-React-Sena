@@ -7,7 +7,7 @@ import Navbar from '../src/Componentes/Navbar'
 import { Notificaciones_store } from '../src/Zustand/Notificaciones_store'
 
 const auth = vi.hoisted(() => ({ signedIn: false, admin: false }))
-vi.mock('@clerk/clerk-react', () => ({
+vi.mock('@clerk/react', () => ({
   useAuth: () => ({ isSignedIn: auth.signedIn }),
   useUser: () => ({ user: { publicMetadata: { administrador: auth.admin } } }),
   SignOutButton: ({ children }: { children: ReactNode }) => children

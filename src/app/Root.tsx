@@ -1,4 +1,5 @@
-import { ClerkProvider } from '@clerk/clerk-react'
+import { ui } from '@clerk/ui'
+import { ClerkProvider } from '@clerk/react'
 import { esES } from '@clerk/localizations'
 import { Toaster } from 'sonner'
 import { configurationErrors, env } from '../shared/config/env'
@@ -20,6 +21,7 @@ export default function Root() {
     </main>
   ) : (
     <ClerkProvider
+      ui={ui}
       publishableKey={env.clerkKey}
       signInUrl='/iniciarsesion'
       signUpUrl='/registrar'
@@ -30,10 +32,10 @@ export default function Root() {
         variables: {
           colorPrimary: dark ? '#ccff5f' : '#5b3a9e',
           colorBackground: dark ? '#242821' : '#ffffff',
-          colorText: dark ? '#edf0e5' : '#191a16',
-          colorTextSecondary: dark ? '#bec4b4' : '#505147',
-          colorInputBackground: dark ? '#171a16' : '#ffffff',
-          colorInputText: dark ? '#edf0e5' : '#191a16',
+          colorForeground: dark ? '#edf0e5' : '#191a16',
+          colorMutedForeground: dark ? '#bec4b4' : '#505147',
+          colorInput: dark ? '#171a16' : '#ffffff',
+          colorInputForeground: dark ? '#edf0e5' : '#191a16',
           borderRadius: '4px',
           fontFamily: 'Arial, Helvetica, sans-serif'
         },

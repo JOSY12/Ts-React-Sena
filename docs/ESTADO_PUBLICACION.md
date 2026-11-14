@@ -1,3 +1,5 @@
+> Actualizaci?n de dependencias del 14 de noviembre de 2026: Node 26 y paquetes fijados. Consulta [DEPENDENCIAS.md](DEPENDENCIAS.md) para las versiones y pruebas vigentes; se conserva debajo el historial de publicaci?n.
+
 # Publicación y verificación de la demo de portafolio
 
 Actualizado el 12 de noviembre de 2026. El proyecto conserva todo el recorrido funcional: registro, roles, catálogo, favoritos, direcciones, carrito, Stripe test, pedidos, envío y recepción. Se mantiene la aplicación actual de Clerk Development y la integración Git de Vercel.

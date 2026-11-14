@@ -1,14 +1,14 @@
 import { Outlet } from 'react-router-dom'
-import { SignedIn, SignedOut, RedirectToSignIn } from '@clerk/clerk-react'
+import { Show, RedirectToSignIn } from '@clerk/react'
 const ProtectedRoute = () => {
   return (
     <>
-      <SignedIn>
+      <Show when='signed-in'>
         <Outlet />
-      </SignedIn>
-      <SignedOut>
+      </Show>
+      <Show when='signed-out'>
         <RedirectToSignIn />
-      </SignedOut>
+      </Show>
     </>
   )
 }
