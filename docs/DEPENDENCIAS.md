@@ -8,7 +8,7 @@ Se utilizan versiones exactas en dependencies/devDependencies, sin ^, ~ ni lates
 
 - Node local y CI: **26.13.1 LTS**, fijado en .nvmrc. La máquina host no se modifica globalmente con este cambio; selecciona esa versión con tu gestor de Node o instálala desde el proveedor.
 - Docker API: **Node 26.13.1 Alpine**, con digest SHA-256 fijo. Se conserva Alpine porque la API no requiere módulos nativos obligatorios; una futura dependencia nativa debe comprobarse con musl.
-- npm de referencia: **11.21.2**, declarado en packageManager y utilizado explícitamente por CI/Docker/instalación de Vercel. npm 12.2.2 es más reciente, pero Vercel documenta soporte integrado hasta npm 11; se conserva la rama compatible.
+- npm de referencia: **11.21.2**, declarado en packageManager y utilizado explícitamente por CI, Docker y la instalación del frontend en Vercel. La API conserva su constructor legacy @vercel/node, que administra la instalación e ignora installCommand del nivel superior; allí no se garantiza la versión exacta de npm. Las dependencias siguen registradas en package-lock.json. npm 12.2.2 es más reciente, pero Vercel documenta soporte integrado hasta npm 11; se conserva la rama compatible.
 - PostgreSQL local, CI y pg_dump: **15.19 Alpine**, con digest fijo, conservando el motor 15 del proyecto. No se migró la base Supabase alojada a otra versión mayor.
 - GitHub Actions checkout **v7.0.1** y setup-node **v7.1.0**, fijadas a sus SHA completos y comprobadas contra sus releases oficiales.
 
@@ -79,6 +79,8 @@ Se ejecutan instalación desde lockfile, formato, lint, tipos y suites existente
 
 Fuentes: [Node LTS](https://nodejs.org/en/about/previous-releases), [Node en Vercel](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions), [gestores de Vercel](https://vercel.com/docs/package-managers), [compatibilidad typescript-eslint](https://typescript-eslint.io/users/dependency-versions/), [Clerk Core 3](https://clerk.com/docs/guides/development/upgrading/upgrade-guides/core-3), [Vite 8](https://vite.dev/guide/migration).
 
-## Validaci?n de la actualizaci?n
+## Validación de la actualización
 
-Comprobado el 14 de noviembre de 2026: formato y lint correctos; 5 pruebas unitarias y 25 de integraci?n de API, y 76 pruebas del frontend aprobadas. Compilaci?n correcta con Vite 8 y TypeScript 6. npm audit devuelve cero vulnerabilidades en ambos proyectos. Chrome comprueba cat?logo, b?squeda, detalle, vista m?vil, guards y formularios de Clerk. Pasaron 22 comprobaciones adicionales con sesiones reales de comprador/administrador, permisos, direcciones, favoritos, carrito, retirada de privilegios y suspensi?n; las cuentas temporales se eliminaron y los eventos de baja se verificaron tambi?n en Supabase. No se generaron pagos adicionales.
+Comprobado el 14 de noviembre de 2026: formato y lint correctos; 5 pruebas unitarias y 25 de integración de API, y 76 pruebas del frontend aprobadas. Compilación correcta con Vite 8 y TypeScript 6. npm audit devuelve cero vulnerabilidades en ambos proyectos. Chrome comprueba catálogo, búsqueda, detalle, vista móvil, guards y formularios de Clerk. Pasaron 22 comprobaciones adicionales con sesiones reales de comprador/administrador, permisos, direcciones, favoritos, carrito, retirada de privilegios y suspensión; las cuentas temporales se eliminaron y los eventos de baja se verificaron también en Supabase. No se generaron pagos adicionales.
+
+Los despliegues públicos de API y frontend quedaron activos con Node 26.x. GitHub Actions pasó en ambos repositorios; el frontend se comprobó en Windows y Linux. Tras publicar, pasaron las 12 comprobaciones de API, la navegación pública en Chrome y las 22 comprobaciones con sesiones reales sobre la demo publicada. Las cuentas temporales se eliminaron al terminar.
