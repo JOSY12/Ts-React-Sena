@@ -1,5 +1,9 @@
 # Estado actual de Techsells
 
+## Corrección del catálogo: 14 de noviembre de 2026
+
+Los botones de favoritos y carrito identifican la carga local del producto elegido. El bloqueo compartido sigue evitando cruces entre solicitudes, pero ya no atenúa los botones de las otras tarjetas. Se conservan los estados de productos agotados y la recuperación ante errores. Verificación: **81 pruebas en 16 archivos**, formato, lint, tipos y compilación correctos. Cambios exclusivos del frontend, sobre la migración de Clerk/Vite ya existente.
+
 ## Actualización local posterior: diseño y compatibilidad
 
 El frontend incorpora las tres correcciones de compatibilidad, el rediseño neobrutalista, el logo original restaurado y un selector de modo oscuro persistente. Suite actual: **76 pruebas en 15 archivos**; formato, lint, tipos y build correctos, audit sin vulnerabilidades. El usuario revisó la tienda local, pidió ajustes de contraste/direcciones/logo que se aplicaron y autorizó subir la entrega a `master` de GitHub. El backend no se modificó. La integración de Vercel puede desplegar este commit automáticamente; comprobar su estado para confirmar la versión pública. El navegador automatizado no estuvo disponible. Detalles: [REDISENO_NEOBRUTALISTA.md](docs/REDISENO_NEOBRUTALISTA.md).

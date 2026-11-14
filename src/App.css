@@ -655,6 +655,10 @@ a {
   height: 35px;
   box-shadow: 2px 2px 0 var(--shadow-color);
 }
+/* A shared request lock must not make the other products look pressed. */
+.product-actions .icon-button:disabled[data-pending-elsewhere='true'] {
+  opacity: 1;
+}
 .favorite-active {
   color: #af263c;
 }

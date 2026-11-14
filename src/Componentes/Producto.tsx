@@ -1,4 +1,5 @@
 import ProductImage from '../shared/ui/ProductImage'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Show } from '@clerk/react'
 import { FiArrowUpRight, FiStar } from 'react-icons/fi'
@@ -12,6 +13,8 @@ const Producto = ({ producto }: { producto: productoprops }) => {
   const favoriteBusy = favoritos_store((state) => state.busy)
   const inCart = carrito_store((state) => state.encarrito(producto.id))
   const cartBusy = carrito_store((state) => state.busy)
+  const [favoritePending, setFavoritePending] = useState(false)
+  const [cartPending, setCartPending] = useState(false)
   return (
     <article className='product-card'>
       <div className='product-media'>
@@ -33,10 +36,20 @@ const Producto = ({ producto }: { producto: productoprops }) => {
               className='icon-button'
               aria-label='Cambiar favorito'
               aria-pressed={favorite}
+              aria-busy={favoritePending}
+              data-pending-elsewhere={favoriteBusy && !favoritePending}
               disabled={favoriteBusy}
-              onClick={() => {
+              onClick={async () => {
                 const state = favoritos_store.getState()
-                void (favorite ? state.quitar(producto.id) : state.agregar(producto.id))
+                if (state.busy) return
+                setFavoritePending(true)
+                try {
+                  await (state.favorito(producto.id)
+                    ? state.quitar(producto.id)
+                    : state.agregar(producto.id))
+                } finally {
+                  setFavoritePending(false)
+                }
               }}
             >
               {favorite ? (
@@ -49,10 +62,22 @@ const Producto = ({ producto }: { producto: productoprops }) => {
               className='icon-button'
               aria-label='Cambiar carrito'
               aria-pressed={inCart}
+              aria-busy={cartPending}
+              data-pending-elsewhere={
+                cartBusy && !cartPending && (inCart || producto.estado === 'Disponible')
+              }
               disabled={cartBusy || (!inCart && producto.estado !== 'Disponible')}
-              onClick={() => {
+              onClick={async () => {
                 const state = carrito_store.getState()
-                void (inCart ? state.quitar(producto.id) : state.agregar(producto.id))
+                if (state.busy) return
+                setCartPending(true)
+                try {
+                  await (state.encarrito(producto.id)
+                    ? state.quitar(producto.id)
+                    : state.agregar(producto.id))
+                } finally {
+                  setCartPending(false)
+                }
               }}
             >
               {inCart ? (
